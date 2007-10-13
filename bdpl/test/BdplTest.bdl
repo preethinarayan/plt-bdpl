@@ -1,0 +1,64 @@
+/////////////////////////////
+// Test program for BDPL   //
+/////////////////////////////
+
+//
+// Some basic tests
+// Test for array
+// Test for basic types
+// Test for comma separated list
+// Test for decimal, binary and hex numbers
+// Test for valid-ok-nok construct in various forms
+//
+bit[4] name;
+char name valid {1,2,3,4} ok {} nok {name = 0x234;};
+char name valid {1,2};
+char name valid {0} ok{};
+char name valid {0x4A..0x7B} nok {projects = 3;};
+
+//
+// Test for range
+//
+byte[2] array valid {0b1110010101010..0b11110000101010} optional on name;
+
+//
+// Test for optional construct
+//
+byte[2] array optional on ~name;
+byte[4] array optional on name;
+
+//
+// Test assignment statement
+//
+name = 0x3AC;
+
+//
+// Test declaration statement
+//
+byte names;
+
+//
+// Test empty struct
+//
+struct filename{
+};
+
+//
+// Test nested struct and undefined size array
+// Test comment
+// Test read and write statements as in Hello World Program
+struct file{
+  char[*] morenames;
+  struct nested_file{
+    char[34] nested_morenames;
+  };
+  byte lastname;
+};  // bad part of line
+read("/home/usr/bin/hello.txt",file_struct);
+write(stdout,file_struct);
+
+//
+// Test comment and end with destructive test
+//
+// char[] badname_commentedout;
+char[] badname;
