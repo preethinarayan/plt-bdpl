@@ -1,0 +1,32 @@
+set("endian" => "little");
+
+struct tiff_file( "endian" => "little" , "max_size" => "64kb" )
+{
+  struct image_file_header
+  {
+    byte[2] endianness 
+      valid { 0x4949 , 0x4d4d }  // ok { set("endian",(endianess==0x4949)?"little":"big") }
+      ok 
+      { 
+        if(endianness==0x4949)
+        {
+          set("endian","little"); // set should be able to work on the current scope
+        }                         // but then, how do we say "set the pos of this file ?"
+                                  // perhaps have set_attr() which takes in an object too and sets its attributes
+        else
+        {
+          set("endian","big");
+        }
+      } 
+      nok { exit(-1); }
+    ;
+    byte[2] magic valid {42};
+    byte[4] pointer;
+  };
+  // we have to goto image_file_header.pointer offset from start of file
+};
+
+tiff_file("endian"=>"big") f1;
+tiff_file f2;
+
+
