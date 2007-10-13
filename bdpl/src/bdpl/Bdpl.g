@@ -94,7 +94,7 @@ options{
 }
 
 file
-    : (stmt SEMICOLON)+ EOF
+    : (stmt)+ EOF
     ;
 
 stmt
@@ -104,21 +104,16 @@ stmt
 
 expr
     : NUM
+    | ID (ASSIGN expr)?
     ;
 
 execstmt
-    : ID ASSIGN expr
-    | "read" OPENPAREN (STRING|"stdin") COMMA ID CLOSEPAREN
-    | "write" OPENPAREN (STRING|"stdout") COMMA ID CLOSEPAREN
-    ;
-
-declstmt
-    : (("bit"|"byte"|"char")(SQBRACKETOPEN (NUM | STAR) SQBRACKETCLOSE)? ID) (validcheck)? (optionalcheck)?
-    | structdecl
-    ;
-
-structdecl
-    : "struct" ID OPENBRACE (declstmt SEMICOLON)* CLOSEBRACE
+    : expr SEMICOLON
+    | stmtblock
+    | "if" OPENPAREN expr CLOSEPAREN execstmt (options {greedy=true;}:"else" execstmt)?
+    | "for" OPENPAREN (expr)? SEMICOLON (expr)? SEMICOLON (expr)? CLOSEPAREN execstmt
+    | "read" OPENPAREN (STRING|"stdin") COMMA ID CLOSEPAREN SEMICOLON
+    | "write" OPENPAREN (STRING|"stdout"|"stderr") COMMA ID CLOSEPAREN SEMICOLON
     ;
 
 range
@@ -129,21 +124,63 @@ csl
     : (NUM((COMMA NUM)*))?
     ;
 
-validcheck
-    : "valid" (OPENBRACE (csl|range) CLOSEBRACE) ("ok" stmtblock)? ("nok" stmtblock)?
-    ;
-
-optionalcheck
-    : "optional" "on" (NEGATE)? ID
-    ;
-
 stmtblock
-    : OPENBRACE (execstmt SEMICOLON)* CLOSEBRACE
+    : OPENBRACE (execstmt)* CLOSEBRACE
     ;
 
+declstmt
+    : basic_type (array)? list_of_ids valid_check optional_check ";"
+    ;
 
+basic_type
+    : "bit"
+    | "byte"
+    | "int"
+    | "float"
+    | "double"
+    | struct_type
+    | struct_defn
+    ;
 
+struct_defn
+    : "struct" ID "{" (declstmt)* "}"
+    ;
 
+struct_type
+    : "type struct" ID
+    ;
+
+array
+    : "[" (range_list|"*") "]"
+    ;
+
+range_list
+    : (range_element)("," range_element)*
+    ;
+
+range_element
+    : (expr)(".." expr)?
+    ;
+
+list_of_ids
+    : (single_id)("," single_id)*
+    ;
+
+single_id
+    : ID ("(" initializer ")")? ("fieldsize" expr)?
+    ;
+
+valid_check
+    : "valid" ("{" range_list "}") ("ok" stmtblock)? ("nok" stmtblock)?
+    ;
+
+optional_check
+    : "optional" "on" expr
+    ;
+
+initializer
+    : (STRING "=>" STRING)("," STRING "=>" STRING)*
+    ;
 
 
 
