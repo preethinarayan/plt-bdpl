@@ -1,0 +1,21 @@
+// BDPL program 1
+// reserved words :
+//    struct
+//    char
+//    read
+//    write
+//    stdout
+
+
+
+struct file_struct
+{
+  char[*] content;
+};
+
+file_struct f1;
+
+read("/home/ap2503/hello-world",f1);
+write(stdout,f1);
+
+
