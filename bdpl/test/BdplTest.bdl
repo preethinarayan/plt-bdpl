@@ -11,10 +11,11 @@
 // Test for valid-ok-nok construct in various forms
 //
 bit[4] name;
+char a,b,c valid {10};
 char name valid {1,2,3,4} ok {} nok {name = 0x234;};
 char name valid {1,2};
 char name valid {0} ok{};
-char name valid {0x4A..0x7B} nok {projects = 3;};
+char name valid {0x4A .. 0x7B} nok {projects = 3;};
 
 //
 // Test for range
@@ -41,7 +42,7 @@ byte names;
 // Test empty struct
 //
 struct filename{
-};
+}a;
 
 //
 // Test nested struct and undefined size array
@@ -51,14 +52,14 @@ struct file{
   char[*] morenames;
   struct nested_file{
     char[34] nested_morenames;
-  };
+  }a;
   byte lastname;
-};  // bad part of line
+}a;  // bad part of line
 read("/home/usr/bin/hello.txt",file_struct);
 write(stdout,file_struct);
 
-//
-// Test comment and end with destructive test
-//
-// char[] badname_commentedout;
-char[] badname;
+
+char[*] badname ;
+a=a.b.c[*][10..34].d.e.f[12].c[*][*];
+
+
