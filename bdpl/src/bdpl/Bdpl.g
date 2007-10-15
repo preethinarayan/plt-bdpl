@@ -24,6 +24,7 @@ OPENPAREN : '(';
 CLOSEPAREN : ')';
 STAR : '*';
 ASSIGN : '=';
+DOT_DOT : "..";
 DOT : '.';
 NEGATE : '~';
 
@@ -132,6 +133,7 @@ basic_type
     | "int"
     | "float"
     | "double"
+    | "char" // this has been added only until we change the BdplTest file
     | struct_type
     | struct_defn
     ;
@@ -153,7 +155,7 @@ range_list
     ;
 
 range_element
-    : (expr)(".." expr)?
+    : (expr)(DOT_DOT expr)?
     ;
 
 list_of_ids
@@ -254,37 +256,27 @@ mult_exprt
 
 //
 // Is this correct?
+// do we need 2 not operators (i presume logical/bitwise)  - akshay
 //
 not_expr
     : ("~" child_term | "!" child_term | child_term)
     ;
 
-child_term
-    : object// child_termt
-    ;
-
-//child_termt
-//    : (("." object) child_termt)?
-//    ;
-
-//
-// Currently, the grammar for an array term is not defined
-// This is currently the grammar for an identifier
-// Make sure thre reference in the child_term and child_termt
-// rules is changed to array_term
-//
-//array_term
-//    : ???
-//    ;
-
-object
-    : (ID("." ID)*) => child_ref_list
+child_term 
+    : object
     | NUM
     ;
 
-child_ref_list
-    : (ID("." ID)*)
-    ;
+// this is really hairy stuff
+// gotta double check that this is correct - akshay
+// note : array of arrays are allowed by this grammer
 
-
+object 
+ 	: ID object_t
+ 	;
+object_t
+	: array object_t
+	| "." ID object_t
+	| // nothing
+	; 	
 
