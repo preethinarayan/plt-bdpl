@@ -27,10 +27,23 @@ ASSIGN : '=';
 DOT_DOT : "..";
 DOT : '.';
 NEGATE : '~';
+MINUS : '-' ;
+PLUS : '+';
+PERCENT : "%";
+
+// TODO : make a list of all operators here
+// apparently, antlr sucks :-)
+
+
+// why dont we have id's starting with underscores ?
+// it would be good to follow the covention that fake 
+// struct variables (the ones you declared cause it;s
+// mandatory) could start with an underscore.
 
 ID
     : LETTER(LETTER|DIGIT|'_')*
     ;
+    
 
 protected
 BINPREFIX
@@ -279,4 +292,3 @@ object_t
 	| "." ID object_t
 	| // nothing
 	; 	
-
