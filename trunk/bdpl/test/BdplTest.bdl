@@ -60,6 +60,13 @@ write(stdout,file_struct);
 
 
 char[*] badname ;
-a=a.b.c[*][10..34].d.e.f[12].c[*][*];
+a=a.b.c[*][10..34].d.e.f[ a.b.c.d[10]..a.b.c].c[*][*]; //arbitary expression
+a=a[10][12,34..56,65]; // array of ranges
+a=a.b.c[12,34..56,65][a.b.c  .. c.d.e[45,55..65,0] * 23 ]; // array indexed by expression with objects
+a=a.b.c[12,34..56,65][a.b.c+56-23%45..c.d.e[45,55..65,0]*23]; // array indexed by expression with objects
+a=a+34;
+a=a.b.c[12,34..56,65][a.b.c]; 
+//make it fail
+a=a/b; // life,it seems, isnt without a sense of irony
 
 
