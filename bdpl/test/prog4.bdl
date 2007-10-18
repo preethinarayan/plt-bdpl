@@ -6,26 +6,24 @@ struct trp_file
     struct transport_packet
     {
        byte magic 
-        valid {0x47} 
-          nok {write(stderr, "Sync Byte Error in: %d",i};
+         valid {0x47} nok {print("Sync Byte Error in: %d");};
        bit[1] error;
        bit[1] priority;
        bit[1] something; 
        bit[13] pid;
-       bit[2] adaptation_field_ control;
-       bit[2] transport_scramblin g_control;
+       bit[2] adaptation_field_control;
+       bit[2] transport_scrambling_control;
        bit[4] continuity_counter 
-        valid {(tp[$#tp-1].continuity_ counter + 1)%16)}
-        nok
-        {
-          write(stderr, "Continuity counter error ");
-        };
-      byte[184] payload;
-  }[*] tp; 
+         valid {((tp[$#tp-1].continuity_counter + 1)%16)}
+         nok
+         {
+           print("Continuity counter error ");
+         };
+       byte[184] payload;
+    }[*] tp; 
 }trp_f;
 
-
-FILE f1;
-f1=read("hello-world.mpeg");
+file f1;
+read("hello-world.mpeg",f1);
 trp_f = f1;
 print("mpeg file parsing complete");

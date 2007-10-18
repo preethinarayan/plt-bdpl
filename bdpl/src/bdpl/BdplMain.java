@@ -3,7 +3,7 @@ import java.io.*;
 class BdplMain{
     public static void main(String[] args){
 	try{
-	    BdplLexer lexer = new BdplLexer(new FileInputStream("BdplTest.bdl"));
+	    BdplLexer lexer = new BdplLexer(new FileInputStream("../../test/prog3.bdl"));
 	    BdplParser parser = new BdplParser(lexer);
 	    parser.file();
 	}catch(Exception e){
