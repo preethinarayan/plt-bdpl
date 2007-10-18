@@ -5,23 +5,23 @@ struct trp_file
 {
     struct transport_packet
     {
-      uimsbf byte magic 
+       byte magic 
         valid {0x47} 
           nok {write(stderr, "Sync Byte Error in: %d",i};
-      bit[1] error;
-      bit[1] priority;
-      bit[1] something; 
-      uimsbf bit[13] pid;
-      uimsbf bit[2] adaptation_field_ control;
-      uimsbf bit[2] transport_scramblin g_control;
-      uimsbf bit[4] continuity_counter 
+       bit[1] error;
+       bit[1] priority;
+       bit[1] something; 
+       bit[13] pid;
+       bit[2] adaptation_field_ control;
+       bit[2] transport_scramblin g_control;
+       bit[4] continuity_counter 
         valid {(tp[$#tp-1].continuity_ counter + 1)%16)}
         nok
         {
-          write(stderr, "Continuity counter error in packet: %d",i);
+          write(stderr, "Continuity counter error ");
         };
       byte[184] payload;
-  }tp[*];
+  }[*] tp; 
 }trp_f;
 
 
