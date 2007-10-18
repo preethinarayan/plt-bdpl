@@ -35,13 +35,13 @@ struct image_file_directory
 
 FILE f1;
 f1=read("hello-world.tiff");
-ifh <= f1;
+ifh <- f1;
 $(f1) = ifh.ifd_pointer;
 for(;1;)
 {
   type image_file_directory temp_idf;
-  temp_idf <= f1 ;
-  idf <= temp_idf;
+  temp_idf <- f1 ;
+  idf <- temp_idf;
   if(temp_idf.nextifdpointer > 0 && temp_idf.nextifdpointer < $#(f1) ) 
   { $(f1) = temp_idf.nextifdpointer; }
   else { break; }
