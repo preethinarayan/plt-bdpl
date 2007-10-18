@@ -5,29 +5,49 @@
 
 struct tiff_file
 {
-struct image_file_header
-{
-byte[2] endianness;
-byte[2] magic;
-byte[4] ifd_pointer;
-};
-};
+  struct image_file_header
+  {
+    byte[2] endianness      
+      valid { 0x4949 , 0x4d4d }  
+        ok  { set("endian",(endianess==0x4949)?"little":"big") }
+        nok { exit("bad endianness byte") );
+    byte[2] magic valid {42} nok {exit("bad magic")};
+    byte[4] ifd_pointer;
+  };
+}ifh;
 
-struct image_file_director y
+struct image_file_directory
 {
-byte[2] numEntries;
-for(i=0;i<numEntrie s;i++)
+  byte[2] numEntries;
+  for(i=0;i<numEntries;i++)
+  {
+    struct image_file_directory_entry
+    {
+      byte[2] tag;
+      byte[2] type;
+      byte[4] count;
+      byte[4] value;
+    };
+  }
+  byte[4] nextifdpointer;
+}idf[*];
+
+
+FILE f1;
+f1=read("hello-world.tiff");
+ifh <= f1;
+$(f1) = ifh.ifd_pointer;
+for(;1;)
 {
-struct image_file_director y_entry
-{
-byte[2] tag;
-byte[2] type;
-byte[4] count;
-byte[4] value;
-};
+  type image_file_directory temp_idf;
+  temp_idf <= f1 ;
+  idf <= temp_idf;
+  if(temp_idf.nextifdpointer > 0 && temp_idf.nextifdpointer < $#(f1) ) 
+  {
+    $(f1) = temp_idf.nextifdpointer;
+  }
 }
-byte[4] nextifdpointer;
-};
+;
 
 --------- End of TIFF Parser ------------ --
 
