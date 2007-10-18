@@ -177,7 +177,6 @@ basic_type
     | "int"
     | "float"
     | "double"
-    | "char" // this has been added only until we change the BdplTest file
     | struct_type
     | struct_defn
     ;
@@ -191,7 +190,7 @@ struct_type
     ;
 
 array
-    : "[" (range_list|STAR) "]"
+    : "[" (expr|STAR) "]"
     ;
 
 range_list
