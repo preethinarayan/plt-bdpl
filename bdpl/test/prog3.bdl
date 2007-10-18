@@ -43,11 +43,11 @@ for(;1;)
   temp_idf <= f1 ;
   idf <= temp_idf;
   if(temp_idf.nextifdpointer > 0 && temp_idf.nextifdpointer < $#(f1) ) 
-  {
-    $(f1) = temp_idf.nextifdpointer;
-  }
+  { $(f1) = temp_idf.nextifdpointer; }
+  else { break; }
 }
-;
+
+
 
 --------- End of TIFF Parser ------------ --
 
