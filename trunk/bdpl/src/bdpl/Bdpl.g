@@ -1,7 +1,7 @@
 class BdplLexer extends Lexer;
 options {
     charVocabulary = '\3'..'\377';
-    k = 2;
+    k = 3;
 }
 
 protected
@@ -14,7 +14,13 @@ DIGIT
     : ('0'..'9')
     ;
 
+protected
+UNDERSCORE
+    : '_'
+    ;
+
 SEMICOLON : ';';
+TERMINATOR : ":-)";
 COMMA : ',';
 OPENBRACE : '{';
 CLOSEBRACE : '}';
@@ -23,25 +29,37 @@ SQBRACKETCLOSE : ']';
 OPENPAREN : '(';
 CLOSEPAREN : ')';
 STAR : '*';
+SLASH : '/';
 ASSIGN : '=';
 DOT_DOT : "..";
 DOT : '.';
 NEGATE : '~';
+NOT : '!';
 MINUS : '-' ;
 PLUS : '+';
-PERCENT : "%";
-
-// TODO : make a list of all operators here
-// apparently, antlr sucks :-)
-
-
-// why dont we have id's starting with underscores ?
-// it would be good to follow the covention that fake 
-// struct variables (the ones you declared cause it;s
-// mandatory) could start with an underscore.
+PERCENT : '%';
+SET : "=>";
+EQUALITY : "==";
+INEQUALITY : "!=";
+LLSH : "<<";
+LRSH : ">>";
+ALSH : "<<<";
+ARSH : ">>>";
+GT : ">";
+LT : "<";
+GTE : ">=";
+LTE : "<=";
+ROL : "<-<";
+ROR : ">->";
+QUESTION :'?';
+APPEND : "<-";
+INDEX : "$#";
+BYTEOFFSET : "$";
+LAND : "&&";
+BAND : "&";
 
 ID
-    : LETTER(LETTER|DIGIT|'_')*
+    : (LETTER | UNDERSCORE)(LETTER|DIGIT|'_')*
     ;
     
 
@@ -106,7 +124,7 @@ COMMENT
 
 class BdplParser extends Parser;
 options{
-    k = 2;
+    k = 1;
 }
 
 file
@@ -119,17 +137,29 @@ stmt
     ;
 
 expr
-    : tern_expr
+    : (term ASSIGN tern_expr) => assign_expr
+    | (term APPEND tern_expr) => append_expr
+    | tern_expr
+    ;
+
+append_expr
+    : term APPEND tern_expr
+    ;
+
+assign_expr
+    : term ASSIGN tern_expr
     ;
 
 execstmt
     : expr ";"
-    | ID ASSIGN expr ";"
     | stmtblock
     | "if" "(" expr ")" execstmt (options {greedy=true;}: "else" execstmt)?
     | "for" "(" (expr)? ";" (expr)? ";" (expr)? ")" execstmt
     | "read" "(" (STRING|"stdin") "," ID ")" ";"
     | "write" "(" (STRING|"stdout"|"stderr") "," ID ")" ";"
+    | "set" "(" STRING "=>" STRING "," ID ")" ";"
+    | "exit" "(" STRING ")" ";"
+    | "print" "(" STRING ")" ";"
     ;
 
 stmtblock
@@ -138,6 +168,7 @@ stmtblock
 
 declstmt
     : basic_type (array)? list_of_ids (valid_check)? (optional_check)? ";"
+    | "file" ID ("," ID)* ";"
     ;
 
 basic_type
@@ -156,11 +187,11 @@ struct_defn
     ;
 
 struct_type
-    : "type struct" ID
+    : "type" "struct" ID
     ;
 
 array
-    : "[" (range_list|"*") "]"
+    : "[" (range_list|STAR) "]"
     ;
 
 range_list
@@ -172,7 +203,7 @@ range_element
     ;
 
 list_of_ids
-    : (single_id)("," single_id)*
+    : (single_id)(COMMA single_id)*
     ;
 
 single_id
@@ -188,11 +219,11 @@ optional_check
     ;
 
 initializer
-    : (STRING "=>" STRING)("," STRING "=>" STRING)*
+    : (STRING SET STRING)(COMMA STRING SET STRING)*
     ;
 
 tern_expr
-    : lor_expr("?" tern_expr ":" tern_expr)?
+    : lor_expr(QUESTION tern_expr COLON tern_expr)?
     ;
 
 lor_expr
@@ -208,7 +239,7 @@ and_expr
     ;
 
 and_exprt
-    : (("&&" bior_expr) and_exprt)?
+    : ((LAND bior_expr) and_exprt)?
     ;
 
 bior_expr
@@ -228,27 +259,44 @@ beor_exprt
     ;
 
 band_expr
-    : blsh_expr band_exprt
+    : eq_expr band_exprt
     ;
 
 band_exprt
-    : (("&" blsh_expr) band_exprt)?
+    : ((BAND eq_expr) band_exprt)?
     ;
 
-blsh_expr
-    : bash_expr blsh_exprt
+eq_expr
+    : comp_expr eq_exprt
     ;
 
-blsh_exprt
-    : (("<<" bash_expr | ">>" bash_expr) blsh_exprt)?
+eq_exprt
+    :((EQUALITY comp_expr)
+    | (INEQUALITY comp_expr) eq_exprt)?
     ;
 
-bash_expr
-    : sum_expr bash_exprt
+comp_expr
+    : sh_expr comp_exprt
     ;
 
-bash_exprt
-    : (("<<<" sum_expr | ">>>" sum_expr) bash_exprt)?
+comp_exprt
+    : (  (GT sh_expr)
+        |(LT sh_expr)
+        |(GTE sh_expr)
+        |(LTE sh_expr) comp_exprt)?
+    ;
+
+sh_expr
+    : sum_expr sh_exprt
+    ;
+
+sh_exprt
+    : (  (LLSH sum_expr)
+        |(LRSH sum_expr)
+        |(ALSH sum_expr)
+        |(ARSH sum_expr)
+        |(ROL sum_expr)
+        |(ROR sum_expr) sh_exprt)?
     ;
 
 sum_expr
@@ -256,7 +304,7 @@ sum_expr
     ;
 
 sum_exprt
-    : (("+" mult_expr | "-" mult_expr) sum_exprt)?
+    : ((PLUS mult_expr | MINUS mult_expr) sum_exprt)?
     ;
 
 mult_expr
@@ -264,31 +312,35 @@ mult_expr
     ;
 
 mult_exprt
-    : (("*" not_expr | "/" not_expr | "%" not_expr) mult_exprt)?
+    : ((STAR not_expr | SLASH not_expr | PERCENT not_expr) mult_exprt)?
     ;
 
-//
-// Is this correct?
-// do we need 2 not operators (i presume logical/bitwise)  - akshay
-//
 not_expr
-    : ("~" child_term | "!" child_term | child_term)
+    : (NEGATE child_term | NOT child_term | child_term)
     ;
 
 child_term 
-    : object
+    : term
+    | "(" expr ")"
+    | INDEX object
+    | "#" lvalue_term
     | NUM
     ;
 
-// this is really hairy stuff
-// gotta double check that this is correct - akshay
-// note : array of arrays are allowed by this grammer
+term
+    : lvalue_term termt
+    | BYTEOFFSET lvalue_term
+    ;
+
+termt
+    : ("." lvalue_term termt)?
+    ;
+
+lvalue_term
+    : object("[" (range_list|STAR) "]")?
+    ;
 
 object 
- 	: ID object_t
+ 	: ID
  	;
-object_t
-	: array object_t
-	| "." ID object_t
-	| // nothing
-	; 	
+

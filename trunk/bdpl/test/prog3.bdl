@@ -1,49 +1,49 @@
-
 //
 // This is a BDPL program to parse a TIFF file
 //
-
+file f1;
 struct tiff_file
 {
   struct image_file_header
   {
     byte[2] endianness      
       valid { 0x4949 , 0x4d4d }  
-        ok  { set("endian",(endianess==0x4949)?"little":"big") }
-        nok { exit("bad endianness byte") );
-    byte[2] magic valid {42} nok {exit("bad magic")};
+        ok  { 
+	    if(endianness == 0x4949)
+                set("endian" => "little",f1);
+	    else
+		set("endian" => "big",f1);
+            }
+        nok { exit("bad endianness byte"); };
+    byte[2] magic valid {42} nok {exit("bad magic");};
     byte[4] ifd_pointer;
-  };
-}ifh;
+  }header;
+}tiff;
 
 struct image_file_directory
 {
   byte[2] numEntries;
-  for(i=0;i<numEntries;i++)
+  struct image_file_directory_entry
   {
-    struct image_file_directory_entry
-    {
       byte[2] tag;
-      byte[2] type;
+      byte[2] typefield;
       byte[4] count;
       byte[4] value;
-    };
-  }
+  }ifdentry;
   byte[4] nextifdpointer;
-}idf[*];
+}[*] ifd;
 
+read("hello-world.tiff",f1);
+tiff.header <- f1;
+$f1 = tiff.header.ifd_pointer;
 
-FILE f1;
-f1=read("hello-world.tiff");
-ifh <- f1;
-$(f1) = ifh.ifd_pointer;
+type struct image_file_directory temp_idf;
 for(;1;)
 {
-  type image_file_directory temp_idf;
   temp_idf <- f1 ;
   idf <- temp_idf;
-  if(temp_idf.nextifdpointer > 0 && temp_idf.nextifdpointer < $#(f1) ) 
-  { $(f1) = temp_idf.nextifdpointer; }
+  if(temp_idf.nextifdpointer > 0 && temp_idf.nextifdpointer < $#f1 ) 
+  { $f1 = temp_idf.nextifdpointer; }
   else { break; }
 }
 
@@ -51,7 +51,7 @@ print("tiff file parsing complete");
 
 
 
---------- End of TIFF Parser ------------ --
+//--------- End of TIFF Parser ------------
 
 
 
