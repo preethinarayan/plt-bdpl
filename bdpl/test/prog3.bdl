@@ -47,6 +47,8 @@ for(;1;)
   else { break; }
 }
 
+print("tiff file parsing complete");
+
 
 
 --------- End of TIFF Parser ------------ --

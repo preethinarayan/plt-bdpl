@@ -3,25 +3,29 @@
 //
 struct trp_file
 {
-for(i=0;;i++ )
-{
-struct transport_packet
-{
-uimsbf byte magic valid {0x47} nok {write(stderr, "Sync Byte
-Error in: %d",i};
-bit[1] error;
-bit[1] priority;
-bit[1] something;
-uimsbf bit[13] pid;
-uimsbf bit[2] adaptation_field_ control;
-uimsbf bit[2] transport_scramblin g_control;
-uimsbf bit[4] continuity_counter valid
-{(transport_ packet[i- 1].continuity_ counter + 1)%16)}
-nok
-{
-write(stderr, "Continuity counter error in packet: %d",i);
-};
-byte[184] payload;
-};
-}
+    struct transport_packet
+    {
+      uimsbf byte magic 
+        valid {0x47} 
+          nok {write(stderr, "Sync Byte Error in: %d",i};
+      bit[1] error;
+      bit[1] priority;
+      bit[1] something; 
+      uimsbf bit[13] pid;
+      uimsbf bit[2] adaptation_field_ control;
+      uimsbf bit[2] transport_scramblin g_control;
+      uimsbf bit[4] continuity_counter 
+        valid {(tp[$#tp-1].continuity_ counter + 1)%16)}
+        nok
+        {
+          write(stderr, "Continuity counter error in packet: %d",i);
+        };
+      byte[184] payload;
+  }tp[*];
+}trp_f;
 
+
+FILE f1;
+f1=read("hello-world.mpeg");
+trp_f = f1;
+print("mpeg file parsing complete");
