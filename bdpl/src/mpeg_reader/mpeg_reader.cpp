@@ -1,7 +1,3 @@
-// mpeg_reader.cpp : Defines the entry point for the console application.
-//
-
-#include "stdafx.h"
 #include <fstream>
 #include <iostream>
 using namespace std;
@@ -37,7 +33,7 @@ struct mpeg_packet
 	} data;
 };
 
-int _tmain(int argc, _TCHAR* argv[])
+int main(int argc, _TCHAR* argv[])
 {
 	ifstream in_file("C:/bb/aa.ts", ios::binary);
 	mpeg_packet mpeg_packets[100];
