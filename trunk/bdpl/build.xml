@@ -1,0 +1,47 @@
+<project name="BDPL" default="jar" basedir=".">
+  <description>
+    This is the BDPL build file
+  </description>
+
+  <property name="base" location="."/>
+  <property name="src" location="src/bdpl"/>
+  <property name="build" location="build"/>
+  <property name="jar" location="lib"/>
+
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${build}"/>
+    <mkdir dir="${jar}"/>
+  </target>
+
+  <antlr target="src/bdpl/bdpl.g" outputdirectory="src/bdpl"/>
+
+  <target name="compile" depends="init">
+    <description>
+      Compile the java source files
+    </description>	
+    <javac srcdir="${src}" destdir="${build}"/>
+  </target>
+
+  <target name="jar" depends="compile">
+    <description>
+      Generates the jar
+    </description>
+    <jar jarfile="${jar}/bdpl.jar" basedir="${build}"/>
+  </target>
+
+  <javadoc destdir="doc/html"
+           author="true"
+           version="true"
+           windowtitle="BDPL API Documentation">
+    <fileset dir="${src}" includes="/*.java"/>
+    <doctitle><![CDATA[<h1>BDPL</h1>]]></doctitle>
+    <bottom><![CDATA[<i>Copyright &#169; 2007 Akshay, Aditi, Preethi, Bharadwaj. All Rights Reserved.</i>]]></bottom>
+  </javadoc>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${jar}"/>
+  </target>
+
+</project>
