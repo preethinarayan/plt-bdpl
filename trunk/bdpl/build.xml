@@ -7,7 +7,7 @@
   <property name="src" location="src/bdpl"/>
   <property name="build" location="build"/>
   <property name="jar" location="lib"/>
-  <property name="antlr_lib" location="c:\Program Files\antlr\277\lib\antlr.jar"/>
+  <property name="antlr_lib" location="tools\antlr.jar"/>
 
   <target name="init">
     <tstamp/>
