@@ -7,6 +7,7 @@
   <property name="src" location="src/bdpl"/>
   <property name="build" location="build"/>
   <property name="jar" location="lib"/>
+  <property name="antlr_lib" location="c:\Program Files\antlr\277\lib\antlr.jar"/>
 
   <target name="init">
     <tstamp/>
@@ -27,9 +28,9 @@
     <description>
       Generates the jar
     </description>
-    <jar jarfile="${jar}/bdpl.jar" basedir="${build}"/>
+    <jar jarfile="${jar}/bdpl.jar" basedir="${build}" />
   </target>
-
+  <!--
   <javadoc destdir="doc/html"
            author="true"
            version="true"
@@ -38,7 +39,10 @@
     <doctitle><![CDATA[<h1>BDPL</h1>]]></doctitle>
     <bottom><![CDATA[<i>Copyright &#169; 2007 Akshay, Aditi, Preethi, Bharadwaj. All Rights Reserved.</i>]]></bottom>
   </javadoc>
-
+  -->
+  <target name="run" depends="jar">
+	  <java classpath="${antlr_lib};${jar}/bdpl.jar" classname="BdplMain"></java>
+  </target>
   <target name="clean">
     <delete dir="${build}"/>
     <delete dir="${jar}"/>
