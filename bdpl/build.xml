@@ -7,7 +7,7 @@
   <property name="src" location="src/bdpl"/>
   <property name="build" location="build"/>
   <property name="jar" location="lib"/>
-  <property name="antlr_lib" location="tools\antlr.jar"/>
+  <property name="antlr_lib" location="tools/antlr.jar"/>
 
   <target name="init">
     <tstamp/>
@@ -30,16 +30,16 @@
     </description>
     <jar jarfile="${jar}/bdpl.jar" basedir="${build}" />
   </target>
-  <!--
+  
   <javadoc destdir="doc/html"
            author="true"
            version="true"
            windowtitle="BDPL API Documentation">
-    <fileset dir="${src}" includes="/*.java"/>
+    <fileset dir="${src}" includes="*.java"/>
     <doctitle><![CDATA[<h1>BDPL</h1>]]></doctitle>
     <bottom><![CDATA[<i>Copyright &#169; 2007 Akshay, Aditi, Preethi, Bharadwaj. All Rights Reserved.</i>]]></bottom>
   </javadoc>
-  -->
+  
   <target name="run" depends="jar">
 	  <java classpath="${antlr_lib};${jar}/bdpl.jar" classname="BdplMain"></java>
   </target>
