@@ -125,10 +125,16 @@ COMMENT
 class BdplParser extends Parser;
 options{
     k = 1;
+    buildAST = true;
+}
+
+tokens{
+    STATEMENTS;
 }
 
 file
-    : (stmt)+ EOF
+    : (stmt)+ EOF!
+        {#file = #([STATEMENTS],file);}
     ;
 
 stmt
@@ -137,60 +143,38 @@ stmt
     ;
 
 expr
-    : (term ASSIGN tern_expr) => assign_expr
-    | (term APPEND tern_expr) => append_expr
+    : (term ASSIGN^ tern_expr) => assign_expr
+    | (term APPEND^ tern_expr) => append_expr
     | tern_expr
     ;
 
 append_expr
-    : term APPEND tern_expr
+    : term APPEND^ tern_expr
     ;
 
 assign_expr
-    : term ASSIGN tern_expr
+    : term ASSIGN^ tern_expr
     ;
 
 execstmt
-    : expr ";"
+    : expr ";"!
     | stmtblock
-    | "if" "(" expr ")" execstmt (options {greedy=true;}: "else" execstmt)?
-    | "for" "(" (expr)? ";" (expr)? ";" (expr)? ")" execstmt
-    | "read" "(" (STRING|"stdin") "," ID ")" ";"
-    | "write" "(" (STRING|"stdout"|"stderr") "," ID ")" ";"
-    | "set" "(" STRING "=>" STRING "," ID ")" ";"
-    | "exit" "(" STRING ")" ";"
-    | "print" "(" STRING ")" ";"
+    | "if"^ "("! expr ")"! execstmt (options {greedy=true;}: "else"! execstmt)?
+    | "for"^ "("! (expr)? ";"! (expr)? ";"! (expr)? ")"! execstmt
+    | "read"^ "("! (STRING|"stdin") ","! ID ")"! ";"!
+    | "write"^ "("! (STRING|"stdout"|"stderr") ","! ID ")"! ";"!
+    | "set"^ "("! STRING "=>"! STRING ","! ID ")"! ";"!
+    | "exit"^ "("! STRING ")"! ";"!
+    | "print"^ "("! STRING ")"! ";"!
     ;
 
 stmtblock
-    : "{" (execstmt)* "}"
+    : "{"! (execstmt)* "}"!
     ;
 
 declstmt
-    : basic_type (array)? list_of_ids (valid_check)? (optional_check)? ";"
-    | "file" ID ("," ID)* ";"
-    ;
-
-basic_type
-    : "bit"
-    | "byte"
-    | "int"
-    | "float"
-    | "double"
-    | struct_type
-    | struct_defn
-    ;
-
-struct_defn
-    : "struct" ID "{" (declstmt)* "}"
-    ;
-
-struct_type
-    : "type" "struct" ID
-    ;
-
-array
-    : "[" (expr|STAR) "]"
+    : ("bit"^ | "byte"^ | "int"^ | "float"^ | "double"^ | ("type"^ "struct"! ID) | ("struct"^ ID "{"! (declstmt)* "}"!)) ("[" (expr|STAR) "]")? list_of_ids (valid_check)? (optional_check)? ";"!
+    | "file"^ ID (","! ID)* ";"!
     ;
 
 range_list
@@ -210,7 +194,7 @@ single_id
     ;
 
 valid_check
-    : "valid" ("{" range_list "}") ("ok" stmtblock)? ("nok" stmtblock)?
+    : "valid"^ ("{"! range_list "}"!) ("ok"^ stmtblock)? ("nok"^ stmtblock)?
     ;
 
 optional_check
@@ -226,113 +210,60 @@ tern_expr
     ;
 
 lor_expr
-    : and_expr lor_exprt
-    ;
-
-lor_exprt
-    : (("||" and_expr) lor_exprt)?
+    : and_expr ("||"^ and_expr)*
     ;
 
 and_expr
-    : bior_expr and_exprt
-    ;
-
-and_exprt
-    : ((LAND bior_expr) and_exprt)?
+    : bior_expr (LAND^ bior_expr)*
     ;
 
 bior_expr
-    : beor_expr bior_exprt
-    ;
-
-bior_exprt
-    : (("|" beor_expr) bior_exprt)?
+    : beor_expr ("|"^ beor_expr)*
     ;
 
 beor_expr
-    : band_expr beor_exprt
-    ;
-
-beor_exprt
-    : (("^" band_expr) beor_exprt)?
+    : band_expr ("^" band_expr)*
     ;
 
 band_expr
-    : eq_expr band_exprt
-    ;
-
-band_exprt
-    : ((BAND eq_expr) band_exprt)?
+    : eq_expr (BAND eq_expr)*
     ;
 
 eq_expr
-    : comp_expr eq_exprt
-    ;
-
-eq_exprt
-    :((EQUALITY comp_expr)
-    | (INEQUALITY comp_expr) eq_exprt)?
+    : comp_expr ((EQUALITY^ | INEQUALITY^) comp_expr)*
     ;
 
 comp_expr
-    : sh_expr comp_exprt
-    ;
-
-comp_exprt
-    : (  (GT sh_expr)
-        |(LT sh_expr)
-        |(GTE sh_expr)
-        |(LTE sh_expr) comp_exprt)?
+    : sh_expr ((GT^ | LT^ | GTE^ | LTE^) sh_expr)*
     ;
 
 sh_expr
-    : sum_expr sh_exprt
-    ;
-
-sh_exprt
-    : (  (LLSH sum_expr)
-        |(LRSH sum_expr)
-        |(ALSH sum_expr)
-        |(ARSH sum_expr)
-        |(ROL sum_expr)
-        |(ROR sum_expr) sh_exprt)?
+    : sum_expr ((LLSH^ | LRSH^ | ALSH^ | ARSH^ | ROL^ | ROR^) sum_expr)*
     ;
 
 sum_expr
-    : mult_expr sum_exprt
-    ;
-
-sum_exprt
-    : ((PLUS mult_expr | MINUS mult_expr) sum_exprt)?
+    : mult_expr ((PLUS^ | MINUS^) mult_expr)*
     ;
 
 mult_expr
-    : not_expr mult_exprt
-    ;
-
-mult_exprt
-    : ((STAR not_expr | SLASH not_expr | PERCENT not_expr) mult_exprt)?
+    : not_expr ((STAR^ | SLASH^ | PERCENT^) not_expr)*
     ;
 
 not_expr
-    : (NEGATE child_term | NOT child_term | child_term)
+    : ((NEGATE^ | NOT^)? child_term)
     ;
 
 child_term 
     : term
-    | "(" expr ")"
-    | INDEX object
-    | "#" lvalue_term
+    | "("! expr ")"!
+    | INDEX^ object
+    | "#"^ lvalue_term
     | NUM
     ;
 
 term
-    : lvalue_term termt
-    | BYTEOFFSET lvalue_term
-    ;
-
-termt
-    : ("." lvalue_term termt)?
+    : lvalue_term ("."^ lvalue_term)*
+    | BYTEOFFSET^ lvalue_term
     ;
 
 lvalue_term
