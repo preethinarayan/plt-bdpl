@@ -1,3 +1,13 @@
+/*
+ * This is the BDPL ANTLR grammar file
+ *
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//                                    LEXER                                  //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 class BdplLexer extends Lexer;
 options {
     charVocabulary = '\3'..'\377';
@@ -62,7 +72,6 @@ ID
     : (LETTER | UNDERSCORE)(LETTER|DIGIT|'_')*
     ;
     
-
 protected
 BINPREFIX
     : '0''b'
@@ -106,7 +115,8 @@ NUM
 
 WS
     : (' '
-    | '\n'
+    | '\n' {newline();}
+    | ('\r' '\n') => '\r' '\n' {newline();}
     | '\r' {newline();}
     | '\t'
     ) {$setType(Token.SKIP);}
@@ -116,12 +126,15 @@ STRING
     : '"'! ( '"' '"'! | ~('"'))* '"'!
     ;
 
-
 COMMENT
     : '/' '/' ((~'\n')* '\n' {newline();}) {$setType(Token.SKIP);}
     ;
 
-
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//                                    PARSER                                 //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
 class BdplParser extends Parser;
 options{
     k = 1;
@@ -129,12 +142,12 @@ options{
 }
 
 tokens{
-    STATEMENTS;
+    PROG;
 }
 
-file
+program
     : (stmt)+ EOF!
-        {#file = #([STATEMENTS],file);}
+        {#program = #([PROG,"PROG"], #program);}
     ;
 
 stmt
@@ -166,6 +179,8 @@ execstmt
     | "set"^ "("! STRING "=>"! STRING ","! ID ")"! ";"!
     | "exit"^ "("! STRING ")"! ";"!
     | "print"^ "("! STRING ")"! ";"!
+    | "break" ";"!
+    | "continue" ";"!
     ;
 
 stmtblock
@@ -173,7 +188,14 @@ stmtblock
     ;
 
 declstmt
-    : ("bit"^ | "byte"^ | "int"^ | "float"^ | "double"^ | ("type"^ "struct"! ID) | ("struct"^ ID "{"! (declstmt)* "}"!)) ("[" (expr|STAR) "]")? list_of_ids (valid_check)? (optional_check)? ";"!
+    : ("bit"^ 
+        | "byte"^ 
+        | "int"^ 
+        | "float"^ 
+        | "double"^ 
+        | ("type"^ "struct"! ID) 
+        | ("struct"^ ID "{"! (declstmt)* "}"!)
+        )("[" (expr|STAR) "]")? list_of_ids (valid_check)? (optional_check)? ";"!
     | "file"^ ID (","! ID)* ";"!
     ;
 
@@ -274,3 +296,61 @@ object
  	: ID
  	;
 
+///////////////////////////////////////////////////////////////////////////////
+//                                                                           //
+//                                TREE WALKER                                //
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+class BdplTreeParser extends TreeParser;
+options{
+}
+
+{
+    String r = new String("Null");
+    String a = new String();
+    String b = new String();
+}
+
+program
+    : #(PROG (r=stmt {System.out.println(r);})+)
+    ;
+
+stmt returns [String r]
+{
+    r = new String();
+}
+    : "if" {r="if";}
+    | "file" {r="file";}
+    | "for" {r="for";}
+    | "break" {r="break";}
+    | "continue" {r="continue";}
+    | "struct" {r="struct";}
+    | "type" {r="type";}
+    | "read" {r="read";}
+    | "write" {r="write";}
+    | "print" {r="print";}
+    | #(DOT       a=stmt b=stmt {})
+    | #(PLUS      a=stmt b=stmt {r="+";System.out.println(r);})
+    | #(MINUS     a=stmt b=stmt {})
+    | #(STAR      a=stmt b=stmt {})
+    | #(SLASH     a=stmt b=stmt {})
+    | #(PERCENT   a=stmt b=stmt {})
+    | #(LLSH      a=stmt b=stmt {})
+    | #(LRSH      a=stmt b=stmt {})
+    | #(ALSH      a=stmt b=stmt {})
+    | #(ARSH      a=stmt b=stmt {})
+    | #(GT        a=stmt b=stmt {})
+    | #(LT        a=stmt b=stmt {})
+    | #(GTE       a=stmt b=stmt {})
+    | #(LTE       a=stmt b=stmt {})
+    | #(ROL       a=stmt b=stmt {})
+    | #(ROR       a=stmt b=stmt {})
+    | #(LAND      a=stmt b=stmt {}) 
+    | #(LOR       a=stmt b=stmt {}) 
+    | #(BAND      a=stmt b=stmt {})
+    | #(BIOR      a=stmt b=stmt {})
+    | #(BEOR      a=stmt b=stmt {})
+    | #(APPEND    a=stmt b=stmt {})
+    | #(ASSIGN    a=stmt b=stmt {r="=";})
+    | #(id:ID {r=id.getText();System.out.println(r);})
+;
