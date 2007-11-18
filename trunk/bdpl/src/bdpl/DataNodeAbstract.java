@@ -31,7 +31,7 @@ abstract public class DataNodeAbstract implements DataNode
     
     public int get_bit_size()  {return _bitsize;}
     
-    abstract public int get_int_value() ;
+    abstract public int get_int_value() throws Exception ;
     
     /** @return the number of bits this type takes */
     public int get_fieldsize() { return _fieldsize;}
