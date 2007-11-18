@@ -13,15 +13,20 @@
  */
 public class DataNodeInt extends DataNodeAbstract
 {
+    void init()
+    {
+        _bitsize=32;
+        _fieldsize=32;
+    }
     
     /** Creates a new instance of DataNodeInt */
-    public DataNodeInt () {super();_data=0; _bitsize=32;}
+    public DataNodeInt () {super();init();_data=0;}
     
     /** construct from int */
-    public DataNodeInt (int data) {super();_data=data; _bitsize=32;}
+    public DataNodeInt (int data) {super();init();_data=data; }
     
     /** copy constructor */
-    public DataNodeInt (DataNodeInt data) {super(data);_data=data._data;_bitsize=data._bitsize; }
+    public DataNodeInt (DataNodeInt data) {super(data);init();_data=data._data;_bitsize=data._bitsize; _fieldsize=data._fieldsize;}
     
     /** return the unique typename */
     public String get_type_name() {return "TYPE_INT";}

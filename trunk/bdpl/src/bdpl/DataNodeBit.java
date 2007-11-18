@@ -14,15 +14,20 @@
 public class DataNodeBit extends DataNodeAbstract
 {
     
+    void init()
+    {
+        _bitsize=1;
+        _fieldsize=1;
+    }
     /** list all constructors here */
     /** Creates a new instance of DataNodeBit */
-    public DataNodeBit () {super();_data=0;_bitsize=1; }
+    public DataNodeBit () {super();init();_data=0;}
     
     /** construct from int */
-    public DataNodeBit (int data) {super(); _data=data;_bitsize=1;}
+    public DataNodeBit (int data) {super(); init();_data=data;}
     
     /** copy constructor */
-    public DataNodeBit (DataNodeBit data) {super(data);_data=data._data;}
+    public DataNodeBit (DataNodeBit data) {super(data);init();_data=data._data;_fieldsize=data._fieldsize;_bitsize=data._bitsize;}
     
     
     /** return the unique typename */
