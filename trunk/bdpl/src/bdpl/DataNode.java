@@ -21,5 +21,5 @@ public interface DataNode
     public int get_bit_size(); 
     public int get_int_value();
     public int get_fieldsize();
-    public int set_fieldsize();
+    public int set_fieldsize(int fieldsize);
 }
