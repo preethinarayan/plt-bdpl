@@ -15,28 +15,37 @@
 import java.util.*;
 public class DataNodeArray extends DataNodeAbstract
 {    
-    /** Creates a new instance of DataNodeArray */
+    /** common initializers */
+    private void init()
+    {
+        _bseq_cache = new Cache();
+        _bsize_cache=new Cache();
+        _intvalue_cache=new Cache();
+        _children= new ArrayList() ;
+        
+    }
     private DataNodeArray ()
     {
         super();
-        _children= new ArrayList() ;
+        init();
     }
     
     /** Creates a new instance of DataNodeArray 
      * the dummy variable is only to keep a refernce of 
      * what type the elements of this array are
      */
-    private DataNodeArray (DataNodeAbstract dummy)
+    public DataNodeArray (DataNodeAbstract dummy)
     {
         super();
+        init();
         _dummy=dummy;
-        _children=new ArrayList();
     }
     
     /** should invoke copy constructor for base class */
     public DataNodeArray (DataNodeArray data)
     {
         super(data);
+        init();
         _children = data._children;
     }
     
@@ -52,7 +61,7 @@ public class DataNodeArray extends DataNodeAbstract
         String ret="";
         for(int i=0;i<_children.size() ; i++ )
         {
-            ret=ret+ ((DataNodeArray)_children.get (i)).get_bitsequence_value ();
+            ret=ret+ ((DataNodeAbstract)_children.get (i)).get_bitsequence_value ();
         }
         _bseq_cache.set (ret);
         return ret;
@@ -66,7 +75,7 @@ public class DataNodeArray extends DataNodeAbstract
         int ret=0;
         for(int i=0;i<_children.size() ; i++ )
         {
-            ret+=((DataNodeArray)_children.get (i)).get_bit_size ();
+            ret+=((DataNodeAbstract)_children.get (i)).get_bit_size ();
         }
         _bsize_cache.set (ret);
         return ret;
@@ -132,9 +141,21 @@ public class DataNodeArray extends DataNodeAbstract
         }
         if(i>=_children.size ())
         {
-            throw new Exception("DataNodeArrayIndexOutOfBound");
+            throw new Exception("DataNodeArray: Index Out Of Bound in set_element");
         }
         _children.set(i,data);
+        _invalid_cache();
+    }
+    
+    /** appends an element to the end of the array */
+    public void append_element(DataNodeAbstract data) throws Exception
+    {
+        if(data.get_type_name () != _dummy.get_type_name ())
+        {
+            throw new Exception("incompatible types ! all elemens of array must be of the defined type.");
+        }
+        
+        _children.add(data);
         _invalid_cache();
     }
         

@@ -13,21 +13,43 @@
  */
 public class DataNodeByte extends DataNodeAbstract
 {
-    
+    void init ()
+    {
+        _bitsize=8;
+        _fieldsize=8;
+    }
     /** Creates a new instance of DataNodeByte */
-    public DataNodeByte () {super();_data=0;_bitsize=8;}
+    public DataNodeByte ()
+    {
+        super ();
+        init ();
+        _data=0;
+    }
     
     /** construct from int */
-    public DataNodeByte (int data) {super();_data=data;_bitsize=8;}
+    public DataNodeByte (int data)
+    {
+        super ();
+        init ();
+        _data=data;
+    }
     
     /** copy constructor */
-    public DataNodeByte (DataNodeByte data) {super(data);_data=data._data;}
+    public DataNodeByte (DataNodeByte data)
+    {
+        super (data);
+        init ();
+        _data=data._data;
+        _bitsize=data._bitsize;
+        _fieldsize=data._fieldsize;
+    }
     
     /** return the unique typename */
-    public String get_type_name() {return "TYPE_BYTE";}
-    public String get_bitsequence_value() 
+    public String get_type_name () {return "TYPE_BYTE";}
+    
+    public String get_bitsequence_value ()
     {
-        String s=Integer.toString (_data,2); 
+        String s=Integer.toString (_data,2);
         if((s.length () >= _fieldsize))
         {
             return s.substring ( s.length ()-_fieldsize, s.length ()-1);
@@ -41,8 +63,8 @@ public class DataNodeByte extends DataNodeAbstract
             return s;
         }
     }
-    public int get_int_value() {return _data;}
-     
+    public int get_int_value () {return _data;}
+    
     private int _data;
     
 }

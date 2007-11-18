@@ -21,7 +21,7 @@
     <description>
       Compile the java source files
     </description>	
-    <javac srcdir="${src}" destdir="${build}"/>
+    <javac  debug="yes" srcdir="${src}" destdir="${build}"/>
   </target>
 
   <target name="jar" depends="compile">
