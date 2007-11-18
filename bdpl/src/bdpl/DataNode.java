@@ -19,7 +19,7 @@ public interface DataNode
     public String get_type_name();
     public String get_bitsequence_value() ;
     public int get_bit_size(); 
-    public int get_int_value();
+    public int get_int_value() throws Exception;
     public int get_fieldsize();
     public int set_fieldsize(int fieldsize);
 }
