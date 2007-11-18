@@ -34,8 +34,8 @@ TERMINATOR : ":-)";
 COMMA : ',';
 OPENBRACE : '{';
 CLOSEBRACE : '}';
-SQBRACKETOPEN : '[';
-SQBRACKETCLOSE : ']';
+SQBROPEN : '[';
+SQBRCLOSE : ']';
 OPENPAREN : '(';
 CLOSEPAREN : ')';
 STAR : '*';
@@ -64,9 +64,13 @@ ROR : ">->";
 QUESTION :'?';
 APPEND : "<-";
 INDEX : "$#";
-BYTEOFFSET : "$";
+BYTEOFFSET : '$';
+POUND : '#';
 LAND : "&&";
-BAND : "&";
+BAND : '&';
+BIOR : '|';
+BEOR : '^';
+LOR : "||";
 
 ID
     : (LETTER | UNDERSCORE)(LETTER|DIGIT|'_')*
@@ -170,17 +174,17 @@ assign_expr
     ;
 
 execstmt
-    : expr ";"!
+    : expr SEMICOLON!
     | stmtblock
     | "if"^ "("! expr ")"! execstmt (options {greedy=true;}: "else"! execstmt)?
-    | "for"^ "("! (expr)? ";"! (expr)? ";"! (expr)? ")"! execstmt
-    | "read"^ "("! (STRING|"stdin") ","! ID ")"! ";"!
-    | "write"^ "("! (STRING|"stdout"|"stderr") ","! ID ")"! ";"!
-    | "set"^ "("! STRING "=>"! STRING ","! ID ")"! ";"!
-    | "exit"^ "("! STRING ")"! ";"!
-    | "print"^ "("! STRING ")"! ";"!
-    | "break" ";"!
-    | "continue" ";"!
+    | "for"^ "("! (expr)? SEMICOLON! (expr)? SEMICOLON! (expr)? ")"! execstmt
+    | "read"^ "("! (STRING|"stdin") COMMA! ID ")"! SEMICOLON!
+    | "write"^ "("! (STRING|"stdout"|"stderr") COMMA! ID ")"! SEMICOLON!
+    | "set"^ "("! STRING "=>"! STRING COMMA! ID ")"! SEMICOLON!
+    | "exit"^ "("! STRING ")"! SEMICOLON!
+    | "print"^ "("! STRING ")"! SEMICOLON!
+    | "break" SEMICOLON!
+    | "continue" SEMICOLON!
     ;
 
 stmtblock
@@ -195,12 +199,12 @@ declstmt
         | "double"^ 
         | ("type"^ "struct"! ID) 
         | ("struct"^ ID "{"! (declstmt)* "}"!)
-        )("[" (expr|STAR) "]")? list_of_ids (valid_check)? (optional_check)? ";"!
-    | "file"^ ID (","! ID)* ";"!
+        )(SQBROPEN^ (expr|STAR) SQBRCLOSE!)? list_of_ids (valid_check)? (optional_check)? SEMICOLON!
+    | "file"^ ID (COMMA! ID)* SEMICOLON!
     ;
 
 range_list
-    : (range_element)("," range_element)*
+    : (range_element)(COMMA range_element)*
     ;
 
 range_element
@@ -279,17 +283,17 @@ child_term
     : term
     | "("! expr ")"!
     | INDEX^ object
-    | "#"^ lvalue_term
+    | POUND^ lvalue_term
     | NUM
     ;
 
 term
-    : lvalue_term ("."^ lvalue_term)*
+    : lvalue_term (DOT^ lvalue_term)*
     | BYTEOFFSET^ lvalue_term
     ;
 
 lvalue_term
-    : object("[" (range_list|STAR) "]")?
+    : object(SQBROPEN (range_list|STAR) SQBRCLOSE)?
     ;
 
 object 
@@ -325,32 +329,40 @@ stmt returns [String r]
     | "break" {r="break";}
     | "continue" {r="continue";}
     | "struct" {r="struct";}
+    | "byte" {r="byte";}
+    | "bit" {r="bit";}
+    | "int" {r="int";}
+    | "float" {r="float";}
+    | "double" {r="double";}
     | "type" {r="type";}
     | "read" {r="read";}
     | "write" {r="write";}
     | "print" {r="print";}
-    | #(DOT       a=stmt b=stmt {})
-    | #(PLUS      a=stmt b=stmt {r="+";System.out.println(r);})
-    | #(MINUS     a=stmt b=stmt {})
-    | #(STAR      a=stmt b=stmt {})
-    | #(SLASH     a=stmt b=stmt {})
-    | #(PERCENT   a=stmt b=stmt {})
-    | #(LLSH      a=stmt b=stmt {})
-    | #(LRSH      a=stmt b=stmt {})
-    | #(ALSH      a=stmt b=stmt {})
-    | #(ARSH      a=stmt b=stmt {})
-    | #(GT        a=stmt b=stmt {})
-    | #(LT        a=stmt b=stmt {})
-    | #(GTE       a=stmt b=stmt {})
-    | #(LTE       a=stmt b=stmt {})
-    | #(ROL       a=stmt b=stmt {})
-    | #(ROR       a=stmt b=stmt {})
-    | #(LAND      a=stmt b=stmt {}) 
-    | #(LOR       a=stmt b=stmt {}) 
-    | #(BAND      a=stmt b=stmt {})
-    | #(BIOR      a=stmt b=stmt {})
-    | #(BEOR      a=stmt b=stmt {})
-    | #(APPEND    a=stmt b=stmt {})
-    | #(ASSIGN    a=stmt b=stmt {r="=";})
+    | #(DOT_DOT     a=stmt b=stmt {})
+    | #(SQBROPEN    a=stmt b=stmt {})
+    | #(BYTEOFFSET  a=stmt        {})
+    | #(DOT         a=stmt b=stmt {})
+    | #(PLUS        a=stmt b=stmt {r="+";System.out.println(r);})
+    | #(MINUS       a=stmt b=stmt {})
+    | #(STAR        a=stmt b=stmt {})
+    | #(SLASH       a=stmt b=stmt {})
+    | #(PERCENT     a=stmt b=stmt {})
+    | #(LLSH        a=stmt b=stmt {})
+    | #(LRSH        a=stmt b=stmt {})
+    | #(ALSH        a=stmt b=stmt {})
+    | #(ARSH        a=stmt b=stmt {})
+    | #(GT          a=stmt b=stmt {})
+    | #(LT          a=stmt b=stmt {})
+    | #(GTE         a=stmt b=stmt {})
+    | #(LTE         a=stmt b=stmt {})
+    | #(ROL         a=stmt b=stmt {})
+    | #(ROR         a=stmt b=stmt {})
+    | #(LAND        a=stmt b=stmt {}) 
+    | #(LOR         a=stmt b=stmt {}) 
+    | #(BAND        a=stmt b=stmt {})
+    | #(BIOR        a=stmt b=stmt {})
+    | #(BEOR        a=stmt b=stmt {})
+    | #(APPEND      a=stmt b=stmt {})
+    | #(ASSIGN      a=stmt b=stmt {r="=";})
     | #(id:ID {r=id.getText();System.out.println(r);})
 ;
