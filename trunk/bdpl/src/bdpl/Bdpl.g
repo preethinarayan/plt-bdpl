@@ -198,9 +198,18 @@ declstmt
         | "float"^ 
         | "double"^ 
         | ("type"^ "struct"! ID) 
-        | ("struct"^ ID "{"! (declstmt)* "}"!)
+        | (("struct"^) struct_body)
         )(SQBROPEN^ (expr|STAR) SQBRCLOSE!)? list_of_ids (valid_check)? (optional_check)? SEMICOLON!
     | "file"^ ID (COMMA! ID)* SEMICOLON!
+    ;
+
+/*
+struct_defn
+    : (("struct"^) struct_body)
+    ;
+*/
+struct_body
+    : (ID^ "{"! (declstmt)* "}"!)
     ;
 
 range_list
@@ -310,39 +319,39 @@ options{
 }
 
 {
-    String r = new String("Null");
-    String a = new String();
-    String b = new String();
+    DataNodeBit r = new DataNodeBit();
+    DataNodeBit a = new DataNodeBit();
+    DataNodeBit b = new DataNodeBit();
 }
 
 program
-    : #(PROG (r=stmt {System.out.println(r);})+)
+    : #(PROG (r=stmt {})+)
     ;
 
-stmt returns [String r]
+stmt returns [DataNodeBit r]
 {
-    r = new String();
+    r = new DataNodeBit();
 }
-    : "if" {r="if";}
-    | "file" {r="file";}
-    | "for" {r="for";}
-    | "break" {r="break";}
-    | "continue" {r="continue";}
-    | "struct" {r="struct";}
-    | "byte" {r="byte";}
-    | "bit" {r="bit";}
-    | "int" {r="int";}
-    | "float" {r="float";}
-    | "double" {r="double";}
-    | "type" {r="type";}
-    | "read" {r="read";}
-    | "write" {r="write";}
-    | "print" {r="print";}
+    : "if"                        {}
+    | "file"                      {}
+    | "for"                       {}
+    | "break"                     {}
+    | "continue"                  {}
+    | "struct"                    {}
+    | "byte"                      {}
+    | "bit"                       {}
+    | "int"                       {}
+    | "float"                     {}
+    | "double"                    {}
+    | "type"                      {}
+    | "read"                      {}
+    | "write"                     {}
+    | "print"                     {}
     | #(DOT_DOT     a=stmt b=stmt {})
     | #(SQBROPEN    a=stmt b=stmt {})
     | #(BYTEOFFSET  a=stmt        {})
     | #(DOT         a=stmt b=stmt {})
-    | #(PLUS        a=stmt b=stmt {r="+";System.out.println(r);})
+    | #(PLUS        a=stmt b=stmt {})
     | #(MINUS       a=stmt b=stmt {})
     | #(STAR        a=stmt b=stmt {})
     | #(SLASH       a=stmt b=stmt {})
@@ -363,6 +372,14 @@ stmt returns [String r]
     | #(BIOR        a=stmt b=stmt {})
     | #(BEOR        a=stmt b=stmt {})
     | #(APPEND      a=stmt b=stmt {})
-    | #(ASSIGN      a=stmt b=stmt {r="=";})
-    | #(id:ID {r=id.getText();System.out.println(r);})
+    | #(ASSIGN      a=stmt b=stmt {})
+    | #(id:ID {/* Look inside the symbol table and get the data node for this id */})
 ;
+
+protected
+id returns [String r]
+{
+    r = new String("");
+}
+    :#(id:ID {r=id.getText();})
+    ;
