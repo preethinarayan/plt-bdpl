@@ -141,12 +141,20 @@ COMMENT
 ///////////////////////////////////////////////////////////////////////////////
 class BdplParser extends Parser;
 options{
-    k = 1;
+    k = 2;
     buildAST = true;
 }
 
 tokens{
+    ARRAY;
+    BODY;
+    IDEN;
+    INITLIST;
+    OPTIONAL;
     PROG;
+    RANGES;
+    TAG;
+    VALID;
 }
 
 program
@@ -198,46 +206,77 @@ declstmt
         | "float"^ 
         | "double"^ 
         | ("type"^ "struct"! ID) 
-        | (("struct"^) struct_body)
-        )(SQBROPEN^ (expr|STAR) SQBRCLOSE!)? list_of_ids (valid_check)? (optional_check)? SEMICOLON!
+        | (("struct"^) tag struct_body)
+        )(array_defn)? list_of_ids (valid_check)? (optional_check)? SEMICOLON!
     | "file"^ ID (COMMA! ID)* SEMICOLON!
     ;
 
-/*
-struct_defn
-    : (("struct"^) struct_body)
+tag
+    : ID
+        {#tag = #([TAG,"TAG"],#tag);}
     ;
-*/
+
+array_defn
+    : (SQBROPEN! (expr|STAR) SQBRCLOSE!)
+        {#array_defn = #([ARRAY,"ARRAY"],#array_defn);}
+    ;
+
 struct_body
-    : (ID^ "{"! (declstmt)* "}"!)
+    : ("{"! (declstmt)* "}"!)
+        {#struct_body = #([BODY,"BODY"],#struct_body);}
     ;
 
 range_list
-    : (range_element)(COMMA range_element)*
+    : (range_element)(COMMA! range_element)*
+        {#range_list = #([RANGES,"RANGES"],#range_list);}
     ;
 
 range_element
-    : (expr)(DOT_DOT expr)?
+    : (expr)(DOT_DOT^ expr)?
     ;
 
 list_of_ids
-    : (single_id)(COMMA single_id)*
+    : (single_id)(COMMA! single_id)*
     ;
 
 single_id
-    : ID ("(" initializer ")")? ("fieldsize" expr)?
+    : ID ("("! init_list ")"!)? (size)?
+        {#single_id = #([IDEN,"IDEN"],#single_id);}
+    ;
+
+size
+    : ("("! "fieldsize"^ expr ")"!)
     ;
 
 valid_check
-    : "valid"^ ("{"! range_list "}"!) ("ok"^ stmtblock)? ("nok"^ stmtblock)?
+    : valid_values (ok_block)? (nok_block)?
+        {#valid_check = #([VALID,"VALID"],#valid_check);}
+    ;
+
+valid_values
+    : "valid"! ("{"! range_list "}"!)
+    ;
+
+ok_block
+    : ("ok"^ stmtblock)
+    ;
+
+nok_block
+    : ("nok"^ stmtblock)
     ;
 
 optional_check
-    : "optional" "on" expr
+    : "optional"! "on"! expr
+        {#optional_check = #([OPTIONAL,"OPTIONAL"],#optional_check);}
+    ;
+
+init_list
+    : (initializer)(COMMA! initializer)*
+        {#init_list = #([INITLIST,"INITLIST"],#init_list);}
     ;
 
 initializer
-    : (STRING SET STRING)(COMMA STRING SET STRING)*
+    : (STRING "=>"^ STRING)
     ;
 
 tern_expr
@@ -245,7 +284,7 @@ tern_expr
     ;
 
 lor_expr
-    : and_expr ("||"^ and_expr)*
+    : and_expr (LOR^ and_expr)*
     ;
 
 and_expr
@@ -322,6 +361,7 @@ options{
     DataNodeBit r = new DataNodeBit();
     DataNodeBit a = new DataNodeBit();
     DataNodeBit b = new DataNodeBit();
+    String x;
 }
 
 program
@@ -331,14 +371,15 @@ program
 stmt returns [DataNodeBit r]
 {
     r = new DataNodeBit();
+    x = new String("");
 }
     : "if"                        {}
     | "file"                      {}
     | "for"                       {}
     | "break"                     {}
     | "continue"                  {}
-    | "struct"                    {}
-    | "byte"                      {}
+    | #("struct" x=id ((OPENBRACE (stmt)* CLOSEBRACE))?                       {})
+    | "byte"
     | "bit"                       {}
     | "int"                       {}
     | "float"                     {}
