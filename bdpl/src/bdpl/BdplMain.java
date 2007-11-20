@@ -6,32 +6,32 @@ import antlr.debug.misc.ASTFrame;
 public class BdplMain{
     
     /** @return non zero on error */
-    int test_utils()
+    public static int test_utils()
     {
        return 0; 
     }
     /** @return non zero on error */
-    int test_cache()
+    public static int test_cache()
     {
         return 0;
     }
     /** @return non zero on error */
-    int test_DataNodeBit()
+    public static int test_DataNodeBit()
     {
         return 0;
     }
     /** @return non zero on error */
-    int test_DataNodeByte()
+    public static int test_DataNodeByte()
     {
         return 0;
     }
     /** @return non zero on error */
-    int test_DataNodeInt()
+    public static int test_DataNodeInt()
     {
         return 0;
     }
     /** @return non zero on error */
-    int test_DataNodeArray()
+    public static int test_DataNodeArray() throws Exception
     {
         
         DataNodeArray a = new DataNodeArray ((DataNodeAbstract)new DataNodeInt ());
@@ -39,10 +39,11 @@ public class BdplMain{
         a.append_element (in_nod);
         a.append_element (in_nod);
         a.append_element (in_nod);
+        System.out.println (a.get_bitsequence_value ());
         return 0;
     }
     /** @return non zero on error */
-    int test_DataNodeStruct()
+    public static int test_DataNodeStruct()
     {
         return 0;
     }
@@ -51,8 +52,6 @@ public class BdplMain{
 	try{
             test_utils();
             test_DataNodeArray();
-            
-            System.out.println (a.get_bitsequence_value ());
 		BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/prog3.bdl"));
 	   // BdplLexer lexer = new BdplLexer(new FileInputStream("C:/Users/akshay/Documents/school/plt/trunk/bdpl/test/prog3.bdl"));
 	    BdplParser parser = new BdplParser(lexer);
