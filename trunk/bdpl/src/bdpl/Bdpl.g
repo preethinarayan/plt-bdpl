@@ -354,32 +354,77 @@ object
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 class BdplTreeParser extends TreeParser;
-options{
-}
-
 {
     DataNodeBit r = new DataNodeBit();
     DataNodeBit a = new DataNodeBit();
     DataNodeBit b = new DataNodeBit();
-    String x;
+    DataNodeBit c = new DataNodeBit();
+//    String x;
+//    String y;
+//    String z;
+    int n;
+    String x = new String("");
+    String y = new String("");
+    String z = new String("");
 }
 
 program
-    : #(PROG (r=stmt {})+)
+{
+    r = new DataNodeBit();
+}
+    : #(PROG ((r=stmt)+))
     ;
 
 stmt returns [DataNodeBit r]
 {
     r = new DataNodeBit();
-    x = new String("");
 }
     : "if"                        {}
     | "file"                      {}
     | "for"                       {}
     | "break"                     {}
     | "continue"                  {}
-    | #("struct" x=id ((OPENBRACE (stmt)* CLOSEBRACE))?                       {})
-    | "byte"
+    | #("struct"
+       (#(TAG x=id {System.out.println("Found a struct of type "+x);}))
+       (#(BODY (r=stmt)*
+        {
+            //
+            // We found a list of declarations within the struct body. Add
+            // each object as a child node.
+            //
+        })
+       )
+       (#(ARRAY n=num {System.out.println("Detected byte array of size "+n);}))?
+       (#(IDEN x=id 
+         (#(INITLIST b=stmt c=stmt {}))?
+         (#("fieldsize" n=num {}))?
+       (#(VALID
+         {}))?
+       (#(OPTIONAL a=stmt {}))?
+         {System.out.println("Declaration of a byte named "+x);}))+
+       {
+           //
+           // We found a struct and fully processed the declaration. Create an
+           // object for each identifier and put it in the symbol table.
+           //
+       }
+      )
+    | #("byte"
+       (#(ARRAY n=num {System.out.println("Detected byte array of size "+n);}))?
+       (#(IDEN x=id 
+         (#(INITLIST b=stmt c=stmt {}))?
+         (#("fieldsize" n=num {}))?
+         {System.out.println("Declaration of a byte named "+x);}))+
+       (#(VALID
+         {}))?
+       (#(OPTIONAL a=stmt {}))?
+       {
+           //
+           // We found a byte and fully processed the declaration. Create an object
+           // for each identifier and put it in the symbol table.
+           // 
+       }
+      )
     | "bit"                       {}
     | "int"                       {}
     | "float"                     {}
@@ -414,13 +459,31 @@ stmt returns [DataNodeBit r]
     | #(BEOR        a=stmt b=stmt {})
     | #(APPEND      a=stmt b=stmt {})
     | #(ASSIGN      a=stmt b=stmt {})
+    | #("=>"        y=string z=string {})
     | #(id:ID {/* Look inside the symbol table and get the data node for this id */})
+    | #(num:NUM     {a=new DataNodeBit(Integer.parseInt(num.getText()));})
 ;
 
 protected
 id returns [String r]
+    {
+        r = new String("");
+    }
+    :#(id:ID {r=id.getText();})
+    ;
+
+protected
+num returns [int n]
+{
+    n = 0;
+}
+    :#(num:NUM {n=Integer.parseInt(num.getText());})
+    ;
+
+protected
+string returns [String r]
 {
     r = new String("");
 }
-    :#(id:ID {r=id.getText();})
-    ;
+    :#(str:STRING {r=str.getText();})
+;
