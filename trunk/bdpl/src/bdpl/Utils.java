@@ -9,12 +9,14 @@
 
 /**
  * Static utility functions
+ * none of these are used yet !!
  * @author akshay
  */
 public class Utils
 {
     enum where_from {MSB,LSB};
-    static int get_n_bits(int source,int n,where_from from)
+    /** get from source, n bits , starting from LSB or MSB */
+    public static int get_n_bits(int source,int n,where_from from)
     {
         
         if(n<0)
@@ -37,8 +39,8 @@ public class Utils
         }
     }
     
-    /** get n bits starting from the offset'th bit form the msb (leftmost) */
-    static int get_n_bits(int source,int n,int offset)
+    /** get from source, n bits starting from the offset'th bit form the msb */
+    public static int get_n_bits(int source,int n,int offset)
     {
         int t=get_n_bits(source,n+offset,where_from.MSB);
         return get_n_bits(t,n,where_from.LSB);
