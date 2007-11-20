@@ -31,14 +31,37 @@
     <jar jarfile="${jar}/bdpl.jar" basedir="${build}" />
   </target>
   
-  <javadoc destdir="doc/html"
-           author="true"
-           version="true"
-           windowtitle="BDPL API Documentation">
-    <fileset dir="${src}" includes="*.java"/>
-    <doctitle><![CDATA[<h1>BDPL</h1>]]></doctitle>
-    <bottom><![CDATA[<i>Copyright &#169; 2007 Akshay, Aditi, Preethi, Bharadwaj. All Rights Reserved.</i>]]></bottom>
-  </javadoc>
+  <target name="docs">
+      <description>Generates ubercool javadoc</description>
+      <property name="ps" value="${path.separator}" /> 
+      <javadoc destdir="doc/html"
+               author="true"
+               version="true"
+               windowtitle="BDPL API Documentation"
+               source="1.5" 
+               additionalparam="-breakiterator"
+               docletpath="tools/ydoc.jar">
+          
+          <fileset dir="${src}" includes="*.java"/>
+          <doctitle><![CDATA[<h1>BDPL</h1>]]></doctitle>
+          <bottom><![CDATA[<i>Copyright &#169; 2007 Akshay, Aditi, Preethi, Bharadwaj. All Rights Reserved.</i>]]></bottom>
+          
+          <doclet name="ydoc.doclets.YStandard" path="tools/ydoc.jar${ps}tools/ydoc/resources">
+              <param name="-author" /> 
+              <param name="-generic" /> 
+              <param name="-umlautogen" /> 
+              <param name="-filterpath" value="tools/ydoc.jar"/> 
+              <param name="-filter" value="ydoc.filters.ExcludeFilter" /> 
+              <param name="-tag" value="y.precondition" /> 
+              <param name="-tag" value="y.postcondition" /> 
+              <param name="-tag" value="y.complexity" /> 
+              <param name="-tag" value="param" /> 
+              <param name="-tag" value="return" /> 
+              <param name="-tag" value="see" /> 
+              <param name="-tag" value="y.uml" /> 
+          </doclet>
+      </javadoc>
+  </target>
   
   <target name="run" depends="jar">
 	  <java classpath="${antlr_lib};${jar}/bdpl.jar" classname="BdplMain"></java>
