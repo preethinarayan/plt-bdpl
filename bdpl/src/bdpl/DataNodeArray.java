@@ -93,11 +93,12 @@ public class DataNodeArray extends DataNodeAbstract
         String t=get_bitsequence_value();
         if(t.length ()<_offset)
         {
-            throw new Exception("Underflow in get_int_val. offset too big ?");
+            throw get_ex("Underflow in get_int_val. offset too big ?");
         }
         else
         {
-            for(int i=_offset;i<t.length () && i<32+_offset ; i++)
+            int i=_offset;
+            for(;i<t.length () && i<32+_offset ; i++)
             {
                 ret=ret<<1;
                 if(t.charAt (i)=='1')
@@ -105,7 +106,10 @@ public class DataNodeArray extends DataNodeAbstract
                     ret+=1;
                 }
             }
+            /** may be one after the last element in the array. Beware ! */
+            _offset=i;
         }
+        
         _intvalue_cache.set (ret);
         return ret;
     }
@@ -122,7 +126,7 @@ public class DataNodeArray extends DataNodeAbstract
     { 
         if(i>=_children.size ())
         {
-            throw new Exception("DataNodeArrayIndexOutOfBound");
+            throw get_ex("index out of bounds");
         }
         return (DataNodeAbstract)_children.get (i);
     }
@@ -137,11 +141,11 @@ public class DataNodeArray extends DataNodeAbstract
     {
         if(data.get_type_name () != _dummy.get_type_name ())
         {
-            throw new Exception("incompatible types ! all elemens of array must be of the defined type.");
+            throw get_ex("incompatible types ! all elemens of array must be of the defined type.");
         }
         if(i>=_children.size ())
         {
-            throw new Exception("DataNodeArray: Index Out Of Bound in set_element");
+            throw get_ex("Index Out Of Bound in set_element");
         }
         _children.set(i,data);
         _invalid_cache();
@@ -152,7 +156,7 @@ public class DataNodeArray extends DataNodeAbstract
     {
         if(data.get_type_name () != _dummy.get_type_name ())
         {
-            throw new Exception("incompatible types ! all elemens of array must be of the defined type.");
+            throw get_ex("incompatible types ! all elemens of array must be of the defined type.");
         }
         
         _children.add(data);

@@ -26,6 +26,11 @@ abstract public class DataNodeAbstract implements DataNode
         _bitsize=data._bitsize;
     }
     
+    public Exception get_ex(String ex_string)
+    {
+        return new Exception(this.getClass().getName()  +": "+ex_string);
+    }
+    
     abstract public String get_type_name();
     abstract public String get_bitsequence_value();
     
