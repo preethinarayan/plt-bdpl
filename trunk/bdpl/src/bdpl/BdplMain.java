@@ -43,8 +43,13 @@ public class BdplMain{
         return 0;
     }
     /** @return non zero on error */
-    public static int test_DataNodeStruct()
+    public static int test_DataNodeStruct() throws Exception
     {
+        DataNodeStruct a=new DataNodeStruct();
+        a.set_child_by_name ("c1",new DataNodeInt(0x1234));
+        a.set_child_by_name ("c2",new DataNodeInt(0x1234));
+        a.set_child_by_name ("c3",new DataNodeInt(0x1234));
+        System.out.println (a.get_bitsequence_value ());
         return 0;
     }
     
@@ -52,7 +57,8 @@ public class BdplMain{
 	try{
             test_utils();
             test_DataNodeArray();
-		BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/prog3.bdl"));
+            test_DataNodeStruct();
+		BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
 	   // BdplLexer lexer = new BdplLexer(new FileInputStream("C:/Users/akshay/Documents/school/plt/trunk/bdpl/test/prog3.bdl"));
 	    BdplParser parser = new BdplParser(lexer);
 	    parser.program();
