@@ -8,6 +8,19 @@ byte[4]
 		nok {continue;} 
 	optional 
 		on x>3 ;
+
+int a;
+int[*] A_a_star;
+int b,c;
+type struct ifd_header[5] d,e;
+struct xxy
+{
+	struct xx
+	{
+		int[10] aa;
+	}[12] bb("endian" => "lil");
+}cc;
+
 struct ifd_header
 {
 	byte[4] 
