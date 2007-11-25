@@ -17,7 +17,7 @@ public class DataNodeStruct extends DataNodeAbstract
 {
     
 
-        /** common initializers */
+    /** common initializers */
     private void init()
     {
         _bseq_cache = new Cache();
@@ -57,7 +57,7 @@ public class DataNodeStruct extends DataNodeAbstract
         String ret="";
         for (Iterator it = _children.keySet ().iterator (); it.hasNext ();)
         {
-            ret+= ((DataNodeAbstract)it.next ()).get_bitsequence_value();
+            ret+= ((DataNodeAbstract)_children.get (it.next ())).get_bitsequence_value();
         }
         _bseq_cache.set (ret);
         return ret;
@@ -80,6 +80,9 @@ public class DataNodeStruct extends DataNodeAbstract
         return ret;
     }
     
+    /** gets the next 4 bytes (as int) from the struct. increments 
+     * ofset pointer. 
+     * @return the next (upto) 4 bytes from the struct as int */
     
     public int get_int_value () throws Exception
     {
