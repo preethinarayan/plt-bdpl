@@ -9,6 +9,7 @@
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 class BdplLexer extends Lexer;
+
 options {
     charVocabulary = '\3'..'\377';
     k = 3;
@@ -139,7 +140,9 @@ COMMENT
 //                                    PARSER                                 //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+{import java.util.*; }
 class BdplParser extends Parser;
+
 options{
     k = 2;
     buildAST = true;
@@ -155,15 +158,20 @@ tokens{
     RANGES;
     TAG;
     VALID;
+    NULL;
+    ARRAY_SIZE;
+    DECL;
+    STRUCT_NAME;
 }
 
 program
+
     : (stmt)+ EOF!
         {#program = #([PROG,"PROG"], #program);}
     ;
 
 stmt
-    : declstmt
+    : declstmt 
     | execstmt
     ;
 
@@ -200,14 +208,19 @@ stmtblock
     ;
 
 declstmt
-    : ("bit"^ 
-        | "byte"^ 
-        | "int"^ 
-        | "float"^ 
-        | "double"^ 
-        | ("type"^ "struct"! ID) 
-        | (("struct"^) tag struct_body)
-        )(array_defn)? list_of_ids (valid_check)? (optional_check)? SEMICOLON!
+    :   (   "bit"^ 
+            | "byte"^ 
+            | "int"^
+            | "float"^ 
+            | "double"^ 
+            | ("type"^ "struct"! ID) 
+            | (("struct"^) tag struct_body)
+        ) 
+        ( {#declstmt=#([ARRAY,"ARRAY"],declstmt);} array_defn )? 
+        list_of_ids
+        (valid_check)? 
+        (optional_check)? 
+        SEMICOLON!
     | "file"^ ID (COMMA! ID)* SEMICOLON!
     ;
 
@@ -218,7 +231,7 @@ tag
 
 array_defn
     : (SQBROPEN! (expr|STAR) SQBRCLOSE!)
-        {#array_defn = #([ARRAY,"ARRAY"],#array_defn);}
+        {#array_defn = #([ARRAY_SIZE,"ARRAY_SIZE"],#array_defn);}
     ;
 
 struct_body
