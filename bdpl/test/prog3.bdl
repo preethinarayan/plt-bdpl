@@ -33,6 +33,7 @@ struct image_file_directory
   byte[4] nextifdpointer;
 }[*] ifd;
 
+byte[5] aaa;
 read("hello-world.tiff",f1);
 tiff.header <- f1;
 $f1 = tiff.header.ifd_pointer;
