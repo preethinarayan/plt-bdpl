@@ -57,8 +57,12 @@ public class BdplMain{
 	try{
             test_utils();
             test_DataNodeArray();
-            test_DataNodeStruct();
+
 		BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
+
+            test_DataNodeStruct();
+		//BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
+
 	   // BdplLexer lexer = new BdplLexer(new FileInputStream("C:/Users/akshay/Documents/school/plt/trunk/bdpl/test/prog3.bdl"));
 	    BdplParser parser = new BdplParser(lexer);
 	    parser.program();
@@ -71,6 +75,27 @@ public class BdplMain{
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
             treeParser.program(parseTree);
+            
+            
+             TypeSymbolTable tst=new TypeSymbolTable();
+             VariableSymbolTable vst=new VariableSymbolTable();
+        
+              tst.makeTypeObject(tst.setTypeName("array","int"),null);
+              Type value=tst.getTypeObject("array_int");
+              String name=value.getTypeName();
+              vst.addValue("intarray",value.getTypeNode());
+              DataNodeAbstract dnab=vst.getValue("intarray");
+              if(dnab instanceof DataNodeArray)
+              {
+                  System.out.println("array of int data node!");
+              }
+              
+             dnab=vst.getValue("duh");
+             if(dnab==null)
+             {
+                 System.out.println("hello! no such thing exists");
+             }
+            
 	}catch(Exception e){
 	    System.err.println("Exception: "+e);
         }
