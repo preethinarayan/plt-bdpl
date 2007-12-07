@@ -97,7 +97,6 @@ public class BdplMain
         a.append_element (in_nod);
         a.append_element (in_nod);
         a.append_element (in_nod);
-        a.set_element(2,a);
         System.out.println("***DataNodeArray Testing***");
         System.out.println (a.get_bitsequence_value ());
         System.out.println(a.get_bit_size());
@@ -117,11 +116,21 @@ public class BdplMain
     /** @return non zero on error */
     public static int test_DataNodeStruct() throws Exception
     {
-        DataNodeStruct a=new DataNodeStruct();
-        a.set_child_by_name ("c1",new DataNodeInt(0x1234));
-        a.set_child_by_name ("c2",new DataNodeInt(0x1234));
-        a.set_child_by_name ("c3",new DataNodeInt(0x1234));
-        System.out.println (a.get_bitsequence_value ());
+        DataNodeStruct str=new DataNodeStruct();
+        DataNodeArray arr = new DataNodeArray ((DataNodeAbstract)new DataNodeInt ());
+        DataNodeInt in_nod =new DataNodeInt (0x1234);
+        
+        arr.append_element (in_nod);
+        arr.append_element (in_nod);
+        arr.append_element (in_nod);
+        str.set_child_by_name ("c1",new DataNodeByte(0x1234));
+        str.set_child_by_name ("c2",new DataNodeInt(0x1234));
+        str.set_child_by_name ("c3",new DataNodeInt(0x1234));
+        str.set_child_by_name ("arr1",arr);
+        DataNodeStruct str1=new DataNodeStruct();
+        str1.set_child_by_name ("str1",str);
+        
+        System.out.println (str1.print());
         return 0;
     }
     
@@ -131,7 +140,7 @@ public class BdplMain
             test_utils();
             test_DataNodeArray();
 
-		BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
+            BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
 
             test_DataNodeStruct();
 		//BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
@@ -151,6 +160,7 @@ public class BdplMain
 	}
         catch(Exception e)
         {
+            e.printStackTrace ();
 	    System.err.println("Exception: "+e);
         }
     }

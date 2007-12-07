@@ -11,6 +11,7 @@
  *
  * @author akshay
  */
+import antlr.collections.*;
 abstract public class DataNodeAbstract implements DataNode
 {
     
@@ -30,6 +31,7 @@ abstract public class DataNodeAbstract implements DataNode
     {
         return new Exception(this.getClass().getName()  +": "+ex_string);
     }
+
     
     abstract public String get_type_name();
     abstract public String get_bitsequence_value();
@@ -45,9 +47,14 @@ abstract public class DataNodeAbstract implements DataNode
      * @return nonzero on error */
     public int set_fieldsize(int fieldsize) {_fieldsize=fieldsize;return 0;}
     
+    /** print a human readable form of this node */
+    abstract public String print();
+    
     /** store the max size of the data in num of bits */ 
     protected int _fieldsize;
     /** stores the currecnt size of the data in bits */
     protected int _bitsize;
+    
+    protected AST _the_ast;
     
 }

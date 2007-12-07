@@ -51,6 +51,11 @@ public class DataNodeBit extends DataNodeAbstract
     }
     public int get_int_value() {return _data;}
     
+    public String print()
+    {
+        return get_bitsequence_value ();
+    }
+    
     private int _data;
     
 }
