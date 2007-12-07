@@ -137,10 +137,19 @@ public class BdplMain
     public static void main(String[] args){
 	try
         {
+            InputStream input;
+            if(args.length == 1)
+            {
+                input = new FileInputStream(args[0]);
+            }
+            else
+            {
+                input = new FileInputStream("x:/test/decl_test1.bdl");
+            }
             test_utils();
             test_DataNodeArray();
 
-            BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
+            BdplLexer lexer = new BdplLexer(input);
 
             test_DataNodeStruct();
 		//BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
