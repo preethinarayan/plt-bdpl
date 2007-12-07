@@ -182,6 +182,15 @@ public class DataNodeArray extends DataNodeAbstract
         _bsize_cache.invalid ();
         _intvalue_cache.invalid ();
     }
+    public String print()
+    {
+        String ret=get_type_name ()+"\n[\n";
+        for(int i=0;i<_children.size() ; i++ )
+        {
+            ret+= "\t"+String.valueOf (i)+" => " + ((DataNodeAbstract)_children.get (i)).print().replaceAll ("\n","\n\t")+",\n";
+        }
+        return ret+"]\n";
+    }
     /**  class private data */
         
    /** current pointer within the array (in bits) */

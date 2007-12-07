@@ -188,6 +188,17 @@ public class DataNodeStruct extends DataNodeAbstract
     /** set current pointer within the struct */
     public void set_offset(int offset) {_offset=offset;}
     
+    public String print()
+    {
+        String ret=get_type_name ()+"\n{\n";
+        for (Iterator it = _children.keySet ().iterator (); it.hasNext ();)
+        {
+            String key=it.next ().toString ();
+            ret+= "\t"+  key+" => " + ((DataNodeAbstract)_children.get (key)).print().replaceAll ("\n","\n\t") +",\n";
+        }
+        return ret+"}\n";
+    }
+    
     private int _offset;
     private HashMap _children; 
     

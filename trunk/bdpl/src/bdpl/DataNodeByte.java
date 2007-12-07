@@ -65,6 +65,11 @@ public class DataNodeByte extends DataNodeAbstract
     }
     public int get_int_value () {return _data;}
     
+    public String print()
+    {
+        return String.format ("0x%4x",_data);
+    }
+    
     private int _data;
     
 }

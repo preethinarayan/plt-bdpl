@@ -47,6 +47,11 @@ public class DataNodeInt extends DataNodeAbstract
         }
     }
     public int get_int_value() {return _data;}
+    
+    public String print()
+    {
+        return String.valueOf (_data);
+    }
      
     private int _data;
     

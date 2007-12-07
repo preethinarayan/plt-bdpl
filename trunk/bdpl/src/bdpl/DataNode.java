@@ -22,4 +22,5 @@ public interface DataNode
     public int get_int_value() throws Exception;
     public int get_fieldsize();
     public int set_fieldsize(int fieldsize);
+    public String print();
 }
