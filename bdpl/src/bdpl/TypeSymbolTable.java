@@ -36,7 +36,7 @@ public class TypeSymbolTable
     /**
      * check if entry exists in the table otherwise make an entry into this table and the variable symbol table
      */
-    public void set(String type_name,Type type_ob) throws Exception
+    public void insert(String type_name,Type type_ob) throws Exception
     {  
         if(_the_table.containsKey (type_name) )
         {
@@ -63,7 +63,9 @@ public class TypeSymbolTable
         }
     }
     
-    
-   
-    
+    /** check if the symbol table containg this type already *//
+    public boolean contain_key(String type)
+    {
+        return _the_table.containsKey (type);
+    }
 }     
