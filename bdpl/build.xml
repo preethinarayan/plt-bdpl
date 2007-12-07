@@ -70,5 +70,18 @@
     <delete dir="${build}"/>
     <delete dir="${jar}"/>
   </target>
+  
+  <target name="testall" depends="jar">
+      <exec executable="cmd">
+          <arg value="subst"/>
+          <arg value="n:"/>
+          <arg value="."/>
+      </exec>
+      <exec executable="cmd">
+          <arg value="/c"/>
+          <arg value="tclsh"/>
+          <arg value="x:/test/test.tcl"/>
+      </exec>
+  </target>
 
 </project>
