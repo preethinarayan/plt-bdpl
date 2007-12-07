@@ -12,48 +12,91 @@
  * @author preethi
  */
 import antlr.collections.*;
-public class Type {
+public class Type 
+{
     private AST _subtree;
     private String _type;
-    private DataNodeAbstract _data_node;
+    private DataNodeAbstract _array_dummy;
+    
     /** Creates a new instance of Type */
-    public Type() {
+    public Type(String type) 
+    {
+        if( type=="bit" ||
+            type=="byte" ||
+            type=="int"
+            )
+        {
+            _type=type;
+        }
+        else
+        {
+            _type="";
+        }
     }
+            
+
     /**
-     *constructor which takes the subtree and the type name
+     *  constructor which takes the subtree and the type name
+     *  type must be struct here
      */
     public Type(String type,AST subtree)
     {
-        _type=type;
-        _subtree=subtree;
+        if(type=="struct")
+        {
+            _type=type;
+            _subtree=subtree;
+        }
+        else
+        {
+            _type="";
+            _subtree=null;
+        }
+        
+    }
+     /**
+     *  constructor which takes the subtree and the type name
+     *  type must be struct here
+     */
+    public Type(String type,DataNodeAbstract array_dummy)
+    {
+        if(type=="struct")
+        {
+            _type=type;
+            _array_dummy=array_dummy;
+        }
+        else
+        {
+            _type="";
+            _subtree=null;
+        }
         
     }
     /**
      *method to get the type of the type object
      */
-    public DataNodeAbstract getTypeNode()
+    public DataNodeAbstract getDataNode() throws Exception
     {
         if(_type.equals("int"))
         {
-            _data_node=new DataNodeInt();
+            return new DataNodeInt();
         }
         else if(_type.equals("bit"))
         {
-            _data_node=new DataNodeBit();
+            return new DataNodeBit();
         }
         else if(_type.equals("byte"))
         {
-            _data_node=new DataNodeByte();
+            return new DataNodeByte();
         }
-        else if(_type.startsWith("array"))
+        else if(_type.startsWith("ARRAY"))
         {
-            _data_node=new DataNodeArray(new DataNodeInt());
+            return new DataNodeArray(_array_dummy);
         }
         else if(_type.startsWith("struct"))
         {
-            _data_node=new DataNodeStruct();
+            return new DataNodeStruct();
         }
-        return _data_node;
+        throw new Exception("bad type!");
     }
     /**
      *method to return the type as a string
@@ -62,5 +105,6 @@ public class Type {
     {
         return _type;
     }
+    
     
 }
