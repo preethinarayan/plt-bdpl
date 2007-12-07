@@ -1,7 +1,7 @@
 /*
- * VariableSymbolTable.java
+ * TypeSymbolTable.java
  *
- * Created on November 21, 2007, 11:44 AM
+ * Created on November 26, 2007, 4:40 AM
  *
  * To change this template, choose Tools | Template Manager
  * and open the template in the editor.
@@ -11,70 +11,55 @@
  *
  * @author preethi
  */
-/**
- * class to create a symbol table to hold the identifiers and their and pointers to where they are stored
- */
+
 import java.util.*;
-public class VariableSymbolTable extends Hashtable<String,DataNodeAbstract>{
-     private DataNodeAbstract _map_value;
-     private DataNodeAbstract _retrieved;
-     private String _map_key;
+import antlr.collections.*;
+public class VariableSymbolTable  
+{
     /**
-     * Creates a new instance of VariableSymbolTable
+     * Creates a new instance of TypeSymbolTable
      */
-    public VariableSymbolTable() {
+    private Map _the_table;
+    public VariableSymbolTable() 
+    {
+        _the_table=new HashMap();
     }
-   
+        
     
     /**
-     * check for an existing key entry
+     * check if entry exists in the table otherwise make an entry into this table and the variable symbol table
      */
-    public boolean checkEntry(String key)
-    {
-        if(containsKey(key))
+    public void insert(String id,DataNodeAbstract datanode) throws Exception
+    {  
+        if(_the_table.containsKey (id) )
         {
-            return true;
+            throw new Exception(id+" already exists in symbol table");
         }
         else
         {
-            return false;
-        }         
+             _the_table.put (id,datanode);
+        }
+                 
     }
-    /** 
-     * method to add keys and values to the existing keys in the hashtable
+    /**
+     *method to retieve a type node from the type symbol table
      */
-    public void addValue(String key,DataNodeAbstract value) throws Exception
+    public DataNodeAbstract get(String id) throws Exception
     {
-        _map_key=key;
-        _map_value=value;
-        if(checkEntry(key))
+        if(_the_table.containsKey(id))
         {
-            throw new Exception("Identifier"+key+" already exists");
-        }
+            return (DataNodeAbstract) _the_table.get (id);
+        }   
         else
         {
-            put(_map_key,_map_value);
+            throw new Exception(id+" : undefined identifier");  
         }
     }
     
-    /**
-     * method to retrieve values corresponding to the identifiers from the table if they exist
-     */
-    public DataNodeAbstract getValue(String key) throws Exception
+    /** check if the symbol table containg this type already */
+    public boolean contain_key(String id)
     {
-        
-       
-        if(checkEntry(key))
-        {
-            _retrieved=get(key);
-            return _retrieved;
-        }
-        else
-        {
-            throw new Exception("Identifier "+key+" not declared");
-        }
-            
-        
+        return _the_table.containsKey (id);
     }
-            
-}
+}     
+
