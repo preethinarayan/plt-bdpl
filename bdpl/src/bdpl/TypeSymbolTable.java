@@ -14,54 +14,56 @@
 
 import java.util.*;
 import antlr.collections.*;
-public class TypeSymbolTable extends Hashtable<String,Type> {
-    private DataNodeAbstract _data_node;
-    private String _type_name;
-    private Type _value;
-    public VariableSymbolTable vst=new VariableSymbolTable();
+public class TypeSymbolTable  
+{
     /**
      * Creates a new instance of TypeSymbolTable
      */
-    public TypeSymbolTable() {
-        put("int",new Type("int",null)); // predefined types 
-        put("bit",new Type("bit",null));
-        put("byte",new Type("byte",null));
+    private Map _the_table;
+    public TypeSymbolTable() 
+    {
+        _the_table=new HashMap();
+        _the_table.put("int",new Type("int")); // predefined types 
+        _the_table.put("bit",new Type("bit"));
+        _the_table.put("byte",new Type("byte"));
+        _the_table.put("ARRAY:byte",new Type("ARRAY",new DataNodeByte()));
+        _the_table.put("ARRAY:int",new Type("ARRAY",new DataNodeInt()));
+        _the_table.put("ARRAY:bit",new Type("ARRAY",new DataNodeBit()));
        
     }
         
-    public String setTypeName(String type,String tag)
-    {
-        type=type+"_"+tag;
-        _type_name=type;
-        return _type_name;
-    }
     
     /**
      * check if entry exists in the table otherwise make an entry into this table and the variable symbol table
      */
-    public void makeTypeObject(String type,AST subtree) 
+    public void set(String type_name,Type type_ob) throws Exception
     {  
-        if(containsKey(type)) ;
+        if(_the_table.containsKey (type_name) )
+        {
+            throw new Exception(type_name+" already exists in symbol table");
+        }
         else
-         {
-             _value=new Type(_type_name,subtree);
-             put(type,_value);     
-         }
+        {
+             _the_table.put (type_name,type_ob);
+        }
                  
     }
     /**
      *method to retieve a type node from the type symbol table
      */
-    public Type getTypeObject(String type) throws Exception
+    public Type get(String type) throws Exception
     {
-        if(containsKey(type))
+        if(_the_table.containsKey(type))
         {
-            _value=get(type);
-            return _value;
+            return (Type) _the_table.get (type);
         }   
         else
-            throw new Exception("Invalid "+type+" type");  
+        {
+            throw new Exception(type+" : undefined type");  
+        }
     }
+    
+    
    
     
 }     

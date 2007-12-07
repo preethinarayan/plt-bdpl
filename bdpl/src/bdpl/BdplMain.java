@@ -3,8 +3,8 @@ import antlr.CommonAST;
 import antlr.collections.AST;
 import antlr.debug.misc.ASTFrame;
 
-public class BdplMain{
-    
+public class BdplMain
+{
     /** @return non zero on error */
     public static int test_utils()
     {
@@ -12,22 +12,79 @@ public class BdplMain{
     }
     /** @return non zero on error */
     public static int test_cache()
-    {
+    {  
+        Cache _b_cache =new Cache(64);
+        Cache _bobj_cache=new Cache(_b_cache);
+        System.out.println("***Cache Testing***");
+         if(_bobj_cache.is_valid ())
+        {
+            System.out.println( _b_cache.as_string());
+        }
+    
         return 0;
     }
     /** @return non zero on error */
     public static int test_DataNodeBit()
-    {
+    {  
+        DataNodeInt in_nod =new DataNodeInt (0x1234);
+        
+        DataNodeBit b=new DataNodeBit(1);
+        System.out.println("***DataNodeBit Testing***");
+        System.out.println(b.get_type_name());
+        System.out.println(b.get_bitsequence_value());
+        System.out.println(b.get_int_value());
+        System.out.println(b._fieldsize);
+        System.out.println(b._bitsize);
         return 0;
     }
     /** @return non zero on error */
-    public static int test_DataNodeByte()
+    public static int test_DataNodeByte()throws Exception
     {
-        return 0;
+        DataNodeArray a1=new DataNodeArray((DataNodeAbstract)new DataNodeByte ());
+        DataNodeArray a2=new DataNodeArray((DataNodeAbstract)new DataNodeBit ());
+        DataNodeByte b_node = new DataNodeByte(0X64);
+        DataNodeBit b1=new DataNodeBit(1);
+        DataNodeBit b2=new DataNodeBit(0);
+        DataNodeBit b3=new DataNodeBit(1);
+       
+       a1.append_element(b_node);
+       a1.append_element(b_node);
+       a2.append_element(b1);
+       a2.append_element(b2);
+       a2.append_element(b3);
+       
+       
+       System.out.println("***DataNodeByte Testing***");
+       System.out.println(b_node.get_type_name());
+       System.out.println(b_node.get_bitsequence_value());//????
+       System.out.println(b_node.get_int_value());
+       System.out.println(b_node._fieldsize);
+       System.out.println(b_node._bitsize);
+        
+      System.out.println("***DataNodeByte Testing with Array***");
+       System.out.println("!!!Array 1 Size!!!"+a1.get_size());
+       System.out.println("Array 1 Element Type"+a1.get_type_name());
+       System.out.println("!!!!Array 1 Bit Sequence!!!!"+a1.get_bitsequence_value());
+       System.out.println("!!!Array 2 Size!!!"+a2.get_size());
+       System.out.println("!!!!Array 2 Bit Sequence!!!!"+a2.get_bitsequence_value());//not showing the sequence
+       System.out.println("Array 2 Elements"+a2.get_element(0).get_type_name());
+       //System.out.println("Array 2 elements"+(a2.get_element(1)));
+       //System.out.println("Array 1 Elements"+a1.get_element(2));
+       return 0;
     }
     /** @return non zero on error */
     public static int test_DataNodeInt()
     {
+        DataNodeInt d_nodeint=new DataNodeInt(18);
+        DataNodeInt d_nodeint1=new DataNodeInt(d_nodeint);
+        System.out.println("***DataNodeInt Testing***");
+        System.out.println(d_nodeint.get_bitsequence_value());
+        System.out.println(d_nodeint.get_type_name());
+        System.out.println(d_nodeint.get_int_value());
+        System.out.println(d_nodeint._bitsize);
+        System.out.println(d_nodeint._fieldsize);
+                
+        
         return 0;
     }
     /** @return non zero on error */
@@ -36,10 +93,25 @@ public class BdplMain{
         
         DataNodeArray a = new DataNodeArray ((DataNodeAbstract)new DataNodeInt ());
         DataNodeInt in_nod =new DataNodeInt (0x1234);
+        
         a.append_element (in_nod);
         a.append_element (in_nod);
         a.append_element (in_nod);
+        a.set_element(2,a);
+        System.out.println("***DataNodeArray Testing***");
         System.out.println (a.get_bitsequence_value ());
+        System.out.println(a.get_bit_size());
+        System.out.println(a.get_int_value());
+        System.out.println(a.get_type_name());
+        System.out.println(a.get_size());
+        System.out.println(a.get_offset());
+     
+        System.out.println(a.get_element(2));//Is it correct???DataNodeInt@1efa1f8
+        System.out.println(a.get_element(1));//Is it correct???DataNodeInt@16729a9
+        a.set_offset(2);
+        System.out.println(a.get_int_value());
+
+
         return 0;
     }
     /** @return non zero on error */
@@ -54,7 +126,8 @@ public class BdplMain{
     }
     
     public static void main(String[] args){
-	try{
+	try
+        {
             test_utils();
             test_DataNodeArray();
 
@@ -75,28 +148,9 @@ public class BdplMain{
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
             treeParser.program(parseTree);
-            
-            
-             TypeSymbolTable tst=new TypeSymbolTable();
-             VariableSymbolTable vst=new VariableSymbolTable();
-        
-              tst.makeTypeObject(tst.setTypeName("array","int"),null);
-              Type value=tst.getTypeObject("array_int");
-              String name=value.getTypeName();
-              vst.addValue("intarray",value.getTypeNode());
-              DataNodeAbstract dnab=vst.getValue("intarray");
-              if(dnab instanceof DataNodeArray)
-              {
-                  System.out.println("array of int data node!");
-              }
-              
-             dnab=vst.getValue("duh");
-             if(dnab==null)
-             {
-                 System.out.println("hello! no such thing exists");
-             }
-            
-	}catch(Exception e){
+	}
+        catch(Exception e)
+        {
 	    System.err.println("Exception: "+e);
         }
     }
