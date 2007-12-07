@@ -64,7 +64,7 @@ public class TypeSymbolTable
     }
     
     /** check if the symbol table containg this type already */
-    public boolean contain(String type)
+    public boolean contains(String type)
     {
         return _the_table.containsKey (type);
     }

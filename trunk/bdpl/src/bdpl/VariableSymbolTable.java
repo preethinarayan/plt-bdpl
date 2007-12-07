@@ -57,7 +57,7 @@ public class VariableSymbolTable
     }
     
     /** check if the symbol table containg this type already */
-    public boolean contain_key(String id)
+    public boolean contains(String id)
     {
         return _the_table.containsKey (id);
     }
