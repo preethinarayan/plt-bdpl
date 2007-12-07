@@ -366,116 +366,186 @@ object
 //                                TREE WALKER                                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+//
+// A program is a collection of declarations and statements
+// A declaration is a subtree which has one of the following as a root node
+//   ARRAY
+//   int
+//   byte
+//   bit
+//   type 
+// A statement may either be an expression or one of the following
+//   if
+//   for
+//   read
+//   write
+//   set
+//   print
+//   break
+//   continue
+// For each of the above, the keyword itself forms the root of the
+// subtree that constitutes the statement.
+// A program returns nothing
+// A statement returns nothing
+// An expression returns an AbstractDataNode
+//
+
 class BdplTreeParser extends TreeParser;
 {
-    DataNodeBit r = new DataNodeBit();
-    DataNodeBit a = new DataNodeBit();
-    DataNodeBit b = new DataNodeBit();
-    DataNodeBit c = new DataNodeBit();
-//    String x;
-//    String y;
-//    String z;
-    int n;
-    String x = new String("");
-    String y = new String("");
-    String z = new String("");
+    VariableSymbolTable varSymbTbl = new VariableSymbolTable();
+    TypeSymbolTable typeSymbTbl = new TypeSymbolTable();
 }
 
 program
 {
-    r = new DataNodeBit();
 }
-    : #(PROG ((r=stmt)+))
+    : #(PROG ((stmts | decls)*))
     ;
 
-stmt returns [DataNodeBit r]
+stmts
 {
-    r = new DataNodeBit();
+    DataNodeAbstract r;
 }
     : "if"                        {}
-    | "file"                      {}
     | "for"                       {}
     | "break"                     {}
     | "continue"                  {}
-    | #("struct"
-       (#(TAG x=id {System.out.println("Found a struct of type "+x);}))
-       (#(BODY (r=stmt)*
-        {
-            //
-            // We found a list of declarations within the struct body. Add
-            // each object as a child node.
-            //
-        })
-       )
-       (#(ARRAY n=num {System.out.println("Detected byte array of size "+n);}))?
-       (#(IDEN x=id 
-         (#(INITLIST b=stmt c=stmt {}))?
-         (#("fieldsize" n=num {}))?
-       (#(VALID
-         {}))?
-       (#(OPTIONAL a=stmt {}))?
-         {System.out.println("Declaration of a byte named "+x);}))+
-       {
-           //
-           // We found a struct and fully processed the declaration. Create an
-           // object for each identifier and put it in the symbol table.
-           //
-       }
-      )
-    | #("byte"
-       (#(ARRAY n=num {System.out.println("Detected byte array of size "+n);}))?
-       (#(IDEN x=id 
-         (#(INITLIST b=stmt c=stmt {}))?
-         (#("fieldsize" n=num {}))?
-         {System.out.println("Declaration of a byte named "+x);}))+
-       (#(VALID
-         {}))?
-       (#(OPTIONAL a=stmt {}))?
-       {
-           //
-           // We found a byte and fully processed the declaration. Create an object
-           // for each identifier and put it in the symbol table.
-           // 
-       }
-      )
-    | "bit"                       {}
-    | "int"                       {}
-    | "float"                     {}
-    | "double"                    {}
-    | "type"                      {}
     | "read"                      {}
     | "write"                     {}
+    | "set"                       {}
     | "print"                     {}
-    | #(DOT_DOT     a=stmt b=stmt {})
-    | #(SQBROPEN    a=stmt b=stmt {})
-    | #(BYTEOFFSET  a=stmt        {})
-    | #(DOT         a=stmt b=stmt {})
-    | #(PLUS        a=stmt b=stmt {})
-    | #(MINUS       a=stmt b=stmt {})
-    | #(STAR        a=stmt b=stmt {})
-    | #(SLASH       a=stmt b=stmt {})
-    | #(PERCENT     a=stmt b=stmt {})
-    | #(LLSH        a=stmt b=stmt {})
-    | #(LRSH        a=stmt b=stmt {})
-    | #(ALSH        a=stmt b=stmt {})
-    | #(ARSH        a=stmt b=stmt {})
-    | #(GT          a=stmt b=stmt {})
-    | #(LT          a=stmt b=stmt {})
-    | #(GTE         a=stmt b=stmt {})
-    | #(LTE         a=stmt b=stmt {})
-    | #(ROL         a=stmt b=stmt {})
-    | #(ROR         a=stmt b=stmt {})
-    | #(LAND        a=stmt b=stmt {}) 
-    | #(LOR         a=stmt b=stmt {}) 
-    | #(BAND        a=stmt b=stmt {})
-    | #(BIOR        a=stmt b=stmt {})
-    | #(BEOR        a=stmt b=stmt {})
-    | #(APPEND      a=stmt b=stmt {})
-    | #(ASSIGN      a=stmt b=stmt {})
+    | r=expr                      {}
+    ;
+
+//
+// Check the symbol table for this name
+// If name exists, throw an exception
+// Else, get a node of type int
+// Populate the node with INITLIST info (AST)
+// Populate the node with fieldsize info (AST)
+//
+decls
+{
+    String name;
+}
+    : #(ARRAY                     {})
+    | #("int"
+        (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
+            {
+                if(varSymbTbl.contains(name))
+                {
+//                    throw new Exception("Redefinition of symbol "+name);
+                }
+                else
+                {
+                    try{
+                        Type intType = typeSymbTbl.get("int");
+                        DataNodeInt intNode = (DataNodeInt)intType.getDataNode();
+                        varSymbTbl.insert(name,intNode);
+                    }catch(Exception e){
+
+                    }
+                }
+            })+
+        {
+            //
+            // Need to do nothing here
+            //
+        }
+       )
+    | #("byte" 
+        (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
+            {
+                if(varSymbTbl.contains(name))
+                {
+//                    throw new Exception("Redefinition of symbol "+name);
+                }
+                else
+                {
+                    try{
+                        Type byteType = typeSymbTbl.get("byte");
+                        DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode();
+                        varSymbTbl.insert(name,byteNode);
+                    }catch(Exception e){
+
+                    }
+                }
+            })+                   
+        {
+            //
+            // Need to do nothing here
+            //
+        }
+        )
+    | #("bit"                     
+         (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
+            {
+                if(varSymbTbl.contains(name))
+                {
+//                    throw new Exception("Redefinition of symbol "+name);
+                }
+                else
+                {
+                    try{
+                        Type bitType = typeSymbTbl.get("bit");
+                        DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode();
+                        varSymbTbl.insert(name,bitNode);
+                    }catch(Exception e){
+
+                    }
+                }
+            })+
+        {
+            //
+            // Need to do nothing here
+            //
+        }
+       )
+    | #("struct" 
+        {
+
+        }
+       )
+    | #("type"                    {})
+    ;
+
+expr returns [DataNodeAbstract r]
+{
+    DataNodeAbstract a,b;
+    r = new DataNodeBit();
+    String y,z; 
+}
+    : #(DOT_DOT     a=expr b=expr {})
+    | #(SQBROPEN    a=expr b=expr {})
+    | #(BYTEOFFSET  a=expr        {})
+    | #(DOT         a=expr b=expr {})
+    | #(PLUS        a=expr b=expr {})
+    | #(MINUS       a=expr b=expr {})
+    | #(STAR        a=expr b=expr {})
+    | #(SLASH       a=expr b=expr {})
+    | #(PERCENT     a=expr b=expr {})
+    | #(LLSH        a=expr b=expr {})
+    | #(LRSH        a=expr b=expr {})
+    | #(ALSH        a=expr b=expr {})
+    | #(ARSH        a=expr b=expr {})
+    | #(GT          a=expr b=expr {})
+    | #(LT          a=expr b=expr {})
+    | #(GTE         a=expr b=expr {})
+    | #(LTE         a=expr b=expr {})
+    | #(ROL         a=expr b=expr {})
+    | #(ROR         a=expr b=expr {})
+    | #(LAND        a=expr b=expr {}) 
+    | #(LOR         a=expr b=expr {}) 
+    | #(BAND        a=expr b=expr {})
+    | #(BIOR        a=expr b=expr {})
+    | #(BEOR        a=expr b=expr {})
+    | #(APPEND      a=expr b=expr {})
+    | #(ASSIGN      a=expr b=expr {})
     | #("=>"        y=string z=string {})
     | #(id:ID {/* Look inside the symbol table and get the data node for this id */})
     | #(num:NUM     {a=new DataNodeBit(Integer.parseInt(num.getText()));})
-;
+    ;
 
 protected
 id returns [String r]
@@ -498,5 +568,5 @@ string returns [String r]
 {
     r = new String("");
 }
-    :#(str:STRING {r=str.getText();})
-;
+    :#(str:ID {r=str.getText();})
+    ;
