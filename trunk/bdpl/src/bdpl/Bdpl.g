@@ -407,7 +407,30 @@ stmts
 {
     DataNodeAbstract r;
 }
-    : "if"                        {}
+    : #("if" r=expr thenpart:. (elsepart:.)?
+        {
+            //
+            // VRB: To do
+            // Check the type of 'r' for consistency
+            //
+            try{
+                if(r.get_int_value() > 0){
+                     stmts(#thenpart);
+                }else{
+                    if(null != elsepart){
+                        stmts(#elsepart);
+                    }else{
+                        //
+                        // Do nothing here. The else part is
+                        // optional
+                        //
+                    }
+                }
+            }catch(Exception e){
+
+            }    
+        }
+       )
     | "for"                       {}
     | "break"                     {}
     | "continue"                  {}
