@@ -130,7 +130,6 @@ public class BdplMain
         DataNodeStruct str1=new DataNodeStruct();
         str1.set_child_by_name ("str1",str);
         
-        System.out.println (str1.print());
         return 0;
     }
     
