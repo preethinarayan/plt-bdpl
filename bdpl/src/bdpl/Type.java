@@ -41,7 +41,7 @@ public class Type
      */
     public Type(String type,AST subtree)
     {
-        if(type=="struct")
+        if(type.startsWith ("struct"))
         {
             _type=type;
             _subtree=subtree;
@@ -59,7 +59,7 @@ public class Type
      */
     public Type(String type,DataNodeAbstract array_dummy)
     {
-        if(type=="struct")
+        if(type.startsWith ("ARRAY"))
         {
             _type=type;
             _array_dummy=array_dummy;
@@ -74,8 +74,11 @@ public class Type
     /**
      *method to get the type of the type object
      */
-    public DataNodeAbstract getDataNode() throws Exception
+    public DataNodeAbstract getDataNode(TypeSymbolTable st) throws Exception
     {
+        if(!st.contains (_type))
+            throw new Exception(_type+" type not defined");
+                
         if(_type.equals("int"))
         {
             return new DataNodeInt();
@@ -90,11 +93,16 @@ public class Type
         }
         else if(_type.startsWith("ARRAY"))
         {
+            // TODO array size.
             return new DataNodeArray(_array_dummy);
         }
         else if(_type.startsWith("struct"))
         {
-            return new DataNodeStruct();
+            DataNodeStruct retval=new DataNodeStruct();
+            assert(_subtree!=null);
+            AST body=_subtree.getFirstChild ();//.getNextSibling ();
+            System.out.println (body.getText ());
+            return retval;
         }
         throw new Exception("bad type!");
     }

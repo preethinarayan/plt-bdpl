@@ -32,6 +32,14 @@ abstract public class DataNodeAbstract implements DataNode
         return new Exception(this.getClass().getName()  +": "+ex_string);
     }
 
+    public void set_name(String name)
+    {
+        _name=name;
+    }
+    public String get_name() 
+    {
+        return _name;
+    }
     
     abstract public String get_type_name();
     abstract public String get_bitsequence_value();
@@ -56,5 +64,7 @@ abstract public class DataNodeAbstract implements DataNode
     protected int _bitsize;
     
     protected AST _the_ast;
+    
+    protected String _name;
     
 }

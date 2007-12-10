@@ -12,6 +12,7 @@
  * none of these are used yet !!
  * @author akshay
  */
+import antlr.collections.*;
 public class Utils
 {
     enum where_from {MSB,LSB};
@@ -44,6 +45,13 @@ public class Utils
     {
         int t=get_n_bits(source,n+offset,where_from.MSB);
         return get_n_bits(t,n,where_from.LSB);
+    }
+    
+    public static Type define_struct (String name, AST subtree,TypeSymbolTable st) throws Exception
+    {
+        Type structType=new Type (name,subtree);
+        st.insert (name,structType);
+        return structType;
     }
         
 }

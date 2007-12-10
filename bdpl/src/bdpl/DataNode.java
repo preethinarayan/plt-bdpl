@@ -23,4 +23,6 @@ public interface DataNode
     public int get_fieldsize();
     public int set_fieldsize(int fieldsize);
     public String print();
+    public void set_name(String name);
+    public String get_name();
 }

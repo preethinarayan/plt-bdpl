@@ -1,6 +1,7 @@
 byte[4]
 	a 	("endian" => "big","maxsize" => "100") 
-		(fieldsize 50),
+		(fieldsize 50);
+byte[4]		
 	b 	("endian" => "big","maxsize" => "100") 
 		(fieldsize 50) 
 	valid {0x30..0x39,0x45..0x68} 
@@ -9,10 +10,23 @@ byte[4]
 	optional 
 		on x>3 ;
 
-int a;
 int[*] A_a_star;
-int b,c;
-type struct ifd_header[5] d,e;
+type struct ifd_header[5] d;
+
+struct normal_struct
+{
+	struct inner
+	{
+		int a;
+		int b;
+		int c;
+//	int[*] int_array;
+		byte d;
+	} inner_ob;
+	int just;
+
+}normal_st_ob;
+
 struct xxy
 {
 	struct xx
@@ -41,11 +55,12 @@ struct ifd_header
 			on x>3 ;
 }[4] 
 	a 	("endian" => "big","maxsize" => "100")
-		(fieldsize 50),
-	b 	("endian" => "big","maxsize" => "100") 
-		(fieldsize 50) 
-	valid {0x30..0x39,0x45..0x68} 
-		ok {break;} 
-		nok {continue;} 
-	optional 
-		on x>3 ;
+		(fieldsize 50);
+		
+//	b 	("endian" => "big","maxsize" => "100") 
+//		(fieldsize 50) 
+//	valid {0x30..0x39,0x45..0x68} 
+//		ok {break;} 
+//		nok {continue;} 
+//	optional 
+//		on x>3 ;

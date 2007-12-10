@@ -249,7 +249,7 @@ range_element
     ;
 
 list_of_ids
-    : (single_id)(COMMA! single_id)*
+    : (single_id) //(COMMA! single_id)*
     ;
 
 single_id
@@ -395,12 +395,13 @@ class BdplTreeParser extends TreeParser;
 {
     VariableSymbolTable varSymbTbl = new VariableSymbolTable();
     TypeSymbolTable typeSymbTbl = new TypeSymbolTable();
+    DataNodeAbstract r;
 }
 
 program
 {
 }
-    : #(PROG ((stmts | decls)*))
+    : #(PROG ((stmts | r=decls)*))
     ;
 
 stmts
@@ -448,11 +449,13 @@ stmts
 // Populate the node with INITLIST info (AST)
 // Populate the node with fieldsize info (AST)
 //
-decls
+decls returns [DataNodeAbstract r=null]
 {
     String name;
+    String id;
 }
-    : #(ARRAY                     {})
+    : #(ARRAY {r=new DataNodeInt();})
+
     | #("int"
         (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
@@ -464,11 +467,15 @@ decls
                 {
                     try{
                         Type intType = typeSymbTbl.get("int");
-                        DataNodeInt intNode = (DataNodeInt)intType.getDataNode();
+                        DataNodeInt intNode = (DataNodeInt)intType.getDataNode(typeSymbTbl);
                         varSymbTbl.insert(name,intNode);
+                        intNode.set_name(name);
+                        System.out.println("int name : "+name);
+                        r=intNode;
                     }catch(Exception e){
 
                     }
+
                 }
             })+
         {
@@ -488,11 +495,14 @@ decls
                 {
                     try{
                         Type byteType = typeSymbTbl.get("byte");
-                        DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode();
+                        DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode(typeSymbTbl);
                         varSymbTbl.insert(name,byteNode);
+                        byteNode.set_name(name);
+                        r=byteNode;
                     }catch(Exception e){
 
                     }
+                    
                 }
             })+                   
         {
@@ -512,11 +522,14 @@ decls
                 {
                     try{
                         Type bitType = typeSymbTbl.get("bit");
-                        DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode();
+                        DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode(typeSymbTbl);
+                        bitNode.set_name(name);
                         varSymbTbl.insert(name,bitNode);
+                        r=bitNode;
                     }catch(Exception e){
 
                     }
+                    
                 }
             })+
         {
@@ -525,12 +538,49 @@ decls
             //
         }
        )
-    | #("struct" 
+    | #("struct"  (#(TAG name=string)) (body:.) (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
+            try
+            {   
+                if(typeSymbTbl.contains(name))
+                {
+                    DataNodeAbstract structNode = typeSymbTbl.get(name).getDataNode(typeSymbTbl);
+                    varSymbTbl.insert(id,structNode); // this is wrong and should be changed
+                    r=structNode;
+                }
+                else
+                {
+                    Type structType=new Type (name,body);
+                    DataNodeStruct structNode = new DataNodeStruct();
+                    structNode.set_name(name);
+                    AST child=body.getFirstChild();
+                    while(child!=null)
+                    {
+                        
+                        DataNodeAbstract cdn=decls(child);
+
+                        structNode.set_child_by_name(cdn.get_name(),cdn);
+                        System.out.println("child is : "+cdn.get_name());
+                        System.out.println("ya");
+                        child=child.getNextSibling();
+                    }
+                    r=structNode;
+                    System.out.println(r.print());
+                    typeSymbTbl.insert(name, structType);
+                    varSymbTbl.insert(r.get_name(),r);
+                }
+                    
+            }
+            catch(Exception e)
+            {
+
+            }
+            
 
         }
+        )
        )
-    | #("type"                    {})
+    | #("type" {r=new DataNodeInt();})
     ;
 
 expr returns [DataNodeAbstract r]
