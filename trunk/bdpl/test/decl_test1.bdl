@@ -43,7 +43,7 @@ struct ifd_header
 		optional 
 			on x>3 ;
 }[4] 
-	a 	("endian" => "big","maxsize" => "100")
+	aa 	("endian" => "big","maxsize" => "100")
 		(fieldsize 50);
 		
 //	b 	("endian" => "big","maxsize" => "100") 

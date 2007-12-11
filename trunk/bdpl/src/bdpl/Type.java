@@ -40,6 +40,7 @@ public class Type
      */
     public Type(String type,DataNodeAbstract node)
     {
+        System.err.println ("defining "+type+"\n");
         if(type.startsWith ("ARRAY"))
         {
             _type=type;

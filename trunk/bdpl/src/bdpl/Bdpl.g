@@ -570,10 +570,13 @@ decls returns [DataNodeAbstract r=null] throws Exception
        )
     | #("struct"  (#(TAG name=string)) (body:.) 
         {
+            VariableSymbolTable newST=new VariableSymbolTable();
+            newST.set_parent(varSymbTbl);
+            varSymbTbl=newST; // go into new scope
             try
             {   
 
-                if(typeSymbTbl.contains(name))
+                if(typeSymbTbl.contains("struct:"+name))
                 {
                     DataNodeAbstract structNode = typeSymbTbl.get(name).getDataNode();
                     System.out.println("contains !! \n\n");
@@ -582,7 +585,6 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 else
                 {
                     DataNodeStruct structNode = new DataNodeStruct();
-                    structNode.set_name(name);
                     AST child=body.getFirstChild();
                     while(child!=null)
                     {
@@ -594,12 +596,13 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r=structNode;
                     Type structType=new Type ("struct:"+name,r);
                     typeSymbTbl.insert("struct:"+name, structType);
+                    varSymbTbl=varSymbTbl.get_parent(); // go up a scope
                 }
                     
             }
             catch(Exception e)
             {
-                //e.printStackTrace();
+                e.printStackTrace();
             }
             
         } 
@@ -616,6 +619,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
        (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             Type t=typeSymbTbl.get("struct:"+name);
+            System.err.println("begotten");
             r=t.getDataNode();
             r.set_name(id);
             
