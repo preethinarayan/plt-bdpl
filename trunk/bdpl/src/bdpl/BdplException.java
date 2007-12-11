@@ -1,16 +1,12 @@
 /*
  * BdplException.java
  *
- * Created on December 9, 2007, 8:01 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 import java.util.*;
 /**
  *
- * @author Bharadwaj
+ * @author Bharadwaj Vellore
  */
 public class BdplException extends RuntimeException {
     

@@ -1,15 +1,11 @@
 /*
  * DataNodeArray.java
  *
- * Created on November 8, 2007, 10:04 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**
  *
- * @author akshay
+ * @author Akshay Pundle
  */
 
 import java.util.*;

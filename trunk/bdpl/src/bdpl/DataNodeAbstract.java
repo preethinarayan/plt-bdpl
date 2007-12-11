@@ -1,15 +1,11 @@
 /*
  * AbstractDataNode.java
  *
- * Created on November 8, 2007, 9:49 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**
  *
- * @author akshay
+ * @author Akshay Pundle
  */
 import antlr.collections.*;
 abstract public class DataNodeAbstract implements DataNode

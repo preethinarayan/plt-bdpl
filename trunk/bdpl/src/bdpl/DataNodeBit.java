@@ -1,15 +1,11 @@
 /*
  * DataNodeBit.java
  *
- * Created on November 8, 2007, 10:02 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**
  *
- * @author akshay
+ * @author Akshay Pundle
  */
 public class DataNodeBit extends DataNodeAbstract
 {

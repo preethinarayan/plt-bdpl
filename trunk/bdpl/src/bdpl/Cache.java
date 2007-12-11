@@ -1,15 +1,12 @@
 /*
  * Cache.java
  *
- * Created on November 18, 2007, 3:31 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Simple class to cache bitsequences, array sizes etc
  */
 
 /**
- * Simple class to cache bitsequences, array sizes etc
- * @author akshay
+ *
+ * @author Akshay Pundle
  */
 public class Cache
 {

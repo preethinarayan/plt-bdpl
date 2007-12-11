@@ -1,15 +1,11 @@
 /*
  * TypeSymbolTable.java
  *
- * Created on November 26, 2007, 4:40 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**
  *
- * @author preethi
+ * @author Preethi Narayan
  */
 
 import java.util.*;
