@@ -70,5 +70,9 @@ struct normal_struct
 
 }[5]normal_st_ob;
 
+struct normal_struct
+{
+	int a;
+}aaaaa;
 
 type struct normal_struct a_var;

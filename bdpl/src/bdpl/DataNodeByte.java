@@ -67,7 +67,7 @@ public class DataNodeByte extends DataNodeAbstract
     
     public String print()
     {
-        return String.format ("0x%4x",_data);
+        return String.format ("0x%x",_data);
     }
     
     private int _data;
