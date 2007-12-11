@@ -398,10 +398,26 @@ class BdplTreeParser extends TreeParser;
     DataNodeAbstract r;
 }
 
-program
+program throws Exception
 {
 }
-    : #(PROG ((stmts | r=decls)*))
+    : #(PROG ((stmts | r=decls)*)
+        {
+            if(r==null) return ;
+            if(varSymbTbl.contains(r.get_name()))
+            {
+//                    throw new Exception("Redefinition of symbol "+r.get_name());
+            }
+            else
+            {
+                try
+                {
+                    varSymbTbl.insert(r.get_name(),r);
+                }
+                catch (Exception e) {}
+            }
+        }
+    )
     ;
 
 stmts
@@ -449,33 +465,43 @@ stmts
 // Populate the node with INITLIST info (AST)
 // Populate the node with fieldsize info (AST)
 //
-decls returns [DataNodeAbstract r=null]
+decls returns [DataNodeAbstract r=null] throws Exception
 {
     String name;
     String id;
+    //String array_size;
+    //String type;
 }
-    : #(ARRAY {r=new DataNodeInt();})
+    : #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+        {
+            DataNodeAbstract dummy_node=null;
+            if(type.getText() == "int" || type.getText()=="bit" || type.getText()=="byte")
+            { 
+                dummy_node=typeSymbTbl.get(type.getText()).getDataNode(typeSymbTbl);
+            }
+            else
+            if(type.getText().startsWith("struct"))
+            {
+                dummy_node=decls(#type);   
+            }
+            r=new DataNodeArray(dummy_node);
+            r.set_name(id);
+        }
+      ))
 
     | #("int"
         (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
                 if(varSymbTbl.contains(name))
                 {
-//                    throw new Exception("Redefinition of symbol "+name);
+                    throw new Exception("Redefinition of symbol "+name);
                 }
                 else
                 {
-                    try{
                         Type intType = typeSymbTbl.get("int");
                         DataNodeInt intNode = (DataNodeInt)intType.getDataNode(typeSymbTbl);
-                        varSymbTbl.insert(name,intNode);
                         intNode.set_name(name);
-                        System.out.println("int name : "+name);
                         r=intNode;
-                    }catch(Exception e){
-
-                    }
-
                 }
             })+
         {
@@ -489,20 +515,14 @@ decls returns [DataNodeAbstract r=null]
             {
                 if(varSymbTbl.contains(name))
                 {
-//                    throw new Exception("Redefinition of symbol "+name);
+                    throw new Exception("Redefinition of symbol "+name);
                 }
                 else
                 {
-                    try{
                         Type byteType = typeSymbTbl.get("byte");
                         DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode(typeSymbTbl);
-                        varSymbTbl.insert(name,byteNode);
                         byteNode.set_name(name);
                         r=byteNode;
-                    }catch(Exception e){
-
-                    }
-                    
                 }
             })+                   
         {
@@ -516,21 +536,16 @@ decls returns [DataNodeAbstract r=null]
             {
                 if(varSymbTbl.contains(name))
                 {
-//                    throw new Exception("Redefinition of symbol "+name);
+                    throw new Exception("Redefinition of symbol "+name);
                 }
                 else
                 {
-                    try{
                         Type bitType = typeSymbTbl.get("bit");
                         DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode(typeSymbTbl);
                         bitNode.set_name(name);
-                        varSymbTbl.insert(name,bitNode);
                         r=bitNode;
-                    }catch(Exception e){
-
-                    }
-                    
-                }
+   
+               }
             })+
         {
             //
@@ -538,14 +553,15 @@ decls returns [DataNodeAbstract r=null]
             //
         }
        )
-    | #("struct"  (#(TAG name=string)) (body:.) (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+    | #("struct"  (#(TAG name=string)) (body:.) 
         {
             try
             {   
+
                 if(typeSymbTbl.contains(name))
                 {
                     DataNodeAbstract structNode = typeSymbTbl.get(name).getDataNode(typeSymbTbl);
-                    varSymbTbl.insert(id,structNode); // this is wrong and should be changed
+                    System.out.println("contains !! \n\n");
                     r=structNode;
                 }
                 else
@@ -558,16 +574,34 @@ decls returns [DataNodeAbstract r=null]
                     {
                         
                         DataNodeAbstract cdn=decls(child);
-
                         structNode.set_child_by_name(cdn.get_name(),cdn);
-                        System.out.println("child is : "+cdn.get_name());
-                        System.out.println("ya");
                         child=child.getNextSibling();
                     }
                     r=structNode;
-                    System.out.println(r.print());
                     typeSymbTbl.insert(name, structType);
-                    varSymbTbl.insert(r.get_name(),r);
+                    typeSymbTbl.insert(name, structType);
+                }
+                    
+            }
+            catch(Exception e)
+            {
+                //e.printStackTrace();
+            }
+            
+        } 
+        (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+
+        {
+            try
+            {   
+
+                if(!typeSymbTbl.contains(name))
+                {
+                    //error
+                }
+                else
+                {
+                    
                 }
                     
             }
@@ -577,8 +611,8 @@ decls returns [DataNodeAbstract r=null]
             }
             
 
-        }
-        )
+        } // IDEN
+        )?
        )
     | #("type" {r=new DataNodeInt();})
     ;

@@ -145,20 +145,20 @@ public class BdplMain
             {
                 input = new FileInputStream("x:/test/decl_test1.bdl");
             }
-            test_utils();
-            test_DataNodeArray();
+            //test_utils();
+            //test_DataNodeArray();
 
             BdplLexer lexer = new BdplLexer(input);
 
-            test_DataNodeStruct();
-		//BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
+            //test_DataNodeStruct();
+            //BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
 
 	   // BdplLexer lexer = new BdplLexer(new FileInputStream("C:/Users/akshay/Documents/school/plt/trunk/bdpl/test/prog3.bdl"));
 	    BdplParser parser = new BdplParser(lexer);
 	    parser.program();
             
             CommonAST parseTree = (CommonAST)parser.getAST();
-            System.out.println(parseTree.toStringList());
+            //System.out.println(parseTree.toStringList());
             
             ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
             frame.setVisible(true);
