@@ -1,10 +1,6 @@
 /*
  * Arithmetic.java
  *
- * Created on December 11, 2007, 1:41 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**

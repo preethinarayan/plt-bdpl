@@ -1,15 +1,11 @@
 /*
  * Type.java
  *
- * Created on November 29, 2007, 9:49 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**
  *
- * @author preethi
+ * @author Preethi Narayan
  */
 import antlr.collections.*;
 public class Type 

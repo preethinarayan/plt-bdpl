@@ -1,16 +1,12 @@
 /*
  * Utils.java
- *
- * Created on November 18, 2007, 4:11 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
+ * Static utility functions
+ * none of these are used yet !!
  */
 
 /**
- * Static utility functions
- * none of these are used yet !!
- * @author akshay
+ *
+ * @author Akshay Pundle
  */
 import antlr.collections.*;
 public class Utils

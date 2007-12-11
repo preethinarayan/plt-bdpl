@@ -1,10 +1,6 @@
 /*
  * TypeConverter.java
  *
- * Created on December 11, 2007, 5:48 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
  */
 
 /**

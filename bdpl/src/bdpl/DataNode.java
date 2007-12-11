@@ -1,19 +1,17 @@
 /*
  * DataNode.java
  *
- * Created on November 8, 2007, 9:43 AM
- *
- * To change this template, choose Tools | Template Manager
- * and open the template in the editor.
- */
-
-/**
  * This defines the interface which all data nodes should 
  * adhere to (i.e this is the abstract base class for all
  * our concrete data node classes 
  *
- * @author akshay
  */
+
+/**
+ *
+ * @author Akshay Pundle
+ */
+
 public interface DataNode
 {
     public String get_type_name();
