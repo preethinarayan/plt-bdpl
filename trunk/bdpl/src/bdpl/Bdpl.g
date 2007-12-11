@@ -477,7 +477,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
             DataNodeAbstract dummy_node=null;
             if(type.getText() == "int" || type.getText()=="bit" || type.getText()=="byte")
             { 
-                dummy_node=typeSymbTbl.get(type.getText()).getDataNode(typeSymbTbl);
+                dummy_node=typeSymbTbl.get(type.getText()).getDataNode();
             }
             else
             if(type.getText().startsWith("struct"))
@@ -499,7 +499,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 else
                 {
                         Type intType = typeSymbTbl.get("int");
-                        DataNodeInt intNode = (DataNodeInt)intType.getDataNode(typeSymbTbl);
+                        DataNodeInt intNode = (DataNodeInt)intType.getDataNode();
                         intNode.set_name(name);
                         r=intNode;
                 }
@@ -520,7 +520,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 else
                 {
                         Type byteType = typeSymbTbl.get("byte");
-                        DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode(typeSymbTbl);
+                        DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode();
                         byteNode.set_name(name);
                         r=byteNode;
                 }
@@ -541,7 +541,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 else
                 {
                         Type bitType = typeSymbTbl.get("bit");
-                        DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode(typeSymbTbl);
+                        DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode();
                         bitNode.set_name(name);
                         r=bitNode;
    
@@ -560,7 +560,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
 
                 if(typeSymbTbl.contains(name))
                 {
-                    DataNodeAbstract structNode = typeSymbTbl.get(name).getDataNode(typeSymbTbl);
+                    DataNodeAbstract structNode = typeSymbTbl.get(name).getDataNode();
                     System.out.println("contains !! \n\n");
                     r=structNode;
                 }
