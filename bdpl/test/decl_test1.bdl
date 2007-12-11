@@ -69,3 +69,6 @@ struct normal_struct
 	int just;
 
 }[5]normal_st_ob;
+
+
+type struct normal_struct a_var;

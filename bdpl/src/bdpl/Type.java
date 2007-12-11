@@ -46,7 +46,7 @@ public class Type
             _array_dummy=node;
             _struct_node=null;
         }
-        else if(type.startsWith ("sruct"))
+        else if(type.startsWith ("struct"))
         {
             _type=type;
             _struct_node=node;
