@@ -74,10 +74,10 @@ public class Type
     /**
      *method to get the type of the type object
      */
-    public DataNodeAbstract getDataNode(TypeSymbolTable st) throws Exception
+    public DataNodeAbstract getDataNode() throws Exception
     {
-        if(!st.contains (_type))
-            throw new Exception(_type+" type not defined");
+        /*if(!st.contains (_type))
+            throw new Exception(_type+" type not defined");*/
                 
         if(_type.equals("int"))
         {
