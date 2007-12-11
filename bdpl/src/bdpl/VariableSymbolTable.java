@@ -32,6 +32,10 @@ public class VariableSymbolTable
     {
         _parent=parent;
     }
+    public VariableSymbolTable get_parent()
+    {
+        return _parent;
+    }
         
     
     /**
