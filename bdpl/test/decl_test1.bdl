@@ -13,19 +13,8 @@ byte[4]
 int[*] A_a_star;
 type struct ifd_header[5] d;
 
-struct normal_struct
-{
-	struct inner
-	{
-		int a;
-		int b;
-		int c;
-//	int[*] int_array;
-		byte d;
-	} inner_ob;
-	int just;
 
-}normal_st_ob;
+
 
 struct xxy
 {
@@ -64,3 +53,19 @@ struct ifd_header
 //		nok {continue;} 
 //	optional 
 //		on x>3 ;
+
+
+
+struct normal_struct
+{
+	struct inner
+	{
+		int a;
+		int b;
+		int c;
+//	int[*] int_array;
+		byte d;
+	} inner_ob;
+	int just;
+
+}[5]normal_st_ob;
