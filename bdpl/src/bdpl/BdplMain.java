@@ -143,7 +143,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/prog5.bdl");
+                input = new FileInputStream("x:/test/arith_test1.bdl");
             }
             //test_utils();
             //test_DataNodeArray();

@@ -59,13 +59,27 @@ public class Arithmetic implements BdplLexerTokenTypes{
                 res = operand1.get_int_value() % operand2.get_int_value();
                 break;
             default:
-                result = new DataNodeInt();
+                res = 0;
                 //
                 // This point will never be reached
                 //
                 assert(false);
         }
         
-        return result;
+        System.out.println("Computed arithmetic expression: "+res);
+        
+        if(result instanceof DataNodeInt){
+            return new DataNodeInt(res);
+        }else if(result instanceof DataNodeByte){
+            return new DataNodeByte(res);
+        }else if(result instanceof DataNodeBit){
+            return new DataNodeBit(res);
+        }else{
+            //
+            // This should never happen
+            //
+            assert(false);
+            return null;
+        }
     }
 }

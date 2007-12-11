@@ -24,13 +24,13 @@ public class TypeChecker {
     
     public static boolean isBasic(String type){
         return (
-                (type == "int")?
+                (type == "TYPE_INT")?
                     true:
                     (
-                        (type == "byte")?
+                        (type == "TYPE_BYTE")?
                             true:
                             (
-                                (type == "bit")?
+                                (type == "TYPE_BIT")?
                                     true:
                                     false
                             )
