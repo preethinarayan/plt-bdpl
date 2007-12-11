@@ -404,6 +404,8 @@ class BdplTreeParser extends TreeParser;
     TypeChecker typeChecker = new TypeChecker(typeSymbTbl,typeConverter);
     Arithmetic arith = new Arithmetic(typeChecker);
     Relational relate = new Relational(typeChecker);
+    Logical logic = new Logical(typeChecker);
+    Bitwise bitwise = new Bitwise(typeChecker);
     DataNodeAbstract r;
 }
 
@@ -636,7 +638,6 @@ expr returns [DataNodeAbstract r] throws Exception
     String y,z; 
 }
     : #(DOT_DOT     a=expr b=expr {})
-    | #(SQBROPEN    a=expr b=expr {})
     | #(BYTEOFFSET  a=expr        {})
     | #(DOT         a=expr b=expr {})
     | #(PLUS        a=expr b=expr {arith.eval(PLUS,a,b);})
@@ -644,23 +645,23 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(STAR        a=expr b=expr {arith.eval(STAR,a,b);})
     | #(SLASH       a=expr b=expr {arith.eval(SLASH,a,b);})
     | #(PERCENT     a=expr b=expr {arith.eval(PERCENT,a,b);})
-    | #(LLSH        a=expr b=expr {})
-    | #(LRSH        a=expr b=expr {})
-    | #(ALSH        a=expr b=expr {})
-    | #(ARSH        a=expr b=expr {})
+    | #(LLSH        a=expr b=expr {bitwise.eval(LLSH,a,b);})
+    | #(LRSH        a=expr b=expr {bitwise.eval(LRSH,a,b);})
+    | #(ALSH        a=expr b=expr {bitwise.eval(ALSH,a,b);})
+    | #(ARSH        a=expr b=expr {bitwise.eval(ARSH,a,b);})
     | #(GT          a=expr b=expr {relate.eval(GT,a,b);})
     | #(LT          a=expr b=expr {relate.eval(LT,a,b);})
     | #(GTE         a=expr b=expr {relate.eval(GTE,a,b);})
     | #(LTE         a=expr b=expr {relate.eval(LTE,a,b);})
     | #(EQUALITY    a=expr b=expr {relate.eval(EQUALITY,a,b);})
     | #(INEQUALITY  a=expr b=expr {relate.eval(INEQUALITY,a,b);})
-    | #(ROL         a=expr b=expr {})
-    | #(ROR         a=expr b=expr {})
-    | #(LAND        a=expr b=expr {}) 
-    | #(LOR         a=expr b=expr {}) 
-    | #(BAND        a=expr b=expr {})
-    | #(BIOR        a=expr b=expr {})
-    | #(BEOR        a=expr b=expr {})
+    | #(ROL         a=expr b=expr {bitwise.eval(ROL,a,b);})
+    | #(ROR         a=expr b=expr {bitwise.eval(ROR,a,b);})
+    | #(LAND        a=expr b=expr {logic.eval(LAND,a,b);}) 
+    | #(LOR         a=expr b=expr {logic.eval(LOR,a,b);}) 
+    | #(BAND        a=expr b=expr {bitwise.eval(BAND,a,b);})
+    | #(BIOR        a=expr b=expr {bitwise.eval(BIOR,a,b);})
+    | #(BEOR        a=expr b=expr {bitwise.eval(BEOR,a,b);})
     | #(APPEND      a=expr b=expr {})
     | #(ASSIGN      a=expr b=expr {})
     | #("=>"        y=string z=string {})
