@@ -49,7 +49,7 @@ public class Utils
     
     public static Type define_struct (String name, AST subtree,TypeSymbolTable st) throws Exception
     {
-        Type structType=new Type (name,subtree);
+        Type structType=new Type (name);
         st.insert (name,structType);
         return structType;
     }
