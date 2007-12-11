@@ -408,16 +408,21 @@ program throws Exception
 }
     : #(PROG ((stmts | r=decls)*)
         {
-            if(r==null) return ;
+            if(r==null) 
+            {
+                System.out.println(" r is null !! \n");
+                return ;
+            }
             if(varSymbTbl.contains(r.get_name()))
             {
-//                    throw new Exception("Redefinition of symbol "+r.get_name());
+                    throw new Exception("Redefinition of symbol "+r.get_name());
             }
             else
             {
                 try
                 {
                     varSymbTbl.insert(r.get_name(),r);
+                    System.out.println(r.get_name()+" defined as " + r.print() );
                 }
                 catch (Exception e) {}
             }
@@ -491,6 +496,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
             }
             r=new DataNodeArray(dummy_node);
             r.set_name(id);
+            System.out.println("returning array ! ");
         }
       ))
 
@@ -596,29 +602,21 @@ decls returns [DataNodeAbstract r=null] throws Exception
         (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
 
         {
-            try
-            {   
-
-                if(!typeSymbTbl.contains(name))
-                {
-                    //error
-                }
-                else
-                {
-                    
-                }
-                    
-            }
-            catch(Exception e)
-            {
-
-            }
+            r.set_name(id);
             
 
         } // IDEN
         )?
        )
-    | #("type" {r=new DataNodeInt();})
+    | #("type" name=string
+       (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+        {
+            Type t=typeSymbTbl.get("struct:"+name);
+            r=t.getDataNode();
+            r.set_name(id);
+            
+        }
+       ))
     ;
 
 expr returns [DataNodeAbstract r]
