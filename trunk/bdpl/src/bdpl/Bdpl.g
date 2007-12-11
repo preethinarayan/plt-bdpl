@@ -403,6 +403,7 @@ class BdplTreeParser extends TreeParser;
     TypeConverter typeConverter = new TypeConverter();
     TypeChecker typeChecker = new TypeChecker(typeSymbTbl,typeConverter);
     Arithmetic arith = new Arithmetic(typeChecker);
+    Relational relate = new Relational(typeChecker);
     DataNodeAbstract r;
 }
 
@@ -647,10 +648,12 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(LRSH        a=expr b=expr {})
     | #(ALSH        a=expr b=expr {})
     | #(ARSH        a=expr b=expr {})
-    | #(GT          a=expr b=expr {})
-    | #(LT          a=expr b=expr {})
-    | #(GTE         a=expr b=expr {})
-    | #(LTE         a=expr b=expr {})
+    | #(GT          a=expr b=expr {relate.eval(GT,a,b);})
+    | #(LT          a=expr b=expr {relate.eval(LT,a,b);})
+    | #(GTE         a=expr b=expr {relate.eval(GTE,a,b);})
+    | #(LTE         a=expr b=expr {relate.eval(LTE,a,b);})
+    | #(EQUALITY    a=expr b=expr {relate.eval(EQUALITY,a,b);})
+    | #(INEQUALITY  a=expr b=expr {relate.eval(INEQUALITY,a,b);})
     | #(ROL         a=expr b=expr {})
     | #(ROR         a=expr b=expr {})
     | #(LAND        a=expr b=expr {}) 

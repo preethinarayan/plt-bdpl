@@ -8,14 +8,12 @@
  * @author Bharadwaj Vellore
  */
 public class Arithmetic implements BdplLexerTokenTypes{
-    
+
+    private TypeChecker _typeChecker;
     /** Creates a new instance of Arithmetic */
-    
     //
     // To Do: Apply singleton pattern here
     //
-    private TypeChecker _typeChecker;
-    
     public Arithmetic(TypeChecker tc){
         _typeChecker = tc;    
     }
