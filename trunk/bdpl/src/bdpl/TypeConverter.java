@@ -24,24 +24,24 @@ public class TypeConverter {
     /** Creates a new instance of TypeConverter */
     public TypeConverter() {
         _intMap = new HashMap();
-        _intMap.put("byte","int");
-        _intMap.put("bit","int");
-        _intMap.put("int","int");
+        _intMap.put("TYPE_BYTE","int");
+        _intMap.put("TYPE_BIT","int");
+        _intMap.put("TYPE_INT","int");
 
         _bitMap = new HashMap();
-        _bitMap.put("byte","byte");
-        _bitMap.put("bit","bit");
-        _bitMap.put("int","int");
+        _bitMap.put("TYPE_BYTE","byte");
+        _bitMap.put("TYPE_BIT","bit");
+        _bitMap.put("TYPE_INT","int");
 
         _byteMap = new HashMap();
-        _byteMap.put("byte","byte");
-        _byteMap.put("bit","byte");
-        _byteMap.put("int","int");
+        _byteMap.put("TYPE_BYTE","byte");
+        _byteMap.put("TYPE_BIT","byte");
+        _byteMap.put("TYPE_INT","int");
         
         _map = new HashMap();
-        _map.put("int",_intMap);
-        _map.put("byte",_byteMap);
-        _map.put("bit",_bitMap);
+        _map.put("TYPE_INT",_intMap);
+        _map.put("TYPE_BYTE",_byteMap);
+        _map.put("TYPE_BIT",_bitMap);
     }
     
     public String get(String ltype, String rtype){

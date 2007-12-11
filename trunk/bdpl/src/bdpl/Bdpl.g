@@ -400,6 +400,9 @@ class BdplTreeParser extends TreeParser;
 {
     VariableSymbolTable varSymbTbl = new VariableSymbolTable();
     TypeSymbolTable typeSymbTbl = new TypeSymbolTable();
+    TypeConverter typeConverter = new TypeConverter();
+    TypeChecker typeChecker = new TypeChecker(typeSymbTbl,typeConverter);
+    Arithmetic arith = new Arithmetic(typeChecker);
     DataNodeAbstract r;
 }
 
@@ -434,7 +437,7 @@ program throws Exception
     )
     ;
 
-stmts
+stmts throws Exception
 {
     DataNodeAbstract r;
 }
@@ -625,7 +628,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
        ))
     ;
 
-expr returns [DataNodeAbstract r]
+expr returns [DataNodeAbstract r] throws Exception
 {
     DataNodeAbstract a,b;
     r = new DataNodeBit();
@@ -635,11 +638,11 @@ expr returns [DataNodeAbstract r]
     | #(SQBROPEN    a=expr b=expr {})
     | #(BYTEOFFSET  a=expr        {})
     | #(DOT         a=expr b=expr {})
-    | #(PLUS        a=expr b=expr {})
-    | #(MINUS       a=expr b=expr {})
-    | #(STAR        a=expr b=expr {})
-    | #(SLASH       a=expr b=expr {})
-    | #(PERCENT     a=expr b=expr {})
+    | #(PLUS        a=expr b=expr {arith.eval(PLUS,a,b);})
+    | #(MINUS       a=expr b=expr {arith.eval(MINUS,a,b);})
+    | #(STAR        a=expr b=expr {arith.eval(STAR,a,b);})
+    | #(SLASH       a=expr b=expr {arith.eval(SLASH,a,b);})
+    | #(PERCENT     a=expr b=expr {arith.eval(PERCENT,a,b);})
     | #(LLSH        a=expr b=expr {})
     | #(LRSH        a=expr b=expr {})
     | #(ALSH        a=expr b=expr {})
@@ -679,7 +682,7 @@ expr returns [DataNodeAbstract r]
             )*
         ){})
 
-    | #(num:NUM     {a=new DataNodeInt(Integer.parseInt(num.getText()));})
+    | #(num:NUM     {r=new DataNodeInt(Integer.parseInt(num.getText()));})
     ;
 
 protected
