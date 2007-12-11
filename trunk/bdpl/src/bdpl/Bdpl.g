@@ -161,6 +161,7 @@ tokens{
     NULL;
     ARRAY_SIZE;
     DECL;
+	LVALUE;
     STRUCT_NAME;
 }
 
@@ -349,12 +350,17 @@ child_term
     ;
 
 term
-    : lvalue_term (DOT^ lvalue_term)*
+    : lvalue
     | BYTEOFFSET^ lvalue_term
     ;
+	
+lvalue
+    : lvalue_term (DOT! lvalue_term)*
+        {#lvalue = #([LVALUE,"LVALUE"],#lvalue);}
+	;
 
 lvalue_term
-    : object(SQBROPEN (range_list|STAR) SQBRCLOSE)?
+    : object(SQBROPEN^ (tern_expr) SQBRCLOSE!)?
     ;
 
 object 
@@ -390,7 +396,6 @@ object
 // A statement returns nothing
 // An expression returns an AbstractDataNode
 //
-
 class BdplTreeParser extends TreeParser;
 {
     VariableSymbolTable varSymbTbl = new VariableSymbolTable();
@@ -650,8 +655,28 @@ expr returns [DataNodeAbstract r]
     | #(APPEND      a=expr b=expr {})
     | #(ASSIGN      a=expr b=expr {})
     | #("=>"        y=string z=string {})
-    | #(id:ID {/* Look inside the symbol table and get the data node for this id */})
-    | #(num:NUM     {a=new DataNodeBit(Integer.parseInt(num.getText()));})
+    | #(lval:LVALUE {}     
+        (
+            (y=id {System.out.print("Parsing:"+y);} | 
+                (#(SQBROPEN y=id a=expr)
+                {
+                    try
+                    {
+                        if(varSymbTbl.contains(y)){
+                            System.out.print("Parsing:"+y+"["+a.get_int_value()+"]");
+                        }else{
+                            throw new BdplException("Undeclared identifer "+y+" in line "+lval.getLine());
+                        }
+                    }catch(Exception e){
+                    }
+                })
+            )
+            (y=id {System.out.print("."+y);} | 
+                (#(SQBROPEN y=id a=expr){try{System.out.print("."+y+"["+a.get_int_value()+"]");}catch(Exception e){}})
+            )*
+        ){})
+
+    | #(num:NUM     {a=new DataNodeInt(Integer.parseInt(num.getText()));})
     ;
 
 protected
