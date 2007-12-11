@@ -24,8 +24,21 @@ public class DataNodeStruct extends DataNodeAbstract
         _bsize_cache=new Cache();
         _intvalue_cache=new Cache();
         _children= new HashMap() ;
+        _scope_pointer=null;
         
     }
+    
+    /** sets a pointer to the new symbol table for this struct */
+    public void set_scope(VariableSymbolTable sp)
+    {
+        _scope_pointer=sp;
+    }
+    /** get the symbol table pointer for this struct */
+    public VariableSymbolTable get_scope()
+    {
+        return _scope_pointer;
+    }
+    
     /** Creates a new instance of DataNodeStruct */
     public DataNodeStruct ()
     {
@@ -210,5 +223,7 @@ public class DataNodeStruct extends DataNodeAbstract
     
     /** cache calculated int value */
     private Cache _intvalue_cache;
+    
+    private VariableSymbolTable _scope_pointer;
     
 }
