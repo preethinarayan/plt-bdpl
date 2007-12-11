@@ -20,9 +20,17 @@ public class VariableSymbolTable
      * Creates a new instance of TypeSymbolTable
      */
     private Map _the_table;
+    private VariableSymbolTable _parent;
+    
     public VariableSymbolTable() 
     {
         _the_table=new HashMap();
+        _parent=null;
+    }
+    
+    public void set_parent(VariableSymbolTable parent)
+    {
+        _parent=parent;
     }
         
     
@@ -52,7 +60,15 @@ public class VariableSymbolTable
         }   
         else
         {
-            throw new Exception(id+" : undefined identifier");  
+            if(_parent!=null)
+            {
+                return _parent.get (id);
+                
+            }
+            else
+            {
+                throw new Exception(id+" : undefined identifier");  
+            }
         }
     }
     

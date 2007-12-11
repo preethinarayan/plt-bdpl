@@ -571,7 +571,6 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 }
                 else
                 {
-                    Type structType=new Type (name,body);
                     DataNodeStruct structNode = new DataNodeStruct();
                     structNode.set_name(name);
                     AST child=body.getFirstChild();
@@ -583,8 +582,8 @@ decls returns [DataNodeAbstract r=null] throws Exception
                         child=child.getNextSibling();
                     }
                     r=structNode;
-                    typeSymbTbl.insert(name, structType);
-                    typeSymbTbl.insert(name, structType);
+                    Type structType=new Type ("struct:"+name,r);
+                    typeSymbTbl.insert("struct:"+name, structType);
                 }
                     
             }
