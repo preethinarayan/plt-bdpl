@@ -30,6 +30,7 @@ public class DataNodeArray extends DataNodeAbstract
         init();
     }
     
+    
     /** Creates a new instance of DataNodeArray 
      * the dummy variable is only to keep a refernce of 
      * what type the elements of this array are
@@ -41,13 +42,14 @@ public class DataNodeArray extends DataNodeAbstract
         _dummy=dummy;
     }
     
-    /** should invoke copy constructor for base class */
+    /*
+    /** should invoke copy constructor for base class *
     public DataNodeArray (DataNodeArray data)
     {
         super(data);
         init();
         _children = data._children;
-    }
+    }*/
     
     /** return the unique typename */
     public String get_type_name() {return "ARRAY";}

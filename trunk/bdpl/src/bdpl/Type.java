@@ -14,9 +14,9 @@
 import antlr.collections.*;
 public class Type 
 {
-    private AST _subtree;
     private String _type;
     private DataNodeAbstract _array_dummy;
+    private DataNodeAbstract _struct_node;
     
     /** Creates a new instance of Type */
     public Type(String type) 
@@ -34,41 +34,31 @@ public class Type
         }
     }
             
-
-    /**
-     *  constructor which takes the subtree and the type name
-     *  type must be struct here
-     */
-    public Type(String type,AST subtree)
-    {
-        if(type.startsWith ("struct"))
-        {
-            _type=type;
-            _subtree=subtree;
-        }
-        else
-        {
-            _type="";
-            _subtree=null;
-        }
-        
-    }
      /**
      *  constructor which takes the subtree and the type name
      *  type must be struct here
      */
-    public Type(String type,DataNodeAbstract array_dummy)
+    public Type(String type,DataNodeAbstract node)
     {
         if(type.startsWith ("ARRAY"))
         {
             _type=type;
-            _array_dummy=array_dummy;
+            _array_dummy=node;
+            _struct_node=null;
+        }
+        else if(type.startsWith ("sruct"))
+        {
+            _type=type;
+            _struct_node=node;
+            _array_dummy=null;
         }
         else
         {
-            _type="";
-            _subtree=null;
+            _struct_node=null;
+            _array_dummy=null;
+            _type=null;
         }
+        
         
     }
     /**
@@ -98,11 +88,7 @@ public class Type
         }
         else if(_type.startsWith("struct"))
         {
-            DataNodeStruct retval=new DataNodeStruct();
-            assert(_subtree!=null);
-            AST body=_subtree.getFirstChild ();//.getNextSibling ();
-            System.out.println (body.getText ());
-            return retval;
+            return _struct_node;
         }
         throw new Exception("bad type!");
     }
