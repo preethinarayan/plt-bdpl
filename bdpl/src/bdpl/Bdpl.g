@@ -578,13 +578,12 @@ decls returns [DataNodeAbstract r=null] throws Exception
 
                 if(typeSymbTbl.contains("struct:"+name))
                 {
-                    DataNodeAbstract structNode = typeSymbTbl.get(name).getDataNode();
-                    System.out.println("contains !! \n\n");
-                    r=structNode;
+                    throw new Exception("redecleration of struct:"+name);
                 }
                 else
                 {
                     DataNodeStruct structNode = new DataNodeStruct();
+                    structNode.set_scope(varSymbTbl);
                     AST child=body.getFirstChild();
                     while(child!=null)
                     {
@@ -619,7 +618,6 @@ decls returns [DataNodeAbstract r=null] throws Exception
        (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             Type t=typeSymbTbl.get("struct:"+name);
-            System.err.println("begotten");
             r=t.getDataNode();
             r.set_name(id);
             
