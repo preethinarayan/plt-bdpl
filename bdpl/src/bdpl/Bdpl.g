@@ -406,27 +406,31 @@ class BdplTreeParser extends TreeParser;
 program throws Exception
 {
 }
-    : #(PROG ((stmts | r=decls)*)
-        {
+    : #(PROG ((stmts 
+    | (r=decls)
+        {   
+    
             if(r==null) 
             {
                 System.out.println(" r is null !! \n");
                 return ;
             }
+                    
             if(varSymbTbl.contains(r.get_name()))
             {
-                    throw new Exception("Redefinition of symbol "+r.get_name());
+                throw new Exception("Redefinition of symbol "+r.get_name());
             }
             else
             {
-                try
-                {
-                    varSymbTbl.insert(r.get_name(),r);
-                    System.out.println(r.get_name()+" defined as " + r.print() );
-                }
-                catch (Exception e) {}
+                varSymbTbl.insert(r.get_name(),r);
+                System.out.println(r.get_name()+" defined as " + r.print() );
             }
+            
         }
+            
+     )* // decls or stmnt
+    )
+        
     )
     ;
 
