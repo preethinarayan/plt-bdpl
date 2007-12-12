@@ -475,8 +475,8 @@ stmts throws Exception
     | #("read"                      {})
     | #("write"                     {})
     | #("set"                       {})
-    | #("print"                     {})
-    | #("printstring"               {})
+    | #("print" {String str;} (((str = string) {System.out.println(str);} ) | (r = expr {r.print();})))
+    | #("printstring" ((r = expr) {r.print();}))
     | r=expr                        {}
     ;
 
@@ -494,7 +494,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
     //String array_size;
     //String type;
 }
-    : #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+    : #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             DataNodeAbstract dummy_node=null;
             if(type.getText() == "int" || type.getText()=="bit" || type.getText()=="byte")
@@ -513,7 +513,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
       ))
 
     | #("int"
-        (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
+        (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
                 if(varSymbTbl.contains(name))
                 {
@@ -534,7 +534,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
         }
        )
     | #("byte" 
-        (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
+        (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
                 if(varSymbTbl.contains(name))
                 {
@@ -555,7 +555,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
         }
         )
     | #("bit"                     
-         (#(IDEN name=string (#(INITLIST {}))? (#("fieldsize" {}))?) 
+         (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
                 if(varSymbTbl.contains(name))
                 {
@@ -576,7 +576,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
             //
         }
        )
-    | #("struct"  (#(TAG name=string)) (body:.) 
+    | #("struct"  (#(TAG name=id)) (body:.) 
         {
             VariableSymbolTable newST=new VariableSymbolTable();
             newST.set_parent(varSymbTbl);
@@ -613,7 +613,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
             }
             
         } 
-        (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+        (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
 
         {
             r.set_name(id);
@@ -622,8 +622,8 @@ decls returns [DataNodeAbstract r=null] throws Exception
         } // IDEN
         )?
        )
-    | #("type" name=string
-       (#(IDEN id=string (#(INITLIST {}))? (#("fieldsize" {}))?)
+    | #("type" name=id
+       (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             Type t=typeSymbTbl.get("struct:"+name);
             r=t.getDataNode();
@@ -712,5 +712,5 @@ string returns [String r]
 {
     r = new String("");
 }
-    :#(str:ID {r=str.getText();})
+    :#(str:STRING {r=str.getText();})
     ;
