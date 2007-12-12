@@ -199,7 +199,8 @@ execstmt
     | "write"^ "("! (STRING|"stdout"|"stderr") COMMA! ID ")"! SEMICOLON!
     | "set"^ "("! STRING "=>"! STRING COMMA! ID ")"! SEMICOLON!
     | "exit"^ "("! STRING ")"! SEMICOLON!
-    | "print"^ "("! STRING ")"! SEMICOLON!
+    | "print"^ "("! (STRING|lvalue) ")"! SEMICOLON!
+    | "printstring"^ "("! (lvalue) ")"! SEMICOLON!
     | "break" SEMICOLON!
     | "continue" SEMICOLON!
     ;
@@ -468,14 +469,15 @@ stmts throws Exception
             }    
         }
        )
-    | "for"                       {}
-    | "break"                     {}
-    | "continue"                  {}
-    | "read"                      {}
-    | "write"                     {}
-    | "set"                       {}
-    | "print"                     {}
-    | r=expr                      {}
+    | #("for"                       {})
+    | #("break"                     {})
+    | #("continue"                  {})
+    | #("read"                      {})
+    | #("write"                     {})
+    | #("set"                       {})
+    | #("print"                     {})
+    | #("printstring"               {})
+    | r=expr                        {}
     ;
 
 //
