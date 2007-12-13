@@ -57,7 +57,10 @@ public class DataNodeStruct extends DataNodeAbstract
         init();
         _children = data._children;
     }
-    
+    public int get_max_accept()
+    {
+        return 0;
+    }
     /** return the unique typename */
     public String get_type_name() 
     {

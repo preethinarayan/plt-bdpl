@@ -24,6 +24,11 @@ public class DataNodeInt extends DataNodeAbstract
     /** copy constructor */
     public DataNodeInt (DataNodeInt data) {super(data);init();_data=data._data;_bitsize=data._bitsize; _fieldsize=data._fieldsize;}
     
+    public int get_max_accept()
+    {
+        return 32;
+    }
+    
     /** return the unique typename */
     public String get_type_name() {return "TYPE_INT";}
     public String get_bitsequence_value() 

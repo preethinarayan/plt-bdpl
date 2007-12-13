@@ -47,6 +47,10 @@ public class DataNodeArray extends DataNodeAbstract
         _children = data._children;
     }*/
     
+    public int get_max_accept()
+    {
+        return 0;
+    }
     /** return the unique typename */
     public String get_type_name() {return "ARRAY";}
     
@@ -170,8 +174,6 @@ public class DataNodeArray extends DataNodeAbstract
     
     /** sets curret pointer within the array */
     public void set_offset(int offset) {_offset=offset;_intvalue_cache.invalid ();}
-    
-    
     
     /** private funciton to invalidate all caches */
     private void _invalid_cache()

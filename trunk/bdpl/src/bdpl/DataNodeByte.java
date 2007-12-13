@@ -40,6 +40,10 @@ public class DataNodeByte extends DataNodeAbstract
         _fieldsize=data._fieldsize;
     }
     
+    public int get_max_accept()
+    {
+        return 8;
+    }
     /** return the unique typename */
     public String get_type_name () {return "TYPE_BYTE";}
     
