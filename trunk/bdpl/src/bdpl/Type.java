@@ -37,7 +37,6 @@ public class Type
      */
     public Type(String type,DataNodeAbstract node)
     {
-        System.err.println ("defining "+type+"\n");
         if(type.startsWith ("ARRAY"))
         {
             _type=type;
@@ -67,7 +66,6 @@ public class Type
     
     public Type(String type,AST struct_ast)
     {
-        System.err.println ("defining "+type+"\n");
         if(type.startsWith ("struct"))
         {
             _struct_node=null;

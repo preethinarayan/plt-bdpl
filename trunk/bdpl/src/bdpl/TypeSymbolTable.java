@@ -66,7 +66,6 @@ public class TypeSymbolTable
         {
             if(_parent!=null)
             {
-                System.out.println (" upt ");
                 return _parent.get (type);
                 
             }
@@ -78,7 +77,7 @@ public class TypeSymbolTable
     }
     
     /** check if the symbol table containg this type already */
-    public boolean contains(String type)
+    private boolean contains(String type)
     {
         if(_the_table.containsKey(type))
         {
@@ -88,7 +87,6 @@ public class TypeSymbolTable
         {
             if(_parent!=null)
             {
-                System.out.println (" upt ");
                 return _parent.contains(type);
                 
             }
