@@ -24,4 +24,5 @@ public interface DataNode
     public void set_name(String name);
     public String get_name();
     public int get_max_accept();
+    public void assign(DataNodeAbstract lhs);
 }

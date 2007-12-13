@@ -61,6 +61,11 @@ public class DataNodeStruct extends DataNodeAbstract
     {
         return 0;
     }
+    
+    public void assign(DataNodeAbstract rhs)
+    {
+    
+    }
     /** return the unique typename */
     public String get_type_name() 
     {

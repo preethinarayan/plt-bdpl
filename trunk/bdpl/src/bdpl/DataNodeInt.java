@@ -29,6 +29,19 @@ public class DataNodeInt extends DataNodeAbstract
         return 32;
     }
     
+    public void assign(DataNodeAbstract rhs)
+    {
+        String b=rhs.get_bitsequence_value ();
+        int a=0;
+        for(int i=0;i<32 && i<b.length ();i++)
+        {
+            a=a<<1;
+            if(b.charAt (i)==1)
+                a+=1;
+            
+        }
+    }
+    
     /** return the unique typename */
     public String get_type_name() {return "TYPE_INT";}
     public String get_bitsequence_value() 
