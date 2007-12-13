@@ -56,7 +56,7 @@ abstract public class DataNodeAbstract implements DataNode
     
     /** store the max size of the data in num of bits */ 
     protected int _fieldsize;
-    /** stores the currecnt size of the data in bits */
+    /** stores the current size of the data in bits */
     protected int _bitsize;
     
     protected AST _the_ast;
