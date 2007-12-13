@@ -423,15 +423,8 @@ program throws Exception
                 return ;
             }
                     
-            if(varSymbTbl.contains(r.get_name()))
-            {
-                throw new Exception("Redefinition of symbol "+r.get_name());
-            }
-            else
-            {
-                varSymbTbl.insert(r.get_name(),r);
-                System.out.println(r.get_name()+" defined as " + r.print() );
-            }
+            varSymbTbl.insert(r.get_name(),r);
+            System.out.println(r.get_name()+" defined as " + r.print() );
             
         }
             
@@ -515,17 +508,12 @@ decls returns [DataNodeAbstract r=null] throws Exception
     | #("int"
         (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
-                if(varSymbTbl.contains(name))
-                {
-                    throw new Exception("Redefinition of symbol "+name);
-                }
-                else
-                {
-                        Type intType = typeSymbTbl.get("int");
-                        DataNodeInt intNode = (DataNodeInt)intType.getDataNode();
-                        intNode.set_name(name);
-                        r=intNode;
-                }
+
+                Type intType = typeSymbTbl.get("int");
+                DataNodeInt intNode = (DataNodeInt)intType.getDataNode();
+                intNode.set_name(name);
+                r=intNode;
+
             })+
         {
             //
@@ -536,17 +524,10 @@ decls returns [DataNodeAbstract r=null] throws Exception
     | #("byte" 
         (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
-                if(varSymbTbl.contains(name))
-                {
-                    throw new Exception("Redefinition of symbol "+name);
-                }
-                else
-                {
-                        Type byteType = typeSymbTbl.get("byte");
-                        DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode();
-                        byteNode.set_name(name);
-                        r=byteNode;
-                }
+                Type byteType = typeSymbTbl.get("byte");
+                DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode();
+                byteNode.set_name(name);
+                r=byteNode;
             })+                   
         {
             //
@@ -557,18 +538,10 @@ decls returns [DataNodeAbstract r=null] throws Exception
     | #("bit"                     
          (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
             {
-                if(varSymbTbl.contains(name))
-                {
-                    throw new Exception("Redefinition of symbol "+name);
-                }
-                else
-                {
-                        Type bitType = typeSymbTbl.get("bit");
-                        DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode();
-                        bitNode.set_name(name);
-                        r=bitNode;
-   
-               }
+                Type bitType = typeSymbTbl.get("bit");
+                DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode();
+                bitNode.set_name(name);
+                r=bitNode;
             })+
         {
             //
@@ -620,41 +593,34 @@ decls returns [DataNodeAbstract r=null] throws Exception
     |  #("type" name=id
        (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
        {
-            if(!typeSymbTbl.contains("struct:"+name))
+            Type t=typeSymbTbl.get("struct:"+name);
+            AST child=t.get_ast().getFirstChild();
+            DataNodeStruct structNode = new DataNodeStruct();
+                
+            VariableSymbolTable newST=new VariableSymbolTable();
+            TypeSymbolTable newTT=new TypeSymbolTable();
+            newST.set_parent(varSymbTbl);
+            newTT.set_parent(typeSymbTbl);
+                
+            varSymbTbl=newST;
+            typeSymbTbl=newTT;
+
+
+            structNode.set_scope(varSymbTbl,typeSymbTbl);
+
+            while(child!=null)
             {
-                throw new Exception("undeclared structure struct:"+name);
+                DataNodeAbstract cdn=decls(child);
+                structNode.set_child_by_name(cdn.get_name(),cdn);
+                child=child.getNextSibling();
             }
-            else
-            {
                 
-                VariableSymbolTable newST=new VariableSymbolTable();
-                TypeSymbolTable newTT=new TypeSymbolTable();
-                newST.set_parent(varSymbTbl);
-                newTT.set_parent(typeSymbTbl);
+             r=structNode;
+             r.set_name(id);
                 
-                varSymbTbl=newST;
-                typeSymbTbl=newTT;
+             typeSymbTbl=typeSymbTbl.get_parent();
+             varSymbTbl=varSymbTbl.get_parent();
 
-                Type t=typeSymbTbl.get("struct:"+name);
-                AST child=t.get_ast().getFirstChild();
-                DataNodeStruct structNode = new DataNodeStruct();
-                structNode.set_scope(varSymbTbl,typeSymbTbl);
-
-                while(child!=null)
-                {
-                    DataNodeAbstract cdn=decls(child);
-                    structNode.set_child_by_name(cdn.get_name(),cdn);
-                    child=child.getNextSibling();
-                }
-                
-                r=structNode;
-                r.set_name(id);
-                
-                typeSymbTbl=typeSymbTbl.get_parent();
-                varSymbTbl=varSymbTbl.get_parent();
-                
-
-            }
         }
        ))
     ;
