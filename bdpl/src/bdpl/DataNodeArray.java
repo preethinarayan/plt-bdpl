@@ -51,6 +51,12 @@ public class DataNodeArray extends DataNodeAbstract
     {
         return 0;
     }
+    public void assign(DataNodeAbstract lhs)
+    {
+        if(lhs.getClass ().equals (("DataNodeArray")))
+        {
+        }
+    }
     /** return the unique typename */
     public String get_type_name() {return "ARRAY";}
     

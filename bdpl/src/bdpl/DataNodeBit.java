@@ -24,6 +24,14 @@ public class DataNodeBit extends DataNodeAbstract
         return 1;
     }
     
+    public void assign(DataNodeAbstract rhs)
+    {
+        String b=rhs.get_bitsequence_value ();
+        if(b.length ()>0)
+            _data= b.charAt (0);
+        else
+            _data=0;
+    }
     /** construct from int */
     public DataNodeBit (int data) {super(); init();_data=data;}
     
