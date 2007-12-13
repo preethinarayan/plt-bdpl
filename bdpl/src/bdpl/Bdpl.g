@@ -573,11 +573,9 @@ decls returns [DataNodeAbstract r=null] throws Exception
             r=structNode;
             Type structType=new Type ("struct:"+name,body);
                     
-            //insert this defn in the parent type st
+            //insert this defn in the parent type st , and restore values
             typeSymbTbl=typeSymbTbl.get_parent();
             typeSymbTbl.insert("struct:"+name, structType);
-                    
-
             varSymbTbl=varSymbTbl.get_parent(); // go up a scope
             
         } 
@@ -585,8 +583,6 @@ decls returns [DataNodeAbstract r=null] throws Exception
 
         {
             r.set_name(id);
-            
-
         } // IDEN
         )?
        )

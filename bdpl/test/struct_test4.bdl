@@ -22,7 +22,7 @@ struct Outer1
 	{
 		int huh;
 	}na;
-	//type struct Outer n_outer;
+	type struct Outer n_outer;
 	type struct Inner new_inner;
 } ob2;
 

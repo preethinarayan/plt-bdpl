@@ -37,6 +37,7 @@ abstract public class DataNodeAbstract implements DataNode
         return _name;
     }
     
+    abstract public int get_max_accept();
     abstract public String get_type_name();
     abstract public String get_bitsequence_value();
     
