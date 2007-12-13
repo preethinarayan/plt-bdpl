@@ -1,0 +1,31 @@
+struct Outer
+{
+	int b_1;
+	struct Inner
+	{
+		byte i_2_1;
+		byte i_2_2;
+	} inner_ob_2;
+	int c_3;
+} ob1;
+
+struct Outer1
+{
+	int b_1;
+	struct Outer
+	{
+		byte i_2_1;
+		byte i_2_2;
+	} inner_ob_2;
+	int c_3;
+	struct Inner
+	{
+		int huh;
+	}na;
+	//type struct Outer n_outer;
+	type struct Inner new_inner;
+} ob2;
+
+
+type struct Outer1 new_ob;
+type struct Outer new_ob1;

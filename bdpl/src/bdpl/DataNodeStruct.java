@@ -20,21 +20,28 @@ public class DataNodeStruct extends DataNodeAbstract
         _bsize_cache=new Cache();
         _intvalue_cache=new Cache();
         _children= new HashMap() ;
-        _scope_pointer=null;
+        _sequence=new ArrayList();
+        _scope_type_pointer=null;
+        _scope_var_pointer=null;
         
     }
     
     /** sets a pointer to the new symbol table for this struct */
-    public void set_scope(VariableSymbolTable sp)
+    public void set_scope(VariableSymbolTable spv,TypeSymbolTable spt)
     {
-        _scope_pointer=sp;
+        _scope_type_pointer=spt;
+        _scope_var_pointer=spv;
     }
     /** get the symbol table pointer for this struct */
-    public VariableSymbolTable get_scope()
+    public VariableSymbolTable get_scope_var()
     {
-        return _scope_pointer;
+        return _scope_var_pointer;
     }
-    
+    /** get the symbol table pointer for this struct */
+    public TypeSymbolTable get_scope_type()
+    {
+        return _scope_type_pointer;
+    }
     /** Creates a new instance of DataNodeStruct */
     public DataNodeStruct ()
     {
@@ -64,9 +71,9 @@ public class DataNodeStruct extends DataNodeAbstract
             return _bseq_cache.as_string ();
         }
         String ret="";
-        for (Iterator it = _children.keySet ().iterator (); it.hasNext ();)
+        for (int i=0;i<_sequence.size ();i++)
         {
-            ret+= ((DataNodeAbstract)_children.get (it.next ())).get_bitsequence_value();
+            ret+= ((DataNodeAbstract)_children.get ( (String)_sequence.get (i) )).get_bitsequence_value();
         }
         _bseq_cache.set (ret);
         return ret;
@@ -81,9 +88,10 @@ public class DataNodeStruct extends DataNodeAbstract
         }
         
         int ret=0;
-        for (Iterator it = _children.keySet ().iterator (); it.hasNext ();)
+        
+        for (int i=0;i<_sequence.size ();i++)
         {
-            ret+= ((DataNodeAbstract)it.next ()).get_bit_size ();
+            ret+= ((DataNodeAbstract)_children.get ( _sequence.get (i))).get_bit_size ();
         }
         _bsize_cache.set (ret);
         return ret;
@@ -155,13 +163,16 @@ public class DataNodeStruct extends DataNodeAbstract
         else
         {
             _children.put (name,value);
+            _sequence.add (name); //remember the sequence number of this child
         }
     }
     
     /** returns child(element of the struct) given number of the child */
     public DataNodeAbstract get_child_by_num(int num) throws Exception
     { 
-        throw get_ex("get_child_by_num not implemented");
+        if(num>_children.size ())
+            throw new Exception("index out of bounds in get_child_by_num");
+        return (DataNodeAbstract)_children.get(_sequence.get (num));
     }
     
     /** @return when implemented, will return all children(elements of the struct) */
@@ -200,16 +211,20 @@ public class DataNodeStruct extends DataNodeAbstract
     public String print()
     {
         String ret=get_type_name ()+"\n{\n";
-        for (Iterator it = _children.keySet ().iterator (); it.hasNext ();)
+        for (int i=0;i<_sequence.size ();i++)
         {
-            String key=it.next ().toString ();
+            String key= (String)_sequence.get (i);
             ret+= "\t"+  key+" => " + ((DataNodeAbstract)_children.get (key)).print().replaceAll ("\n","\n\t") +",\n";
         }
         return ret+"}\n";
     }
     
     private int _offset;
-    private HashMap _children; 
+    
+    private HashMap _children;
+    
+    /** stores the sequence of children */
+    private List _sequence;
     
     /** bit sequence  cache */
     private Cache _bseq_cache;
@@ -220,6 +235,7 @@ public class DataNodeStruct extends DataNodeAbstract
     /** cache calculated int value */
     private Cache _intvalue_cache;
     
-    private VariableSymbolTable _scope_pointer;
+    private VariableSymbolTable _scope_var_pointer;
+    private TypeSymbolTable _scope_type_pointer;
     
 }

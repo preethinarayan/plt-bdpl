@@ -16,6 +16,7 @@ public class TypeSymbolTable
      * Creates a new instance of TypeSymbolTable
      */
     private Map _the_table;
+    private TypeSymbolTable _parent; // pointer to parent
     public TypeSymbolTable() 
     {
         _the_table=new HashMap();
@@ -25,10 +26,18 @@ public class TypeSymbolTable
         _the_table.put("ARRAY:byte",new Type("ARRAY",new DataNodeByte()));
         _the_table.put("ARRAY:int",new Type("ARRAY",new DataNodeInt()));
         _the_table.put("ARRAY:bit",new Type("ARRAY",new DataNodeBit()));
+        _parent=null;
        
     }
         
-    
+    public void set_parent(TypeSymbolTable parent)
+    {
+        _parent=parent;
+    }
+    public TypeSymbolTable get_parent()
+    {
+        return _parent;
+    }        
     /**
      * check if entry exists in the table otherwise make an entry into this table and the variable symbol table
      */
@@ -55,13 +64,38 @@ public class TypeSymbolTable
         }   
         else
         {
-            throw new Exception(type+" : undefined type");  
+            if(_parent!=null)
+            {
+                System.out.println (" upt ");
+                return _parent.get (type);
+                
+            }
+            else
+            {
+                throw new Exception(type+" : undefined type");  
+            }
         }
     }
     
     /** check if the symbol table containg this type already */
     public boolean contains(String type)
     {
-        return _the_table.containsKey (type);
+        if(_the_table.containsKey(type))
+        {
+            return true;
+        }   
+        else
+        {
+            if(_parent!=null)
+            {
+                System.out.println (" upt ");
+                return _parent.contains(type);
+                
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }     

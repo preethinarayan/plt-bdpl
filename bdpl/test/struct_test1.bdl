@@ -1,0 +1,6 @@
+struct Outer
+{
+	int b2_first_in_str;
+	int a1_second_in_str;
+} ob;
+

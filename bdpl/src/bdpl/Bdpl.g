@@ -579,38 +579,33 @@ decls returns [DataNodeAbstract r=null] throws Exception
     | #("struct"  (#(TAG name=id)) (body:.) 
         {
             VariableSymbolTable newST=new VariableSymbolTable();
+            TypeSymbolTable newTT=new TypeSymbolTable();
             newST.set_parent(varSymbTbl);
+            newTT.set_parent(typeSymbTbl);
             varSymbTbl=newST; // go into new scope
-            try
-            {   
+            
 
-                if(typeSymbTbl.contains("struct:"+name))
-                {
-                    throw new Exception("redecleration of struct:"+name);
-                }
-                else
-                {
-                    DataNodeStruct structNode = new DataNodeStruct();
-                    structNode.set_scope(varSymbTbl);
-                    AST child=body.getFirstChild();
-                    while(child!=null)
-                    {
-                        
-                        DataNodeAbstract cdn=decls(child);
-                        structNode.set_child_by_name(cdn.get_name(),cdn);
-                        child=child.getNextSibling();
-                    }
-                    r=structNode;
-                    Type structType=new Type ("struct:"+name,r);
-                    typeSymbTbl.insert("struct:"+name, structType);
-                    varSymbTbl=varSymbTbl.get_parent(); // go up a scope
-                }
-                    
-            }
-            catch(Exception e)
+
+            typeSymbTbl=newTT; // new type symbol table for type definitions
+            DataNodeStruct structNode = new DataNodeStruct();
+            structNode.set_scope(varSymbTbl,typeSymbTbl);
+            AST child=body.getFirstChild();
+            while(child!=null)
             {
-                e.printStackTrace();
+                        
+                DataNodeAbstract cdn=decls(child);
+                structNode.set_child_by_name(cdn.get_name(),cdn);
+                child=child.getNextSibling();
             }
+            r=structNode;
+            Type structType=new Type ("struct:"+name,body);
+                    
+            //insert this defn in the parent type st
+            typeSymbTbl=typeSymbTbl.get_parent();
+            typeSymbTbl.insert("struct:"+name, structType);
+                    
+
+            varSymbTbl=varSymbTbl.get_parent(); // go up a scope
             
         } 
         (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
@@ -622,13 +617,44 @@ decls returns [DataNodeAbstract r=null] throws Exception
         } // IDEN
         )?
        )
-    | #("type" name=id
+    |  #("type" name=id
        (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
-        {
-            Type t=typeSymbTbl.get("struct:"+name);
-            r=t.getDataNode();
-            r.set_name(id);
-            
+       {
+            if(!typeSymbTbl.contains("struct:"+name))
+            {
+                throw new Exception("undeclared structure struct:"+name);
+            }
+            else
+            {
+                
+                VariableSymbolTable newST=new VariableSymbolTable();
+                TypeSymbolTable newTT=new TypeSymbolTable();
+                newST.set_parent(varSymbTbl);
+                newTT.set_parent(typeSymbTbl);
+                
+                varSymbTbl=newST;
+                typeSymbTbl=newTT;
+
+                Type t=typeSymbTbl.get("struct:"+name);
+                AST child=t.get_ast().getFirstChild();
+                DataNodeStruct structNode = new DataNodeStruct();
+                structNode.set_scope(varSymbTbl,typeSymbTbl);
+
+                while(child!=null)
+                {
+                    DataNodeAbstract cdn=decls(child);
+                    structNode.set_child_by_name(cdn.get_name(),cdn);
+                    child=child.getNextSibling();
+                }
+                
+                r=structNode;
+                r.set_name(id);
+                
+                typeSymbTbl=typeSymbTbl.get_parent();
+                varSymbTbl=varSymbTbl.get_parent();
+                
+
+            }
         }
        ))
     ;
