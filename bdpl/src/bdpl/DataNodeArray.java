@@ -51,10 +51,11 @@ public class DataNodeArray extends DataNodeAbstract
     {
         return 0;
     }
-    public void assign(DataNodeAbstract lhs)
+    public void assign(DataNodeAbstract rhs)
     {
-        if(lhs.getClass ().equals (("DataNodeArray")))
+        if(rhs.getClass ().getCanonicalName ().equals (("DataNodeArray")))
         {
+            // copying from array to array
         }
     }
     /** return the unique typename */
@@ -190,7 +191,7 @@ public class DataNodeArray extends DataNodeAbstract
     }
     public String print()
     {
-        String ret=get_type_name ()+"\n[\n";
+        String ret=get_type_name ()+" of " + _dummy.get_type_name ()+"\n[\n";
         for(int i=0;i<_children.size() ; i++ )
         {
             ret+= "\t"+String.valueOf (i)+" => " + ((DataNodeAbstract)_children.get (i)).print().replaceAll ("\n","\n\t")+",\n";

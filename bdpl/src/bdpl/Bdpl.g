@@ -495,7 +495,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 dummy_node=typeSymbTbl.get(type.getText()).getDataNode();
             }
             else
-            if(type.getText().startsWith("struct"))
+            if(type.getText().startsWith("struct") || type.getText().startsWith("type") )
             {
                 dummy_node=decls(#type);   
             }
@@ -570,7 +570,9 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 structNode.set_child_by_name(cdn.get_name(),cdn);
                 child=child.getNextSibling();
             }
+            structNode.set_type_name("struct:"+name);
             r=structNode;
+            
             Type structType=new Type ("struct:"+name,body);
                     
             //insert this defn in the parent type st , and restore values
@@ -587,11 +589,11 @@ decls returns [DataNodeAbstract r=null] throws Exception
         )?
        )
     |  #("type" name=id
-       (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
        {
             Type t=typeSymbTbl.get("struct:"+name);
             AST child=t.get_ast().getFirstChild();
             DataNodeStruct structNode = new DataNodeStruct();
+            structNode.set_type_name("struct:"+name);
                 
             VariableSymbolTable newST=new VariableSymbolTable();
             TypeSymbolTable newTT=new TypeSymbolTable();
@@ -611,12 +613,14 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 child=child.getNextSibling();
             }
                 
+            
              r=structNode;
-             r.set_name(id);
-                
              typeSymbTbl=typeSymbTbl.get_parent();
              varSymbTbl=varSymbTbl.get_parent();
-
+        }
+        ((#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?))?
+        {
+            r.set_name(name);
         }
        ))
     ;
