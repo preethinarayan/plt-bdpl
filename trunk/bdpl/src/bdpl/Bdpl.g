@@ -410,6 +410,9 @@ class BdplTreeParser extends TreeParser;
     Logical logic = new Logical(typeChecker);
     Bitwise bitwise = new Bitwise(typeChecker);
     DataNodeAbstract r;
+    boolean breakset = false;
+    boolean continueset = false;
+    int loopcounter = 0;
 }
 
 program throws Exception
@@ -436,6 +439,7 @@ stmts throws Exception
 {
     DataNodeAbstract r;
     DataNodeAbstract init;
+    if(breakset | continueset) return;
 }
     : #("if" r=expr thenpart:. (elsepart:.)?
         {
@@ -461,16 +465,28 @@ stmts throws Exception
             }    
         }
        )
-    | #("for" init=expr cond:. incr:. body:.
+    | #("for" (init=expr) (cond:.) (incr:.) (body:.)
         {
+           loopcounter++; 
            while(expr(#cond).get_int_value()!=0){
                stmts(#body);
+               if(breakset) {breakset = false; break;}
                expr(#incr);
+               if(continueset) {continueset = false; continue;}
            } 
+           loopcounter--;
         }
       )
-    | #("break"                     {})
-    | #("continue"                  {})
+    | #("break"                     {if(loopcounter != 0){
+                                        breakset = true;
+                                    }else{
+                                        throw new BdplException("'break' is only permitted within the body of a loop");
+                                    }})
+    | #("continue"                  {if(loopcounter != 0){
+                                        continueset = true;
+                                    }else{
+                                        throw new BdplException("'continue' is only permitted within the body of a loop");
+                                    }})
     | #("read"                      {})
     | #("write"                     {})
     | #("set"                       {})
