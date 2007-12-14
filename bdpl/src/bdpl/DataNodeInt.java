@@ -33,13 +33,24 @@ public class DataNodeInt extends DataNodeAbstract
     {
         String b=rhs.get_bitsequence_value ();
         int a=0;
-        for(int i=0;i<32 && i<b.length ();i++)
+        int start=0,end=_fieldsize-1;
+
+        if(rhs.getClass ().getCanonicalName (). equals ("DataNodeBit")  ||
+            rhs.getClass ().getCanonicalName ().equals ("DataNodeByte") ||
+            rhs.getClass ().getCanonicalName ().equals ("DataNodeInt"))
+        {
+            start=(b.length ()>=_fieldsize)?b.length ()-_fieldsize:0;
+            end=b.length ()-1;
+        }
+        for(int i=start;i<=end && i<b.length ();i++)
         {
             a=a<<1;
-            if(b.charAt (i)==1)
+            if(b.charAt (i)=='1')
                 a+=1;
             
         }
+        _data=a;
+        
     }
     
     /** return the unique typename */
@@ -49,11 +60,12 @@ public class DataNodeInt extends DataNodeAbstract
         String s=Integer.toString (_data,2); 
         if((s.length () >= _fieldsize))
         {
-            return s.substring ( s.length ()-_fieldsize, s.length ()-1);
+            return s.substring ( s.length ()-_fieldsize, s.length ());
         }
         else
         {
-            for(int i=0;i<_fieldsize-s.length ();i++)
+            int l=s.length ();
+            for(int i=0;i<_fieldsize-l;i++)
             {
                 s='0'+s;
             }
