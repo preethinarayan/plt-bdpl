@@ -699,7 +699,18 @@ expr returns [DataNodeAbstract r] throws Exception
                         throw new BdplException(r.get_name()+" is not a structure");
                     }
                 } | 
-                (#(SQBROPEN y=id a=expr){try{System.out.print("."+y+"["+a.get_int_value()+"]");}catch(Exception e){}})
+                (#(SQBROPEN y=id a=expr){
+                    if(r instanceof DataNodeStruct){
+                        r = ((DataNodeStruct)r).get_child_by_name(y);
+                        if(r instanceof DataNodeArray){
+                            r = ((DataNodeArray)r).get_element(a.get_int_value());
+                        }else{
+                            throw new BdplException(r.get_name()+" is not an array");
+                        }
+                    }else{
+                        throw new BdplException(r.get_name()+" is not a structure");
+                    }
+                })
             )*
         ){})
     | #(num:NUM     {r=new DataNodeInt(Integer.parseInt(num.getText()));})
