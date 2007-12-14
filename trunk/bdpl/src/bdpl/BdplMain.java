@@ -171,10 +171,16 @@ public class BdplMain
             DataNodeByte b=new DataNodeByte();
             DataNodeBit c=new DataNodeBit();
             b.assign (a);
-                        c.assign (b);
-            a.assign (c);
+            c.assign (b);
             
-            System.err.println (a.print ());
+            DataNodeStruct s=new DataNodeStruct();
+            s.set_child_by_name ("bit_c",c);
+            s.set_child_by_name ("int_a",a);
+            s.set_child_by_name ("byte_b",b);
+            b.assign (s);
+            
+            
+            System.err.println (b.print ());
 	}
         catch(Exception e)
         {

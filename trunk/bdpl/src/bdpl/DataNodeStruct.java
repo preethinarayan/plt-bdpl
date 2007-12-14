@@ -23,6 +23,7 @@ public class DataNodeStruct extends DataNodeAbstract
         _sequence=new ArrayList();
         _scope_type_pointer=null;
         _scope_var_pointer=null;
+        _type_name="TYPE_STRUCT";
         
     }
     
@@ -69,8 +70,14 @@ public class DataNodeStruct extends DataNodeAbstract
     /** return the unique typename */
     public String get_type_name() 
     {
-        return "TYPE_STRUCT";
+        return _type_name;
     }
+    /** set the type name of this struct */
+    public void set_type_name(String type_name)
+    {
+        _type_name=type_name;
+    }
+    
     /** @return concatenation of bit_sequence of all children */
     public String get_bitsequence_value() 
     {
@@ -228,6 +235,8 @@ public class DataNodeStruct extends DataNodeAbstract
     }
     
     private int _offset;
+    
+    private String _type_name;
     
     private HashMap _children;
     
