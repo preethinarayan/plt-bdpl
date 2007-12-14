@@ -143,7 +143,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/array_test1.bdl");
+                input = new FileInputStream("x:/test/array_test2.bdl");
             }
             //test_utils();
             //test_DataNodeArray();
@@ -176,11 +176,13 @@ public class BdplMain
             
             s.set_child_by_name ("int_a",a);
             s.set_child_by_name ("byte_b",b);
-            System.err.println (b.print (1));
-            BdplFile f=new BdplFile("x:/test/aa.mp3.mp3");
-            System.err.println (f.read_n_bytes(4));                                                
-            System.err.println (f.read_n_bytes(4));                                                
-            System.err.println (f.read_n_bytes(4));                                                
+            System.err.println (s.print ());
+            DataNodeStruct ns=new DataNodeStruct(s);
+            System.err.println (ns.print ());            
+            
+            
+            
+            
 	}
         catch(Exception e)
         {

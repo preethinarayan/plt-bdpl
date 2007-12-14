@@ -56,8 +56,40 @@ public class DataNodeStruct extends DataNodeAbstract
     {
         super(data);
         init();
-        _children = data._children;
+        
+        for(int i=0;i<data._sequence.size ();i++)
+        {
+            _sequence.add (data._sequence.get (i));
+            DataNodeAbstract d = (DataNodeAbstract)data._children.get (data._sequence.get (i));
+            DataNodeAbstract child=null;
+            if(d.getClass ().getCanonicalName ().equals ("DataNodeBit"))
+            {
+                child=new DataNodeBit();
+            } 
+            else if(d.getClass ().getCanonicalName ().equals ("DataNodeByte"))
+            {
+                child=new DataNodeByte();
+            } 
+            else if(d.getClass ().getCanonicalName ().equals ("DataNodeInt"))
+            {
+                child=new DataNodeInt();
+            } 
+            else if(d.getClass ().getCanonicalName ().equals ("DataNodeArray"))
+            {
+                child=new DataNodeArray( ((DataNodeArray)d).get_dummy() );
+            } 
+            else if(d.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
+            {
+                child=new DataNodeStruct( (DataNodeStruct) d  );
+            }
+            _children.put (data._sequence.get (i),child );
+        }
+        _type_name=data._type_name;
+        _scope_var_pointer=data._scope_var_pointer;
+        _scope_type_pointer=data._scope_type_pointer;
+        
     }
+    
     public int get_max_accept()
     {
         return 0;

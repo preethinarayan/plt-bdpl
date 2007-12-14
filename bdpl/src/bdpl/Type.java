@@ -105,8 +105,7 @@ public class Type
         }
         else if(_type.startsWith("ARRAY"))
         {
-            // TODO array size.
-            return new DataNodeArray(_array_dummy);
+            throw new Exception("getDataNode() not implemented for struct : use getDataNode(int)");
         }
         else if(_type.startsWith("struct"))
         {
@@ -114,6 +113,22 @@ public class Type
         }
         throw new Exception("bad type!");
     }
+
+    
+    
+    public DataNodeAbstract getDataNode(int arr_size) throws Exception
+    {
+        if(_type.startsWith("ARRAY"))
+        {
+            return new DataNodeArray(_array_dummy,arr_size);
+        }
+        else 
+        {
+            throw new Exception("getDataNode(int) is only for making arrays");
+        }
+    }
+        
+    
     public AST get_ast()
     {
         return _struct_ast;
