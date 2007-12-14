@@ -97,7 +97,19 @@ public class DataNodeBit extends DataNodeAbstract
         {
             return "";
         }
-    }        
+    }       
+    
+    public void populate (BdplFile rhs) throws Exception
+    {
+        if(rhs.num_readable_bits ()>=1)
+        {
+            String next_bit=rhs.read_n_bits (1);
+            if(next_bit.charAt (0)=='1')
+                _data=1;
+            else
+                _data=0;
+        }
+    }
     
     private int _data;
     

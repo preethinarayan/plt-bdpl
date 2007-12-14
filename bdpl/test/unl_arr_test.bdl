@@ -1,0 +1,11 @@
+struct outer
+{
+	struct inner
+	{
+		byte[4] four_bytes;
+	}[*] unl;
+}a;
+
+file "x:/test/file_test.dat" inp_file;
+read(inp_file,a);
+print(a);

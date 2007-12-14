@@ -58,9 +58,9 @@ public class BdplFile
     public String read_n_bytes (int n) throws Exception
     {
         String ret="";
-        if( (_bit_pointer+8*n) > _data.size () )
-            throw new Exception("dont have "+n+" bytes to read");
-        while(n>0 && _bit_pointer<8*(_data.size ()-1))
+        if( (_bit_pointer+8*n) > 8*_data.size () )
+            throw new Exception("dont have "+n+" bytes to read, have only " + ( 8*_data.size ()-_bit_pointer)+" bits");
+        while(n>0 && _bit_pointer<=8*(_data.size ()-1))
         {
             String s=read_n_bits(8);
             int c=0;
@@ -127,11 +127,22 @@ public class BdplFile
     /** returns the next nth readable bit (0 indexed) */
     public boolean get_nth_readable_bit(int n) throws Exception
     {
-        if(n + _bit_pointer > 8*_data.size () || _bit_pointer < 0 )
+        if( ((n + _bit_pointer) > 8*_data.size () ) || _bit_pointer < 0 )
             throw new Exception("index out of range");
         int off=(n+_bit_pointer)%8;
         byte mask= (byte)(1 << (7-off));
         return ( (Byte.parseByte ( _data.get ( (n+_bit_pointer)/8 ).toString () ) & mask)!=0);
+    }
+    
+    public boolean eof()
+    {
+        return _bit_pointer>= 8*_data.size ();
+    }
+    
+    public int num_readable_bits()
+    {
+        System.err.println("num readable bits : " + ((8*_data.size ())-_bit_pointer ));
+        return (8*_data.size ())-_bit_pointer;
     }
     
 }//end of class

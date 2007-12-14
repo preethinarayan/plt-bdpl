@@ -270,6 +270,55 @@ public class DataNodeArray extends DataNodeAbstract
             return "";
         }
     }        
+    
+    public void populate (BdplFile rhs) throws Exception
+    {
+        int i=0;
+        if(_isunlimited)
+        {
+            while( rhs.num_readable_bits ()>0  )
+            {           
+                DataNodeAbstract child=null;
+                if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeBit"))
+                {
+                    child=new DataNodeBit ();
+                }
+                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeByte"))
+                {
+                    child=new DataNodeByte ();
+                }
+                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeInt"))
+                {
+                    child=new DataNodeInt ();
+                }
+                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeArray"))
+                {
+                    throw new BdplException ("array or arrays not allowed");
+                }
+                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
+                {
+                    child=new DataNodeStruct ( (DataNodeStruct) _dummy  );
+                }
+                child.populate (rhs);
+                try
+                {
+                    append_element (child);
+                }
+                catch( Exception e)
+                {
+                    e.printStackTrace ();
+                }
+            }
+        }
+        else
+        {
+            while( rhs.num_readable_bits ()>0 && i<_children.size () )
+            {
+                ((DataNodeAbstract)_children.get (i)).populate (rhs);
+                i++;
+            }
+        }
+    }
        
     /**  class private data */
         
