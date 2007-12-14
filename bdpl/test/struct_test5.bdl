@@ -22,9 +22,9 @@ struct Outer1
 	{
 		int huh;
 	}na;
-	type struct Outer n_outer;
+	type struct Outer[4] n_outer;
 	type struct Inner new_inner;
-} ob2;
-
+}[5] ob2;
+int[*]  aa;
 
 type struct Outer[5] arr_outer;

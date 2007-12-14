@@ -490,8 +490,8 @@ decls returns [DataNodeAbstract r=null] throws Exception
     : #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             DataNodeAbstract dummy_node=null;
-            if(type.getText() == "int" || type.getText()=="bit" || type.getText()=="byte")
-            { 
+            if(type.getText().equals("int") || type.getText().equals("bit") || type.getText().equals("byte"))
+            {
                 dummy_node=typeSymbTbl.get(type.getText()).getDataNode();
             }
             else
