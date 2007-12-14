@@ -60,8 +60,6 @@ public class Arithmetic implements BdplLexerTokenTypes{
                 assert(false);
         }
         
-        System.out.println("Computed arithmetic expression: "+res);
-        
         if(result instanceof DataNodeInt){
             return new DataNodeInt(res);
         }else if(result instanceof DataNodeByte){

@@ -199,8 +199,8 @@ execstmt
     | "write"^ "("! (STRING|"stdout"|"stderr") COMMA! ID ")"! SEMICOLON!
     | "set"^ "("! STRING "=>"! STRING COMMA! ID ")"! SEMICOLON!
     | "exit"^ "("! STRING ")"! SEMICOLON!
-    | "print"^ "("! (STRING|lvalue) ")"! SEMICOLON!
-    | "printstring"^ "("! (lvalue) ")"! SEMICOLON!
+    | "print"^ "("! (STRING|expr) ")"! SEMICOLON!
+    | "printstring"^ "("! (expr) ")"! SEMICOLON!
     | "break" SEMICOLON!
     | "continue" SEMICOLON!
     ;
@@ -464,8 +464,8 @@ stmts throws Exception
     | #("read"                      {})
     | #("write"                     {})
     | #("set"                       {})
-    | #("print" {String str;} (((str = string) {System.out.println(str);} ) | (r = expr {r.print();})))
-    | #("printstring" ((r = expr) {r.print();}))
+    | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.println(r.print());})))
+    | #("printstring" ((r = expr) {System.out.print(r.print());}))
     | r=expr                        {}
     ;
 
