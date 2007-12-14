@@ -433,6 +433,7 @@ program throws Exception
 stmts throws Exception
 {
     DataNodeAbstract r;
+    DataNodeAbstract init;
 }
     : #("if" r=expr thenpart:. (elsepart:.)?
         {
@@ -458,14 +459,21 @@ stmts throws Exception
             }    
         }
        )
-    | #("for"                       {})
+    | #("for" init=expr cond:. incr:. body:.
+        {
+           while(expr(#cond).get_int_value()!=0){
+               stmts(#body);
+               expr(#incr);
+           } 
+        }
+      )
     | #("break"                     {})
     | #("continue"                  {})
     | #("read"                      {})
     | #("write"                     {})
     | #("set"                       {})
     | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.println(r.print());})))
-    | #("printstring" ((r = expr) {System.out.print(r.print());}))
+    | #("printstring" ((r = expr) {System.out.print(r.print(1));}))
     | r=expr                        {}
     ;
 
