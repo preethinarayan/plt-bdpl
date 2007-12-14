@@ -43,9 +43,7 @@ public class Logical implements BdplLexerTokenTypes{
                 //
                 assert(false);
         }
-        
-        System.out.println("Computed logical expression: "+res);
-        
+              
         return new DataNodeBit(res==true?1:0);
     }
 }
