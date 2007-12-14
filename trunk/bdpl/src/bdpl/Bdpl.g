@@ -541,33 +541,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
             {
                 dummy_node=decls(#type);   
             }
-            DataNodeArray arr=new DataNodeArray(dummy_node);
-            for(int i=0;i< Integer.parseInt(array_size.getText()) ; i++ )
-            {
-                
-                DataNodeAbstract child=null;
-                if(dummy_node.getClass ().getCanonicalName ().equals ("DataNodeBit"))
-                {
-                    child=new DataNodeBit();
-                } 
-                else if(dummy_node.getClass ().getCanonicalName ().equals ("DataNodeByte"))
-                {
-                    child=new DataNodeByte();
-                } 
-                else if(dummy_node.getClass ().getCanonicalName ().equals ("DataNodeInt"))
-                {
-                    child=new DataNodeInt();
-                } 
-                else if(dummy_node.getClass ().getCanonicalName ().equals ("DataNodeArray"))
-                {
-                    throw new BdplException("array or arrays not allowed");
-                } 
-                else if(dummy_node.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
-                {
-                    child=new DataNodeStruct( (DataNodeStruct) dummy_node  );
-                }
-                arr.append_element(child);
-            }
+            DataNodeArray arr=new DataNodeArray(dummy_node,Integer.parseInt(array_size.getText()) );
             r=arr;
             r.set_name(id);
         }
