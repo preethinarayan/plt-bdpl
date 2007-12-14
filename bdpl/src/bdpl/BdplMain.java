@@ -143,7 +143,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/for_test1.bdl");
+                input = new FileInputStream("x:/test/struct_test6.bdl");
             }
             //test_utils();
             //test_DataNodeArray();
