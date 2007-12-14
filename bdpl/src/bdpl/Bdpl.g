@@ -159,7 +159,10 @@ tokens{
     RANGES;
     TAG;
     VALID;
+    INITIAL;
     NULL;
+    COND;
+    INCR;
     ARRAY_SIZE;
     DECL;
 	LVALUE;
@@ -195,7 +198,7 @@ execstmt
     : expr SEMICOLON!
     | stmtblock
     | "if"^ "("! expr ")"! execstmt (options {greedy=true;}: "else"! execstmt)?
-    | "for"^ "("! (expr)? SEMICOLON! (expr)? SEMICOLON! (expr)? ")"! execstmt
+    | "for"^ "("! (init_iterator)? SEMICOLON! (cond_iterator)? SEMICOLON! (incr_iterator)? ")"! execstmt
     | "read"^ "("! (STRING|"stdin") COMMA! ID ")"! SEMICOLON!
     | "write"^ "("! (STRING|"stdout"|"stderr") COMMA! ID ")"! SEMICOLON!
     | "set"^ "("! STRING "=>"! STRING COMMA! ID ")"! SEMICOLON!
@@ -204,6 +207,21 @@ execstmt
     | "printstring"^ "("! (expr) ")"! SEMICOLON!
     | "break" SEMICOLON!
     | "continue" SEMICOLON!
+    ;
+
+init_iterator
+    : expr
+        {#init_iterator = #([INITIAL,"INITIAL"],#init_iterator);}
+    ;
+
+cond_iterator
+    : expr
+        {#cond_iterator = #([COND,"COND"],#cond_iterator);}
+    ;
+
+incr_iterator
+    : expr
+        {#incr_iterator = #([INCR,"INCR"],#incr_iterator);}
     ;
 
 stmtblock
@@ -439,7 +457,7 @@ stmts throws Exception
 {
     DataNodeAbstract r;
     DataNodeAbstract init;
-    if(breakset | continueset) return;
+    if(breakset || continueset) return;
 }
     : #("if" r=expr thenpart:. (elsepart:.)?
         {
@@ -465,18 +483,19 @@ stmts throws Exception
             }    
         }
        )
-    | #("for" (init=expr) (cond:.) (incr:.) (body:.)
+    | #("for" (#(INITIAL init=expr))? (#(COND cond:.))? (#(INCR incr:.))? (#(body:BLOCK {}))
         {
            loopcounter++; 
-           while(expr(#cond).get_int_value()!=0){
+           while(true){
+               if(#cond != null && expr(#cond).get_int_value()== 0) break;
                stmts(#body);
                if(breakset) {breakset = false; break;}
-               expr(#incr);
+               if(#incr != null) expr(#incr);
                if(continueset) {continueset = false; continue;}
            } 
            loopcounter--;
         }
-      )
+        )
     | #("break"                     {if(loopcounter != 0){
                                         breakset = true;
                                     }else{
