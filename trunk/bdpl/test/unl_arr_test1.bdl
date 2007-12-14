@@ -1,0 +1,6 @@
+int[20000] a;
+
+file "x:/test/aa.mp3.mp3" inp_file;
+print("finished reading input file ... printing output");
+read(inp_file,a);
+print(a);

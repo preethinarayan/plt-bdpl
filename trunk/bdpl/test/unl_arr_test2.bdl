@@ -1,0 +1,12 @@
+struct outer
+{
+	byte size;
+	struct inner
+	{
+		byte[size] n_bytes;
+	} u;
+}[*]a;
+
+file "x:/test/file_test.dat" inp_file;
+read(inp_file,a);
+print(a);

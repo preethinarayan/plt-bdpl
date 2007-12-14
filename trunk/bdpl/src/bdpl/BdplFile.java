@@ -38,12 +38,13 @@ public class BdplFile
                 for(int i=0;i<bytes_read;i++)
                 {
                     _data.add (inp[i]);
-
                 }
                 if(bytes_read<=0)
                     flag=false;
                 else
+                {
                     _bit_pointer=0;
+                }
             }
             file.close ();
             
@@ -141,7 +142,6 @@ public class BdplFile
     
     public int num_readable_bits()
     {
-        System.err.println("num readable bits : " + ((8*_data.size ())-_bit_pointer ));
         return (8*_data.size ())-_bit_pointer;
     }
     
