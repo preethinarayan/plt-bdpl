@@ -549,13 +549,20 @@ decls returns [DataNodeAbstract r=null] throws Exception
             else
             if(type.getText().startsWith("struct") || type.getText().startsWith("type") )
             {
+                VariableSymbolTable newST=new VariableSymbolTable();
+                newST.set_parent(varSymbTbl);
+                varSymbTbl=newST; // go into new scope
+                
                 dummy_node=decls(#type);   
+                //((DataNodeStruct)dummy_node).set_scope(varSymbTbl,typeSymbTbl);
+                varSymbTbl=varSymbTbl.get_parent();
             }
             DataNodeArray arr;
             if(array_size.getText().equals("*"))
             {
                 arr=new DataNodeArray(dummy_node);
                 arr.set_is_unlimited(true);
+                arr.set_scope(varSymbTbl);
             }
             else
             {
@@ -619,9 +626,6 @@ decls returns [DataNodeAbstract r=null] throws Exception
             newST.set_parent(varSymbTbl);
             newTT.set_parent(typeSymbTbl);
             varSymbTbl=newST; // go into new scope
-            
-
-
             typeSymbTbl=newTT; // new type symbol table for type definitions
             DataNodeStruct structNode = new DataNodeStruct();
             structNode.set_scope(varSymbTbl,typeSymbTbl);
@@ -630,6 +634,11 @@ decls returns [DataNodeAbstract r=null] throws Exception
             {
                         
                 DataNodeAbstract cdn=decls(child);
+                if(cdn.getClass().getCanonicalName ().equals ("DataNodeArray"))
+                {
+                    System.err.println("\n\n\nscope\n\n\n");
+                    ((DataNodeArray)cdn).set_scope(varSymbTbl);
+                }
                 structNode.set_child_by_name(cdn.get_name(),cdn);
                 varSymbTbl.insert(cdn.get_name(),cdn);
                 child=child.getNextSibling();

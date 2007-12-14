@@ -57,11 +57,16 @@ public class DataNodeStruct extends DataNodeAbstract
         super(data);
         init();
         
+        
+        _scope_var_pointer=new VariableSymbolTable();
+        _scope_var_pointer.set_parent (data._scope_var_pointer);
+        _scope_type_pointer=data._scope_type_pointer;
         for(int i=0;i<data._sequence.size ();i++)
-        {
+        {   
+            DataNodeAbstract child=null;
             _sequence.add (data._sequence.get (i));
             DataNodeAbstract d = (DataNodeAbstract)data._children.get (data._sequence.get (i));
-            DataNodeAbstract child=null;
+            
             if(d.getClass ().getCanonicalName ().equals ("DataNodeBit"))
             {
                 child=new DataNodeBit();
@@ -84,17 +89,27 @@ public class DataNodeStruct extends DataNodeAbstract
                 else
                 {
                     child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_size()  );
+                    ((DataNodeArray)child).set_scope (_scope_var_pointer);
                 }
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
             {
                 child=new DataNodeStruct( (DataNodeStruct) d  );
+                ((DataNodeStruct)child).set_scope (_scope_var_pointer,_scope_type_pointer);
             }
             _children.put (data._sequence.get (i),child );
+            try
+            {
+                _scope_var_pointer.insert ((String)data._sequence.get (i),child);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace ();
+            }
         }
         _type_name=data._type_name;
-        _scope_var_pointer=data._scope_var_pointer;
-        _scope_type_pointer=data._scope_type_pointer;
+
+        
         
     }
     
