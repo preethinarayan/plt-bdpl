@@ -55,9 +55,7 @@ public class Relational implements BdplLexerTokenTypes{
                 //
                 assert(false);
         }
-        
-        System.out.println("Computed relational expression: "+res);
-        
+              
         return new DataNodeBit(res==true?1:0);
     }
     
