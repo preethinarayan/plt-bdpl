@@ -6,9 +6,13 @@ struct _a{
 		byte y;
 		bit z;
 	}b;
+	int x;
 }[2] a;
 
 print(a);
+a[0].x=100;
+print(a[0].x);
+
 for(i=0;i<10;i=i+1){
 	a[0].b.x[i] = i;
 }
