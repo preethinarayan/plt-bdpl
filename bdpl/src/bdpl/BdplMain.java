@@ -176,10 +176,11 @@ public class BdplMain
             
             s.set_child_by_name ("int_a",a);
             s.set_child_by_name ("byte_b",b);
-            
-            
-            
             System.err.println (b.print (1));
+            BdplFile f=new BdplFile("x:/test/aa.mp3.mp3");
+            System.err.println (f.read_n_bytes(4));                                                
+            System.err.println (f.read_n_bytes(4));                                                
+            System.err.println (f.read_n_bytes(4));                                                
 	}
         catch(Exception e)
         {

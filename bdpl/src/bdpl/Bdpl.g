@@ -401,7 +401,7 @@ object
 //
 class BdplTreeParser extends TreeParser;
 {
-    VariableSymbolTable varSymbTbl = new VariableSymbolTable();
+    public VariableSymbolTable varSymbTbl = new VariableSymbolTable();
     TypeSymbolTable typeSymbTbl = new TypeSymbolTable();
     TypeConverter typeConverter = new TypeConverter();
     TypeChecker typeChecker = new TypeChecker(typeSymbTbl,typeConverter);
