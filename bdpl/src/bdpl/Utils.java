@@ -57,18 +57,21 @@ public class Utils
                 if(bits.charAt (i*8+j)=='1')
                     c+=1;
             }
-            char c1= (char)(c & 0x255);
-            ret+=c1;
+            ret+= (char)c;
+            
         }
-        int c=0;
-        for(int i=0;i<8;i++)
+        if(remaining > 0)
         {
-            c=c<<1;
-            if(i<remaining && bits.charAt ( (l-1)*8+i)=='1')
-                c+=1;
+            int c=0;
+            for(int i=0;i<8;i++)
+            {
+                c=c<<1;
+                if(i<remaining && bits.charAt ( (l-1)*8+i)=='1')
+                    c+=1;
+            }
+            
+            ret+= (char)c;
         }
-        char c1= (char)(c & 0x255);
-        ret+=c1;
         return ret;
     }
     
