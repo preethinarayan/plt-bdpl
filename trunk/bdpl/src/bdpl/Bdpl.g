@@ -151,6 +151,7 @@ options{
 tokens{
     ARRAY;
     BODY;
+    BLOCK;
     IDEN;
     INITLIST;
     OPTIONAL;
@@ -207,6 +208,7 @@ execstmt
 
 stmtblock
     : "{"! (execstmt)* "}"!
+        {#stmtblock = #([BLOCK,"BLOCK"],#stmtblock);}
     ;
 
 declstmt
@@ -474,6 +476,7 @@ stmts throws Exception
     | #("set"                       {})
     | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.println(r.print());})))
     | #("printstring" ((r = expr) {System.out.print(r.print(1));}))
+    | #(BLOCK (stmts)*              {})
     | r=expr                        {}
     ;
 

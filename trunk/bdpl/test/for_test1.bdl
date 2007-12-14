@@ -1,5 +1,6 @@
 byte i;
 for(i=65;i<91;i=i+1)
 {
-	printstring(i); printstring(i);
+	printstring(i);
+	print(i);
 }
