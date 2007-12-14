@@ -38,6 +38,60 @@ public class DataNodeArray extends DataNodeAbstract
         _dummy=dummy;
     }
     
+    /** Creates a new instance of DataNodeArray 
+     * just like this array node
+     */
+    public DataNodeArray (DataNodeArray node)
+    {
+        super();
+        init();    
+        _dummy=node._dummy;
+    }
+    
+    public DataNodeArray (DataNodeAbstract dummy,int arr_size)
+    {
+        super();
+        init();
+        _dummy=dummy;
+        
+        for(int i=0;i< arr_size ; i++ )
+        {
+            DataNodeAbstract child=null;
+            if(dummy.getClass ().getCanonicalName ().equals ("DataNodeBit"))
+            {
+                child=new DataNodeBit ();
+            }
+            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeByte"))
+            {
+                child=new DataNodeByte ();
+            }
+            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeInt"))
+            {
+                child=new DataNodeInt ();
+            }
+            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeArray"))
+            {
+                throw new BdplException ("array or arrays not allowed");
+            }
+            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
+            {
+                child=new DataNodeStruct ( (DataNodeStruct) dummy  );
+            }
+            try
+            {
+                append_element (child);
+            }
+            catch( Exception e)
+            {
+                e.printStackTrace ();
+            }
+        }
+    }
+
+    public DataNodeAbstract get_dummy()
+    {
+        return _dummy;
+    }
     /*
     /** should invoke copy constructor for base class *
     public DataNodeArray (DataNodeArray data)
