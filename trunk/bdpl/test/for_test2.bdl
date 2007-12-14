@@ -1,0 +1,9 @@
+int i;
+int j;
+i=0;
+for(j=0;j==0;j)
+{
+	i=i+1;
+	if(i<10) {print(i);continue;}
+	else break;
+}
