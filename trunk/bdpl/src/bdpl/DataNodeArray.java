@@ -198,6 +198,25 @@ public class DataNodeArray extends DataNodeAbstract
         }
         return ret+"]\n";
     }
+    
+
+    /** print formatted */
+    public String print(int format)
+    {
+        if(format==0)
+        {
+            return print ();
+        }
+        else if(format ==1 )
+        {
+            return Utils.bits_as_string (get_bitsequence_value ());
+        }
+        else
+        {
+            return "";
+        }
+    }        
+       
     /**  class private data */
         
    /** current pointer within the array (in bits) */

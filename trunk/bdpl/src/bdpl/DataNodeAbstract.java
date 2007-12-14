@@ -57,6 +57,9 @@ abstract public class DataNodeAbstract implements DataNode
     /** print a human readable form of this node */
     abstract public String print();
     
+    /** print a human readable form of this node */
+    abstract public String print(int format);
+    
     /** store the max size of the data in num of bits */ 
     protected int _fieldsize;
     /** stores the current size of the data in bits */
