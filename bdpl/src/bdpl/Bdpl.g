@@ -199,8 +199,8 @@ execstmt
     | stmtblock
     | "if"^ "("! expr ")"! execstmt (options {greedy=true;}: "else"! execstmt)?
     | "for"^ "("! (init_iterator)? SEMICOLON! (cond_iterator)? SEMICOLON! (incr_iterator)? ")"! execstmt
-    | "read"^ "("! (STRING|"stdin") COMMA! ID ")"! SEMICOLON!
-    | "write"^ "("! (STRING|"stdout"|"stderr") COMMA! ID ")"! SEMICOLON!
+    | "read"^ "("! (ID) COMMA! ID ")"! SEMICOLON!
+    | "write"^ "("! (ID) COMMA! ID ")"! SEMICOLON!
     | "set"^ "("! STRING "=>"! STRING COMMA! ID ")"! SEMICOLON!
     | "exit"^ "("! STRING ")"! SEMICOLON!
     | "print"^ "("! (STRING|expr) ")"! SEMICOLON!
@@ -243,7 +243,7 @@ declstmt
         (valid_check)? 
         (optional_check)? 
         SEMICOLON!
-    | "file"^ ID (COMMA! ID)* SEMICOLON!
+    | "file"^ STRING ID SEMICOLON!
     ;
 
 tag
@@ -431,6 +431,7 @@ class BdplTreeParser extends TreeParser;
     boolean breakset = false;
     boolean continueset = false;
     int loopcounter = 0;
+    BdplFile inputFile;
 }
 
 program throws Exception
@@ -457,6 +458,7 @@ stmts throws Exception
 {
     DataNodeAbstract r;
     DataNodeAbstract init;
+    String source,dest;
     if(breakset || continueset) return;
 }
     : #("if" r=expr thenpart:. (elsepart:.)?
@@ -506,7 +508,14 @@ stmts throws Exception
                                     }else{
                                         throw new BdplException("'continue' is only permitted within the body of a loop");
                                     }})
-    | #("read"                      {})
+    | #("read" source=id dest=id    {if(varSymbTbl.contains(dest)){
+                                        varSymbTbl.get(dest);
+//                                        inputFile = fileTable.get(source);
+                                        dest.populate(inputFile);
+                                    }else{
+                                        throw new BdplException("Undeclared Identifier "+dest);
+                                    };
+      })
     | #("write"                     {})
     | #("set"                       {})
     | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.print(r.print());})))
@@ -526,10 +535,9 @@ decls returns [DataNodeAbstract r=null] throws Exception
 {
     String name;
     String id;
-    //String array_size;
-    //String type;
 }
-    : #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
+    : #("file" name=id id=id {inputFile = new BdplFile(name);}) 
+    | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             DataNodeAbstract dummy_node=null;
             if(type.getText().equals("int") || type.getText().equals("bit") || type.getText().equals("byte"))
