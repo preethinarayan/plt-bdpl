@@ -443,9 +443,11 @@ program throws Exception
             if(r==null) 
             {
                 System.out.println(" r is null !! \n");
-                return ;
             }
-            varSymbTbl.insert(r.get_name(),r);
+            else
+            {
+                varSymbTbl.insert(r.get_name(),r);
+            }
         }
             
      )* // decls or stmnt
@@ -509,9 +511,10 @@ stmts throws Exception
                                         throw new BdplException("'continue' is only permitted within the body of a loop");
                                     }})
     | #("read" source=id dest=id    {if(varSymbTbl.contains(dest)){
-                                        varSymbTbl.get(dest);
-//                                        inputFile = fileTable.get(source);
-                                        dest.populate(inputFile);
+                                        r=varSymbTbl.get(dest);
+                                        System.err.print("got r as : "+r.print());
+//                                      inputFile = fileTable.get(source);
+                                        r.populate(inputFile);
                                     }else{
                                         throw new BdplException("Undeclared Identifier "+dest);
                                     };
@@ -536,7 +539,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
     String name;
     String id;
 }
-    : #("file" name=id id=id {inputFile = new BdplFile(name);}) 
+    : #("file" name=string id=id {inputFile = new BdplFile(name);}) 
     | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
         {
             DataNodeAbstract dummy_node=null;
@@ -549,7 +552,17 @@ decls returns [DataNodeAbstract r=null] throws Exception
             {
                 dummy_node=decls(#type);   
             }
-            DataNodeArray arr=new DataNodeArray(dummy_node,Integer.parseInt(array_size.getText()) );
+            DataNodeArray arr;
+            if(array_size.getText().equals("*"))
+            {
+                arr=new DataNodeArray(dummy_node);
+                arr.set_is_unlimited(true);
+            }
+            else
+            {
+                arr = new DataNodeArray(dummy_node,expr(array_size).get_int_value());
+                arr.set_is_unlimited(false);
+            }
             r=arr;
             r.set_name(id);
         }

@@ -114,6 +114,15 @@ public class DataNodeByte extends DataNodeAbstract
             return "";
         }
     }        
+    
+    public void populate (BdplFile rhs) throws Exception
+    {
+        if(rhs.num_readable_bits ()>=8)
+        {
+            String next_bit=rhs.read_n_bytes (1);
+            _data=(int) next_bit.charAt (0);
+        }
+    }
         
     private int _data;
     

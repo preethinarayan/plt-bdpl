@@ -143,7 +143,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/array_test2.bdl");
+                input = new FileInputStream("x:/test/unl_arr_test.bdl");
             }
             //test_utils();
             //test_DataNodeArray();
@@ -165,23 +165,7 @@ public class BdplMain
             frame.setVisible(true);
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
-            treeParser.program(parseTree);
-                        
-            DataNodeInt a=new DataNodeInt(65);
-            DataNodeByte b=new DataNodeByte();
-            
-            b.assign (a);
-            
-            DataNodeStruct s=new DataNodeStruct();
-            
-            s.set_child_by_name ("int_a",a);
-            s.set_child_by_name ("byte_b",b);
-            System.err.println (s.print ());
-            DataNodeStruct ns=new DataNodeStruct(s);
-            System.err.println (ns.print ());            
-            
-            
-            
+            treeParser.program(parseTree);           
             
 	}
         catch(Exception e)

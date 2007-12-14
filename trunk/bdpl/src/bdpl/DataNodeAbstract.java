@@ -54,6 +54,8 @@ abstract public class DataNodeAbstract implements DataNode
      * @return nonzero on error */
     public int set_fieldsize(int fieldsize) {_fieldsize=fieldsize;return 0;}
     
+    abstract public void populate(BdplFile rhs) throws Exception ;
+    
     /** print a human readable form of this node */
     abstract public String print();
     

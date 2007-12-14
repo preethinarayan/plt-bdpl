@@ -40,4 +40,5 @@ public interface DataNode
     public String get_name();
     public int get_max_accept();
     public void assign(DataNodeAbstract rhs);
+    public void populate(BdplFile rhs) throws Exception;
 }

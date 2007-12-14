@@ -283,6 +283,17 @@ public class DataNodeStruct extends DataNodeAbstract
         }
     }        
         
+    public void populate (BdplFile rhs) throws Exception
+    {
+        int i=0;
+        
+        while( rhs.num_readable_bits ()>0 && i<_sequence.size ())
+        {
+            DataNodeAbstract child= (DataNodeAbstract)_children.get (_sequence.get (i) );
+            child.populate (rhs);
+            i++;
+        }
+    }
     
     private int _offset;
     
