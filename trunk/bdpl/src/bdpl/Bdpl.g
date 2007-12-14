@@ -416,16 +416,12 @@ program throws Exception
     : #(PROG ((stmts 
     | (r=decls)
         {   
-    
             if(r==null) 
             {
                 System.out.println(" r is null !! \n");
                 return ;
             }
-                    
             varSymbTbl.insert(r.get_name(),r);
-            System.out.println(r.get_name()+" defined as " + r.print() );
-            
         }
             
      )* // decls or stmnt
@@ -657,11 +653,18 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(BIOR        a=expr b=expr {r = bitwise.eval(BIOR,a,b);})
     | #(BEOR        a=expr b=expr {r = bitwise.eval(BEOR,a,b);})
     | #(APPEND      a=expr b=expr {})
-    | #(ASSIGN      a=expr b=expr {})
+    | #(ASSIGN      lhs:LVALUE b=expr {r = expr(#lhs); r.assign(b);})
     | #("=>"        y=string z=string {})
     | #(lval:LVALUE {}     
         (
-            (y=id {System.out.print("Parsing:"+y);} | 
+            (y=id 
+                {
+                    if(varSymbTbl.contains(y)){
+                        r = varSymbTbl.get(y);
+                    }else{
+                        throw new BdplException("Undeclared identifier "+y);
+                    }
+                }| 
                 (#(SQBROPEN y=id a=expr)
                 {
                     try
@@ -679,7 +682,6 @@ expr returns [DataNodeAbstract r] throws Exception
                 (#(SQBROPEN y=id a=expr){try{System.out.print("."+y+"["+a.get_int_value()+"]");}catch(Exception e){}})
             )*
         ){})
-
     | #(num:NUM     {r=new DataNodeInt(Integer.parseInt(num.getText()));})
     ;
 
