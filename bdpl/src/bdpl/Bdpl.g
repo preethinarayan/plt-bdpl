@@ -474,7 +474,7 @@ stmts throws Exception
     | #("read"                      {})
     | #("write"                     {})
     | #("set"                       {})
-    | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.println(r.print());})))
+    | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.print(r.print());})))
     | #("printstring" ((r = expr) {System.out.print(r.print(1));}))
     | #(BLOCK (stmts)*              {})
     | r=expr                        {}
@@ -679,7 +679,12 @@ expr returns [DataNodeAbstract r] throws Exception
                     try
                     {
                         if(varSymbTbl.contains(y)){
-                            System.out.print("Parsing:"+y+"["+a.get_int_value()+"]");
+                            r = varSymbTbl.get(y);
+                            if(r instanceof DataNodeArray){
+                                r = ((DataNodeArray)r).get_element(a.get_int_value());
+                            }else{
+                                throw new BdplException(r.get_name()+" is not an array");
+                            }
                         }else{
                             throw new BdplException("Undeclared identifer "+y);
                         }
