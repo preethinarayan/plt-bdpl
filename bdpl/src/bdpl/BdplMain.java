@@ -180,7 +180,7 @@ public class BdplMain
             b.assign (s);
             
             
-            System.err.println (b.print ());
+            System.err.println (a.print ());
 	}
         catch(Exception e)
         {
