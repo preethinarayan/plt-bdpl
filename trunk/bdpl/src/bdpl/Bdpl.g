@@ -668,28 +668,32 @@ expr returns [DataNodeAbstract r] throws Exception
     | #("=>"        y=string z=string {})
     | #(lval:LVALUE {}     
         (
-            (y=id 
-                {
+            (y=id {
                     if(varSymbTbl.contains(y)){
                         r = varSymbTbl.get(y);
                     }else{
                         throw new BdplException("Undeclared identifier "+y);
                     }
                 }| 
-                (#(SQBROPEN y=id a=expr)
-                {
+                (#(SQBROPEN y=id a=expr){
                     try
                     {
                         if(varSymbTbl.contains(y)){
                             System.out.print("Parsing:"+y+"["+a.get_int_value()+"]");
                         }else{
-                            throw new BdplException("Undeclared identifer "+y+" in line "+lval.getLine());
+                            throw new BdplException("Undeclared identifer "+y);
                         }
                     }catch(Exception e){
                     }
                 })
             )
-            (y=id {System.out.print("."+y);} | 
+            (y=id {
+                    if(r instanceof DataNodeStruct){
+                        r = ((DataNodeStruct)r).get_child_by_name(y);
+                    }else{
+                        throw new BdplException(r.get_name()+" is not a structure");
+                    }
+                } | 
                 (#(SQBROPEN y=id a=expr){try{System.out.print("."+y+"["+a.get_int_value()+"]");}catch(Exception e){}})
             )*
         ){})
