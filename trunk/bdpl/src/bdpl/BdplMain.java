@@ -150,6 +150,7 @@ public class BdplMain
 
             BdplLexer lexer = new BdplLexer(input);
 
+
             //test_DataNodeStruct();
             //BdplLexer lexer = new BdplLexer(new FileInputStream("x:/test/decl_test1.bdl"));
 
@@ -165,6 +166,15 @@ public class BdplMain
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
             treeParser.program(parseTree);
+                        
+            DataNodeInt a=new DataNodeInt(0x10111213);
+            DataNodeByte b=new DataNodeByte();
+            DataNodeBit c=new DataNodeBit();
+            b.assign (a);
+                        c.assign (b);
+            a.assign (c);
+            
+            System.err.println (a.print ());
 	}
         catch(Exception e)
         {
