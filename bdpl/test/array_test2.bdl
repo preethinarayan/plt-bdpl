@@ -8,10 +8,9 @@ struct _a{
 	}b;
 }[2] a;
 
-
+print(a);
 for(i=0;i<10;i=i+1){
 	a[0].b.x[i] = i;
-print(a);
 }
 a[0].b.y = 3;
 a[0].b.z = 1;
