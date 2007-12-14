@@ -167,20 +167,19 @@ public class BdplMain
 	    BdplTreeParser treeParser = new BdplTreeParser();
             treeParser.program(parseTree);
                         
-            DataNodeInt a=new DataNodeInt(0x10111213);
+            DataNodeInt a=new DataNodeInt(65);
             DataNodeByte b=new DataNodeByte();
-            DataNodeBit c=new DataNodeBit();
+            
             b.assign (a);
-            c.assign (b);
             
             DataNodeStruct s=new DataNodeStruct();
-            s.set_child_by_name ("bit_c",c);
+            
             s.set_child_by_name ("int_a",a);
             s.set_child_by_name ("byte_b",b);
-            b.assign (s);
             
             
-            System.err.println (a.print ());
+            
+            System.err.println (s.print (1));
 	}
         catch(Exception e)
         {

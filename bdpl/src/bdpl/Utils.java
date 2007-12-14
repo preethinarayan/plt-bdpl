@@ -43,11 +43,33 @@ public class Utils
         return get_n_bits(t,n,where_from.LSB);
     }
     
-    public static Type define_struct (String name, AST subtree,TypeSymbolTable st) throws Exception
+    public static String bits_as_string (String bits)
     {
-        Type structType=new Type (name);
-        st.insert (name,structType);
-        return structType;
+        String ret="";
+        int l= (int)(bits.length ()/8 ); // floor
+        int remaining=bits.length () % 8;
+        for(int i=0;i<l;i++)
+        {
+            int c=0;
+            for(int j=0;j<8;j++)
+            {
+                c=c<<1;
+                if(bits.charAt (i*8+j)=='1')
+                    c+=1;
+            }
+            char c1= (char)(c & 0x255);
+            ret+=c1;
+        }
+        int c=0;
+        for(int i=0;i<8;i++)
+        {
+            c=c<<1;
+            if(i<remaining && bits.charAt ( (l-1)*8+i)=='1')
+                c+=1;
+        }
+        char c1= (char)(c & 0x255);
+        ret+=c1;
+        return ret;
     }
-        
+    
 }

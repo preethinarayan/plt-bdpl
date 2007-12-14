@@ -78,6 +78,24 @@ public class DataNodeInt extends DataNodeAbstract
     {
         return String.valueOf (_data);
     }
+
+    /** print formatted */
+    public String print(int format)
+    {
+        if(format==0)
+        {
+            return print ();
+        }
+        else if(format ==1 )
+        {
+            return Utils.bits_as_string (get_bitsequence_value ());
+        }
+        else
+        {
+            return "";
+        }
+    }        
+        
      
     private int _data;
     
