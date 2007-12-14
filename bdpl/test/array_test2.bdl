@@ -1,0 +1,25 @@
+int i;
+struct _a{
+	struct _b{
+		int[10] x;
+		byte y;
+		bit z;
+	}b;
+}a;
+
+for(i=0;i<10;i=i+1){
+	a.b.x[i] = i;
+}
+a.b.y = 3;
+a.b.z = 1;
+
+int n;
+
+print("The values are: ");
+for(i=0;i<10;i=i+1){
+	print(a.b.x[i]);
+	print(",");
+}
+print(a.b.y);
+print(a.b.z);
+		
