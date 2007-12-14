@@ -442,7 +442,7 @@ program throws Exception
         {   
             if(r==null) 
             {
-                System.out.println(" r is null !! \n");
+                //System.out.println(" r is null !! \n");
             }
             else
             {
@@ -512,7 +512,6 @@ stmts throws Exception
                                     }})
     | #("read" source=id dest=id    {if(varSymbTbl.contains(dest)){
                                         r=varSymbTbl.get(dest);
-                                        System.err.print("got r as : "+r.print());
 //                                      inputFile = fileTable.get(source);
                                         r.populate(inputFile);
                                     }else{
@@ -560,8 +559,9 @@ decls returns [DataNodeAbstract r=null] throws Exception
             }
             else
             {
-                arr = new DataNodeArray(dummy_node,expr(array_size).get_int_value());
+                arr = new DataNodeArray(dummy_node,array_size);
                 arr.set_is_unlimited(false);
+                arr.set_scope(varSymbTbl);
             }
             r=arr;
             r.set_name(id);
@@ -631,7 +631,9 @@ decls returns [DataNodeAbstract r=null] throws Exception
                         
                 DataNodeAbstract cdn=decls(child);
                 structNode.set_child_by_name(cdn.get_name(),cdn);
+                varSymbTbl.insert(cdn.get_name(),cdn);
                 child=child.getNextSibling();
+                
             }
             structNode.set_type_name("struct:"+name);
             r=structNode;
@@ -725,25 +727,21 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(lval:LVALUE {}     
         (
             (y=id {
-                    if(varSymbTbl.contains(y)){
-                        r = varSymbTbl.get(y);
-                    }else{
-                        throw new BdplException("Undeclared identifier "+y);
-                    }
+
+                    r = varSymbTbl.get(y);
+                    
                 }| 
                 (#(SQBROPEN y=id a=expr){
                     try
                     {
-                        if(varSymbTbl.contains(y)){
+                        
                             r = varSymbTbl.get(y);
                             if(r instanceof DataNodeArray){
                                 r = ((DataNodeArray)r).get_element(a.get_int_value());
-                            }else{
-                                throw new BdplException(r.get_name()+" is not an array");
                             }
-                        }else{
-                            throw new BdplException("Undeclared identifer "+y);
-                        }
+                            
+                            
+
                     }catch(Exception e){
                     }
                 })

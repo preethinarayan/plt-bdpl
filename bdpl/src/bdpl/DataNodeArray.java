@@ -9,6 +9,8 @@
  */
 
 import java.util.*;
+import antlr.collections.AST;
+
 public class DataNodeArray extends DataNodeAbstract
 {    
     /** common initializers */
@@ -18,8 +20,11 @@ public class DataNodeArray extends DataNodeAbstract
         _bsize_cache=new Cache();
         _intvalue_cache=new Cache();
         _children= new ArrayList() ;
+        _delayed_size=false;
+        _size_evaled=false;
         
     }
+    
     private DataNodeArray ()
     {
         super();
@@ -48,44 +53,72 @@ public class DataNodeArray extends DataNodeAbstract
         _dummy=node._dummy;
     }
     
+    public DataNodeArray (DataNodeAbstract dummy,AST _arr_size_expr)
+    {
+        super();
+        init();
+        _arr_size_expr_ast=_arr_size_expr;
+        _isunlimited=false;
+        _delayed_size=true;
+        _size_evaled=false;
+        _scope_var_pointer=null;
+        _dummy=dummy;
+    }
     public DataNodeArray (DataNodeAbstract dummy,int arr_size)
     {
         super();
         init();
         _dummy=dummy;
-        
-        for(int i=0;i< arr_size ; i++ )
+        add_n_elements(arr_size);
+    }
+    
+    private void add_n_elements(int n)
+    {
+        for(int i=0;i< n; i++ )
         {
             DataNodeAbstract child=null;
-            if(dummy.getClass ().getCanonicalName ().equals ("DataNodeBit"))
+            if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeBit"))
             {
                 child=new DataNodeBit ();
             }
-            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeByte"))
+            else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeByte"))
             {
                 child=new DataNodeByte ();
             }
-            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeInt"))
+            else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeInt"))
             {
                 child=new DataNodeInt ();
             }
-            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeArray"))
+            else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeArray"))
             {
                 throw new BdplException ("array or arrays not allowed");
             }
-            else if(dummy.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
+            else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
             {
-                child=new DataNodeStruct ( (DataNodeStruct) dummy  );
+                child=new DataNodeStruct ( (DataNodeStruct) _dummy  );
             }
             try
             {
-                append_element (child);
+                _children.add (child);
+                //append_element (child);
             }
             catch( Exception e)
             {
                 e.printStackTrace ();
             }
         }
+        
+    }
+    
+    /** sets a pointer to the new symbol table for this struct */
+    public void set_scope(VariableSymbolTable spv)
+    {
+        _scope_var_pointer=spv;
+    }
+    /** get the symbol table pointer for this struct */
+    public VariableSymbolTable get_scope_var()
+    {
+        return _scope_var_pointer;
     }
 
     public DataNodeAbstract get_dummy()
@@ -182,8 +215,17 @@ public class DataNodeArray extends DataNodeAbstract
     public void set_is_unlimited(boolean isunlimited) {_isunlimited=isunlimited;}
     
     /** returns size of the array in num of elements */
-    public int get_size() {return _children.size ();}
-    
+    public int get_size ()
+    {
+        if(_delayed_size && !_size_evaled)
+        {
+            _size_evaled=true;
+            evaluate_and_resize ();
+
+        }
+        return _children.size ();
+    }
+
     /** returns the ith element from the array */
     public DataNodeAbstract get_element(int i) throws Exception
     { 
@@ -206,6 +248,13 @@ public class DataNodeArray extends DataNodeAbstract
         {
             throw get_ex("incompatible types ! all elemens of array must be of the defined type.");
         }
+        
+        if(_delayed_size && !_size_evaled)
+        {
+            _size_evaled=true;
+            evaluate_and_resize ();
+            
+        }
         if(i>=_children.size ())
         {
             throw get_ex("Index Out Of Bound in set_element");
@@ -217,6 +266,12 @@ public class DataNodeArray extends DataNodeAbstract
     /** appends an element to the end of the array */
     public void append_element(DataNodeAbstract data) throws Exception
     {
+        if(_delayed_size && !_size_evaled)
+        {
+            _size_evaled=true;
+            evaluate_and_resize ();
+
+        }
         if(data.get_type_name () != _dummy.get_type_name ())
         {
             throw get_ex("incompatible types ! all elemens of array must be of the defined type.");
@@ -278,40 +333,13 @@ public class DataNodeArray extends DataNodeAbstract
         {
             while( rhs.num_readable_bits ()>0  )
             {           
-                DataNodeAbstract child=null;
-                if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeBit"))
-                {
-                    child=new DataNodeBit ();
-                }
-                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeByte"))
-                {
-                    child=new DataNodeByte ();
-                }
-                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeInt"))
-                {
-                    child=new DataNodeInt ();
-                }
-                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeArray"))
-                {
-                    throw new BdplException ("array or arrays not allowed");
-                }
-                else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
-                {
-                    child=new DataNodeStruct ( (DataNodeStruct) _dummy  );
-                }
-                child.populate (rhs);
-                try
-                {
-                    append_element (child);
-                }
-                catch( Exception e)
-                {
-                    e.printStackTrace ();
-                }
+                add_n_elements(1);
+                ((DataNodeAbstract)_children.get (_children.size ()-1)).populate (rhs);
             }
         }
         else
         {
+            evaluate_and_resize();
             while( rhs.num_readable_bits ()>0 && i<_children.size () )
             {
                 ((DataNodeAbstract)_children.get (i)).populate (rhs);
@@ -319,8 +347,41 @@ public class DataNodeArray extends DataNodeAbstract
             }
         }
     }
+    
+    private void evaluate_and_resize()
+    {
+        if(_delayed_size)
+        {
+            BdplTreeParser par=new BdplTreeParser();
+            if(_scope_var_pointer != null)
+                par.varSymbTbl=_scope_var_pointer;
+            
+            try
+            {
+                int siz=((DataNodeAbstract)par.expr (_arr_size_expr_ast)).get_int_value ();
+                if(siz>_children.size ())
+                {
+                    add_n_elements (siz-_children.size ());
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace ();
+            }
+            
+        }
+    }
        
+    public AST get_ast()
+    {
+        return _arr_size_expr_ast;
+    }
+    
     /**  class private data */
+    private AST _arr_size_expr_ast;
+    boolean _delayed_size;
+    boolean _size_evaled;
+    private VariableSymbolTable _scope_var_pointer;
         
    /** current pointer within the array (in bits) */
     private int _offset;

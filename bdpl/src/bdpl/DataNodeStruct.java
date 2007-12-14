@@ -76,7 +76,15 @@ public class DataNodeStruct extends DataNodeAbstract
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeArray"))
             {
-                child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_size ()  );
+                if(((DataNodeArray)d).get_ast()!=null)
+                {
+                    child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_ast()  );
+                    ((DataNodeArray)child).set_scope (_scope_var_pointer);
+                }
+                else
+                {
+                    child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_size()  );
+                }
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
             {
