@@ -27,7 +27,7 @@ public class DataNodeByte extends DataNodeAbstract
     {
         super ();
         init ();
-        _data=data;
+        _data=data&0xff;
     }
     
     /** copy constructor */
@@ -106,6 +106,7 @@ public class DataNodeByte extends DataNodeAbstract
         }
         else if(format ==1 )
         {
+            //return get_bitsequence_value ()+"\n";
             return Utils.bits_as_string (get_bitsequence_value ());
         }
         else

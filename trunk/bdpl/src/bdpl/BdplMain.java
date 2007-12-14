@@ -143,7 +143,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/var_test1.bdl");
+                input = new FileInputStream("x:/test/for_test1.bdl");
             }
             //test_utils();
             //test_DataNodeArray();
@@ -179,7 +179,7 @@ public class BdplMain
             
             
             
-            System.err.println (s.print (1));
+            System.err.println (b.print (1));
 	}
         catch(Exception e)
         {
