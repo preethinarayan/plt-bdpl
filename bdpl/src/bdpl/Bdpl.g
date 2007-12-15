@@ -460,7 +460,8 @@ stmts throws Exception
 {
     DataNodeAbstract r;
     DataNodeAbstract init;
-    String source,dest;
+    String source;
+    DataNodeAbstract dest;
     if(breakset || continueset) return;
 }
     : #("if" r=expr thenpart:. (elsepart:.)?
@@ -510,13 +511,9 @@ stmts throws Exception
                                     }else{
                                         throw new BdplException("'continue' is only permitted within the body of a loop");
                                     }})
-    | #("read" source=id dest=id    {if(varSymbTbl.contains(dest)){
-                                        r=varSymbTbl.get(dest);
+    | #("read" source=id dest=expr  { 
 //                                      inputFile = fileTable.get(source);
-                                        r.populate(inputFile);
-                                    }else{
-                                        throw new BdplException("Undeclared Identifier "+dest);
-                                    };
+                                        dest.populate(inputFile);
       })
     | #("write"                     {})
     | #("set"                       {})
