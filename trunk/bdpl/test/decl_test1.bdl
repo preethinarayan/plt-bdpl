@@ -11,9 +11,6 @@ byte[4]
 		on x>3 ;
 
 int[*] A_a_star;
-type struct ifd_header[5] d;
-
-
 
 
 struct xxy
@@ -70,9 +67,6 @@ struct normal_struct
 
 }[5]normal_st_ob;
 
-struct normal_struct
-{
-	int a;
-}aaaaa;
-
 type struct normal_struct a_var;
+
+int af (fieldsize normal_st_ob[0].inner_ob.d);

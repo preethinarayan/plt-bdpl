@@ -29,3 +29,5 @@ struct Outer1
 
 type struct Outer1 new_ob;
 type struct Outer new_ob1;
+
+print(new_ob1);

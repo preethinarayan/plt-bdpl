@@ -12,16 +12,29 @@ abstract public class DataNodeAbstract implements DataNode
 {
     
     /** Creates a new instance of AbstractDataNode */
-    public DataNodeAbstract ()
+    private void init()
     {
         _fieldsize=0;
         _bitsize=0;
+        _context=null;
+        _fieldsize_ast=null;
+        _name="";
+        _verify_ast=null;
+        _then_ast=null;
+        _else_ast=null;
+    }
+    public DataNodeAbstract ()
+    {
+        init();
     }
     public DataNodeAbstract (DataNodeAbstract data)
     {
+        init();
         _fieldsize=data._fieldsize;
         _bitsize=data._bitsize;
     }
+    
+    
     
     public Exception get_ex(String ex_string)
     {
@@ -42,6 +55,70 @@ abstract public class DataNodeAbstract implements DataNode
     abstract public int get_max_accept();
     abstract public String get_type_name();
     abstract public String get_bitsequence_value();
+    
+    /** set the expression for number of bits this type takes*/
+    public void set_fieldsize(AST fieldsize_ast)
+    {
+        _fieldsize_ast=fieldsize_ast;
+    }
+    
+    /** sets the contaxt for evaluation of expressions for this data node*/
+    public void set_context(VariableSymbolTable context)
+    {
+        _context=context;
+    }
+    
+    private int evaluate_fieldsize ()
+    {
+        BdplTreeParser par=new BdplTreeParser ();
+        if(_context != null)
+            par.varSymbTbl=_context;
+
+        try
+        {
+            return ((DataNodeAbstract)par.expr (_fieldsize_ast)).get_int_value ();
+            
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace ();
+        }
+        return 0;
+    }
+    
+    public void set_verify_then_else(AST verify_ast,AST then_ast , AST else_ast)
+    {
+        _verify_ast=verify_ast;
+        _then_ast=then_ast;
+        _else_ast=else_ast;
+    }
+    
+    private void evaluate_verify_then_else ()
+    {
+        BdplTreeParser par=new BdplTreeParser ();
+        if(_context != null)
+            par.varSymbTbl=_context;
+
+        try
+        {
+            if (_verify_ast != null && ((DataNodeAbstract)par.expr (_verify_ast)).get_int_value ()!=0)
+            {
+                if(_then_ast!= null) par.stmts (_then_ast);
+            }
+            else
+            {
+                if(_else_ast!= null) par.stmts (_else_ast);
+            }
+            
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace ();
+        }
+
+    }
+    
+    
     
     public int get_bit_size()  {return _bitsize;}
     
@@ -67,8 +144,13 @@ abstract public class DataNodeAbstract implements DataNode
     /** stores the current size of the data in bits */
     protected int _bitsize;
     
-    protected AST _the_ast;
-    
     protected String _name;
+    
+    VariableSymbolTable _context;
+    
+    AST _fieldsize_ast;
+    AST _verify_ast;
+    AST _then_ast;
+    AST _else_ast;
     
 }

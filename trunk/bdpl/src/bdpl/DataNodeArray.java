@@ -134,9 +134,15 @@ public class DataNodeArray extends DataNodeAbstract
         _children = data._children;
     }*/
     
+    
     public int get_max_accept()
     {
-        return 0;
+        if(_isunlimited)
+            return -1;
+        else 
+            return 0;
+            
+            
     }
     public void assign(DataNodeAbstract rhs)
     {
