@@ -1,11 +1,14 @@
 int size;
 struct outer
 {
+	
 	byte size;
 	struct inner
 	{
 		byte[10+size/2] n_bytes;
 	}[*] c;
+	type struct cc ccc;
+
 }[*] b;
 
 

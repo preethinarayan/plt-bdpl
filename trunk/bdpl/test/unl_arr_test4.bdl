@@ -1,0 +1,9 @@
+struct outer
+{
+	byte[*] first;
+	byte[*] second;
+}b;
+
+file "x:/test/file_test.dat" inp_file;
+read(inp_file,b.second);
+print(b);
