@@ -199,7 +199,7 @@ execstmt
     | stmtblock
     | "if"^ "("! expr ")"! execstmt (options {greedy=true;}: "else"! execstmt)?
     | "for"^ "("! (init_iterator)? SEMICOLON! (cond_iterator)? SEMICOLON! (incr_iterator)? ")"! execstmt
-    | "read"^ "("! (ID) COMMA! ID ")"! SEMICOLON!
+    | "read"^ "("! (ID) COMMA! expr ")"! SEMICOLON!
     | "write"^ "("! (ID) COMMA! ID ")"! SEMICOLON!
     | "set"^ "("! STRING "=>"! STRING COMMA! ID ")"! SEMICOLON!
     | "exit"^ "("! STRING ")"! SEMICOLON!
