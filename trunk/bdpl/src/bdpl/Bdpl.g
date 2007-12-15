@@ -633,7 +633,6 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 DataNodeAbstract cdn=decls(child);
                 if(cdn.getClass().getCanonicalName ().equals ("DataNodeArray"))
                 {
-                    System.err.println("\n\n\nscope\n\n\n");
                     ((DataNodeArray)cdn).set_scope(varSymbTbl);
                 }
                 structNode.set_child_by_name(cdn.get_name(),cdn);
