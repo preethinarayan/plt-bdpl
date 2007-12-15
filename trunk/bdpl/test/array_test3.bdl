@@ -1,0 +1,8 @@
+int i;
+i=10;
+byte[i] arr;
+for(i=0;i<10;i++)
+{
+	arr[i]=i;
+}
+print(arr);

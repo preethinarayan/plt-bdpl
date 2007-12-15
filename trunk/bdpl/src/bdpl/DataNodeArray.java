@@ -96,16 +96,11 @@ public class DataNodeArray extends DataNodeAbstract
             else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
             {
                 child=new DataNodeStruct ( (DataNodeStruct) _dummy  );
-                VariableSymbolTable v=new VariableSymbolTable();
-                TypeSymbolTable t=new TypeSymbolTable();
-                v.set_parent (((DataNodeStruct) _dummy).get_scope_var ());
-                t.set_parent (((DataNodeStruct) _dummy).get_scope_type ());
-                ((DataNodeStruct)child).set_scope (v,t);
+                ((DataNodeStruct) child).get_scope_var ().set_parent (_scope_var_pointer);
             }
             try
             {
                 _children.add (child);
-                //append_element (child);
             }
             catch( Exception e)
             {

@@ -1,13 +1,16 @@
+int size;
 struct outer
 {
 	byte size;
-	byte[size] n_bytes;
+	struct inner
+	{
+		byte[10+size/2] n_bytes;
+	}[*] c;
 }[*] b;
 
 
 
-
+size=20;
 file "x:/test/file_test.dat" inp_file;
 read(inp_file,b);
 print(b);
-
