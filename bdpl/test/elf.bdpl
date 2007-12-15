@@ -1,0 +1,30 @@
+
+
+structElf32_Ehdr
+{
+	byte[16]	e_ident;
+	byte[2]		 e_type;
+	byte[2] e_machine;
+	byte[4] e_version;
+	Elf32_Addre_entry;
+	Elf32_Offe_phoff;
+	Elf32_Offe_shoff;
+	byte[4] e_flags;
+	byte[2] e_ehsize;
+	byte[2] e_phentsize;
+	byte[2] e_phnum;
+	byte[2] e_shentsize;
+	byte[2] e_shnum;
+	byte[2] e_shstrndx;
+}elf_header;
+
+
+if( elf_header.e_type[0] == 0)
+	print "No machine";
+else if( elf_header.e_type[0] == 1)
+	print "AT&T WE 32100";
+else if( elf_header.e_type[0] == 2)
+	print "SPARC";
+else if( elf_header.e_type[0] == 3)
+	print "Intel 80386";
+else print "Other";
