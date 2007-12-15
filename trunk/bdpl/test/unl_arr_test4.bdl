@@ -5,5 +5,10 @@ struct outer
 }b;
 
 file "x:/test/file_test.dat" inp_file;
-read(inp_file,b.second);
-print(b);
+
+int i;
+for(i=0;i<10;i=i+1)
+{
+	read(inp_file,b.second);
+	printstring(b);
+}
