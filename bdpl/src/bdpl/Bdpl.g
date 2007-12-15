@@ -536,7 +536,8 @@ decls returns [DataNodeAbstract r=null] throws Exception
     String id;
 }
     : #("file" name=string id=id {inputFile = new BdplFile(name);}) 
-    | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
+    | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) 
+        (#(IDEN id=id 
         {
             DataNodeAbstract dummy_node=null;
             if(type.getText().equals("int") || type.getText().equals("bit") || type.getText().equals("byte"))
@@ -570,51 +571,74 @@ decls returns [DataNodeAbstract r=null] throws Exception
             r=arr;
             r.set_name(id);
         }
+        (#(INITLIST {}))? 
+        (#("fieldsize" f_ast_a:.
+            {
+                r.set_context(varSymbTbl);
+                r.set_fieldsize(f_ast_a);
+            }
+
+        ))?)
       ))
 
     | #("int"
-        (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
+        (#(IDEN name=id 
             {
 
                 Type intType = typeSymbTbl.get("int");
                 DataNodeInt intNode = (DataNodeInt)intType.getDataNode();
                 intNode.set_name(name);
                 r=intNode;
+            }
 
-            })+
-        {
-            //
-            // Need to do nothing here
-            //
-        }
+        (#(INITLIST {}))? 
+        (#("fieldsize" f_ast_i:.
+            {
+                r.set_context(varSymbTbl);
+                r.set_fieldsize(f_ast_i);
+            }
+        ))?) 
+        )+
        )
     | #("byte" 
-        (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
+        (#(IDEN name=id 
             {
                 Type byteType = typeSymbTbl.get("byte");
                 DataNodeByte byteNode = (DataNodeByte)byteType.getDataNode();
                 byteNode.set_name(name);
                 r=byteNode;
-            })+                   
-        {
-            //
-            // Need to do nothing here
-            //
-        }
+            }
+
+        (#(INITLIST {}))? 
+        (#("fieldsize" f_ast_B:.
+            {
+                r.set_context(varSymbTbl);
+                r.set_fieldsize(f_ast_B);                
+            }
+        ))?
         )
+        )+                   
+        )
+
     | #("bit"                     
-         (#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?) 
+         (#(IDEN name=id 
             {
                 Type bitType = typeSymbTbl.get("bit");
                 DataNodeBit bitNode = (DataNodeBit)bitType.getDataNode();
                 bitNode.set_name(name);
                 r=bitNode;
-            })+
-        {
-            //
-            // Need to do nothing here
-            //
-        }
+            }
+
+         (#(INITLIST {}))? 
+         (#("fieldsize" f_ast_b:.
+            {
+                r.set_context(varSymbTbl);
+                r.set_fieldsize(f_ast_b);                
+            }         
+
+        ))?)
+
+       )+
        )
     | #("struct"  (#(TAG name=id)) (body:.) 
         {
@@ -651,11 +675,18 @@ decls returns [DataNodeAbstract r=null] throws Exception
             varSymbTbl=varSymbTbl.get_parent(); // go up a scope
             
         } 
-        (#(IDEN id=id (#(INITLIST {}))? (#("fieldsize" {}))?)
+        (#(IDEN id=id 
+            {
+                r.set_name(id);
+            } 
 
-        {
-            r.set_name(id);
-        } // IDEN
+        (#(INITLIST {}))? 
+        (#("fieldsize" f_ast_s:.{}))?)
+            {
+                r.set_context(varSymbTbl);
+                r.set_fieldsize(f_ast_s);                
+            }
+        
         )?
        )
     |  #("type" name=id
@@ -688,10 +719,17 @@ decls returns [DataNodeAbstract r=null] throws Exception
              typeSymbTbl=typeSymbTbl.get_parent();
              varSymbTbl=varSymbTbl.get_parent();
         }
-        ((#(IDEN name=id (#(INITLIST {}))? (#("fieldsize" {}))?))?
-        {
-            r.set_name(name);
-        }
+        ((#(IDEN name=id 
+            {
+                r.set_name(name);
+            }
+        (#(INITLIST {}))? 
+        (#("fieldsize" f_ast_t:.
+            {
+                r.set_context(varSymbTbl);
+                r.set_fieldsize(f_ast_t);                
+            }        
+        ))?))?
        ))
     ;
 

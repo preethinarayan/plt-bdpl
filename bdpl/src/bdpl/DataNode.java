@@ -12,6 +12,7 @@
  * @author Akshay Pundle
  */
 
+import antlr.collections.AST;
 public interface DataNode
 {
     public String get_type_name();
@@ -22,9 +23,14 @@ public interface DataNode
     /** @return the number of bits this type takes */    
     public int get_fieldsize();
     
-    /** set the number of bits this type takes
-    * @return nonzero on error */
-    public int set_fieldsize(int fieldsize);
+    /** set the expression for number of bits this type takes*/
+    public void set_fieldsize(AST fieldsize);
+    
+    /** set valid ok nok */
+    public void set_verify_then_else(AST verify_ast,AST then_ast , AST else_ast);
+    
+    /** sets the contaxt for evaluation of expressions for this data node*/
+    public void set_context(VariableSymbolTable context);
     
     /** print a human readable form of this node */
     public String print();
@@ -38,7 +44,10 @@ public interface DataNode
     public String print(int format);
     public void set_name(String name);
     public String get_name();
+    
+    /** returns the maximum size this object can accept (hold) or -1 for infinity */
     public int get_max_accept();
     public void assign(DataNodeAbstract rhs);
     public void populate(BdplFile rhs) throws Exception;
+    
 }

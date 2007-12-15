@@ -56,6 +56,22 @@ public class BdplFile
 
     } 
     
+    /** make a file froma bitsequence. limit to max_size bits */
+    public BdplFile (String bitsequence,int max_size) throws BdplException
+    {
+        _data=new ArrayList(); 
+        _bit_pointer=-1; 
+
+    }    
+    
+    
+    public BdplFile (BdplFile f,int maxsize) throws BdplException
+    {
+        _data=new ArrayList(); 
+        _bit_pointer=-1; 
+
+    }
+    
     public String read_n_bytes (int n) throws Exception
     {
         String ret="";

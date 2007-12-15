@@ -11,17 +11,17 @@ struct MP3_FILE
 	struct FRAME
 	{
 		byte[4] frame_id;
-		byte[4] size;
+		int size;
 		byte[2] flags;
     	struct TEXT_FRAME
 	    {
 		    byte encoding;
-		    byte[size-1] string;
+		    byte[size/100] string;
 	    }text;
     }[10]textFrame;
 }mp3_file;
 
-file "x:/test/aa.mp3.mp3" inp_file;
+file "x:/test/test_id3.dat" inp_file;
 print("finished reading input file ... printing output");
-read(inp_file,mp3);
+read(inp_file,mp3_file);
 print(a);

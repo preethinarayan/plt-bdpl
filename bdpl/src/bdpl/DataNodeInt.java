@@ -101,10 +101,10 @@ public class DataNodeInt extends DataNodeAbstract
         if(rhs.num_readable_bits ()>=32)
         {
             String next_bit=rhs.read_n_bytes (4);
-            _data=  (((int) next_bit.charAt (0))<<24)  + 
-                    (((int) next_bit.charAt (1))<<16)  + 
-                    (((int) next_bit.charAt (2))<<8)  + 
-                    (((int) next_bit.charAt (3))) ;
+            _data=  (((int) next_bit.charAt (3))<<24)  + 
+                    (((int) next_bit.charAt (2))<<16)  + 
+                    (((int) next_bit.charAt (1))<<8)  + 
+                    (((int) next_bit.charAt (0))) ;
         }
     }
         
