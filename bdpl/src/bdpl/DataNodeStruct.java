@@ -56,10 +56,7 @@ public class DataNodeStruct extends DataNodeAbstract
     {
         super(data);
         init();
-        
-        
         _scope_var_pointer=new VariableSymbolTable();
-        _scope_var_pointer.set_parent (data._scope_var_pointer);
         _scope_type_pointer=data._scope_type_pointer;
         for(int i=0;i<data._sequence.size ();i++)
         {   
@@ -84,22 +81,23 @@ public class DataNodeStruct extends DataNodeAbstract
                 if(((DataNodeArray)d).get_ast()!=null)
                 {
                     child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_ast()  );
-                    ((DataNodeArray)child).set_scope (_scope_var_pointer);
                 }
                 else
                 {
                     child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_size()  );
-                    ((DataNodeArray)child).set_scope (_scope_var_pointer);
                 }
+                ((DataNodeArray)child).set_scope (_scope_var_pointer);
+                ((DataNodeArray)child).set_is_unlimited ( ((DataNodeArray)d).get_is_unlimited ());
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeStruct"))
             {
                 child=new DataNodeStruct( (DataNodeStruct) d  );
-                ((DataNodeStruct)child).set_scope (_scope_var_pointer,_scope_type_pointer);
+                ((DataNodeStruct)child).get_scope_var ().set_parent (_scope_var_pointer);
             }
             _children.put (data._sequence.get (i),child );
             try
             {
+                child.set_name (d.get_name ());
                 _scope_var_pointer.insert ((String)data._sequence.get (i),child);
             }
             catch (Exception e)
@@ -109,8 +107,6 @@ public class DataNodeStruct extends DataNodeAbstract
         }
         _type_name=data._type_name;
 
-        
-        
     }
     
     public int get_max_accept()
