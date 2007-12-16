@@ -107,6 +107,16 @@ abstract public class DataNodeAbstract implements DataNode
         _then_ast=then_ast;
         _else_ast=else_ast;
     }
+
+    public void set_then(AST then_ast )
+    {
+        _then_ast=then_ast;
+    }
+    
+    public void set_else(AST else_ast )
+    {
+        _else_ast=else_ast;
+    }
     
     protected void evaluate_verify_then_else ()
     {

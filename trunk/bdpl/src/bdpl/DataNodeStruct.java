@@ -128,7 +128,7 @@ public class DataNodeStruct extends DataNodeAbstract
     
     public void assign(DataNodeAbstract rhs)
     {
-    
+        evaluate_verify_then_else();
     }
     /** return the unique typename */
     public String get_type_name() 
@@ -243,6 +243,7 @@ public class DataNodeStruct extends DataNodeAbstract
             _children.put (name,value);
             _sequence.add (name); //remember the sequence number of this child
         }
+        evaluate_verify_then_else();
     }
     
     /** returns child(element of the struct) given number of the child */
@@ -350,6 +351,7 @@ public class DataNodeStruct extends DataNodeAbstract
         {
             rhs.read_n_bits (num_reading-temprhs.num_readable_bits ()); // consume bits from rhs
         }
+        evaluate_verify_then_else();
     }
     
     private int _offset;

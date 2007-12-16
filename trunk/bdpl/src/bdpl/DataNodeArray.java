@@ -167,6 +167,7 @@ public class DataNodeArray extends DataNodeAbstract
         {
             // copying from array to array
         }
+        evaluate_verify_then_else();
     }
     /** return the unique typename */
     public String get_type_name() {return "ARRAY";}
@@ -284,6 +285,7 @@ public class DataNodeArray extends DataNodeAbstract
         }
         _children.set(i,data);
         _invalid_cache();
+        evaluate_verify_then_else();
     }
     
     /** appends an element to the end of the array */
@@ -302,6 +304,7 @@ public class DataNodeArray extends DataNodeAbstract
         
         _children.add(data);
         _invalid_cache();
+        evaluate_verify_then_else();
     }
         
     /** returns the type of (all) the elements of the array 
@@ -401,6 +404,7 @@ public class DataNodeArray extends DataNodeAbstract
         {
             rhs.read_n_bits (num_reading-temprhs.num_readable_bits ()); // consume bits from rhs
         }
+        evaluate_verify_then_else();
         
         
     }

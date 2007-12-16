@@ -578,8 +578,24 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 r.set_fieldsize(f_ast_a);
             }
 
-        ))?)
-      ))
+        ))?) ) //iden ends
+        (#(SATISFIES valid_a:. 
+            {
+                r.set_context(varSymbTbl);
+                r.set_verify_then_else(valid_a,null,null);
+            }
+            (#("then" then_ast_a:.
+                {
+                    r.set_then(then_ast_a);
+                }
+             ))? 
+            (#("else" else_ast_a:.
+                {
+                    r.set_else(else_ast_a);
+                }
+
+             ))?))
+        )
 
     | #("int"
         (#(IDEN name=id 
@@ -598,7 +614,24 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 r.set_fieldsize(f_ast_i);
             }
         ))?) 
+        
         )+
+        (#(SATISFIES valid_i:. 
+            {
+                r.set_context(varSymbTbl);
+                r.set_verify_then_else(valid_i,null,null);
+            }
+            (#("then" then_ast_i:.
+                {
+                    r.set_then(then_ast_i);
+                }
+             ))? 
+            (#("else" else_ast_i:.
+                {
+                    r.set_else(else_ast_i);
+                }
+
+             ))?))
        )
     | #("byte" 
         (#(IDEN name=id 
@@ -617,7 +650,23 @@ decls returns [DataNodeAbstract r=null] throws Exception
             }
         ))?
         )
-        )+                   
+        )+
+        (#(SATISFIES valid_B:.
+            {
+                r.set_context(varSymbTbl);
+                r.set_verify_then_else(valid_B,null,null);
+            }
+            (#("then" then_ast_B:.
+                {
+                    r.set_then(then_ast_B);
+                }
+             ))? 
+            (#("else" else_ast_B:.
+                {
+                    r.set_else(else_ast_B);
+                }
+
+             ))?))
         )
 
     | #("bit"                     
@@ -637,6 +686,22 @@ decls returns [DataNodeAbstract r=null] throws Exception
             }         
 
         ))?)
+        (#(SATISFIES valid_b:. 
+            {
+                r.set_context(varSymbTbl);
+                r.set_verify_then_else(valid_b,null,null);
+            }
+            (#("then" then_ast_b:.
+                {
+                    r.set_then(then_ast_b);
+                }
+             ))? 
+            (#("else" else_ast_b:.
+                {
+                    r.set_else(else_ast_b);
+                }
+
+             ))?))
 
        )+
        )
@@ -688,6 +753,22 @@ decls returns [DataNodeAbstract r=null] throws Exception
             }
         
         )?
+        (#(SATISFIES valid_s:. 
+            {
+                r.set_context(varSymbTbl);
+                r.set_verify_then_else(valid_s,null,null);
+            }
+            (#("then" then_ast_s:.
+                {
+                    r.set_then(then_ast_s);
+                }
+             ))? 
+            (#("else" else_ast_s:.
+                {
+                    r.set_else(else_ast_s);
+                }
+
+             ))?))
        )
     |  #("type" name=id
        {
@@ -730,7 +811,25 @@ decls returns [DataNodeAbstract r=null] throws Exception
                 r.set_fieldsize(f_ast_t);                
             }        
         ))?))?
-       ))
+       )
+        (#(SATISFIES valid_t:. 
+            {
+                r.set_context(varSymbTbl);
+                r.set_verify_then_else(valid_t,null,null);
+            }
+            (#("then" then_ast_t:.
+                {
+                    r.set_then(then_ast_t);
+                }
+             ))? 
+            (#("else" else_ast_t:.
+                {
+                    r.set_else(else_ast_t);
+                }
+
+             ))?))
+
+        )
     ;
 
 expr returns [DataNodeAbstract r] throws Exception

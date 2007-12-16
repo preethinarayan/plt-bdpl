@@ -48,6 +48,7 @@ public class DataNodeBit extends DataNodeAbstract
             
         }
         _data=a;
+        evaluate_verify_then_else();
         
     }
     
@@ -102,6 +103,7 @@ public class DataNodeBit extends DataNodeAbstract
             else
                 _data=0;
         }
+        evaluate_verify_then_else();
     }
     
     private int _data;

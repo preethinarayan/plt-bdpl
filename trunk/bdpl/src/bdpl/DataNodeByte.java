@@ -67,7 +67,7 @@ public class DataNodeByte extends DataNodeAbstract
             
         }
         _data=a;
-        
+        evaluate_verify_then_else();
     }
     
     /** return the unique typename */
@@ -124,6 +124,7 @@ public class DataNodeByte extends DataNodeAbstract
             String bits=rhs.read_n_bits (_fieldsize);
             _data=(int) Integer.parseInt (bits,2);
         }
+        evaluate_verify_then_else();
     }
         
     private int _data;
