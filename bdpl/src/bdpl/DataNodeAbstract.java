@@ -68,7 +68,7 @@ abstract public class DataNodeAbstract implements DataNode
         _context=context;
     }
     
-    private int evaluate_fieldsize ()
+    protected int evaluate_fieldsize ()
     {
         BdplTreeParser par=new BdplTreeParser ();
         if(_context != null)
@@ -76,7 +76,11 @@ abstract public class DataNodeAbstract implements DataNode
 
         try
         {
-            return ((DataNodeAbstract)par.expr (_fieldsize_ast)).get_int_value ();
+            int f=((DataNodeAbstract)par.expr (_fieldsize_ast)).get_int_value ();
+            if(_bitsize<=0 || f<_bitsize)
+                _fieldsize=f;
+                
+            return _fieldsize;
             
         }
         catch (Exception e)
@@ -93,7 +97,7 @@ abstract public class DataNodeAbstract implements DataNode
         _else_ast=else_ast;
     }
     
-    private void evaluate_verify_then_else ()
+    protected void evaluate_verify_then_else ()
     {
         BdplTreeParser par=new BdplTreeParser ();
         if(_context != null)

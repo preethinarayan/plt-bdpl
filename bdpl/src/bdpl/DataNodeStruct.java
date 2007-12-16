@@ -109,9 +109,20 @@ public class DataNodeStruct extends DataNodeAbstract
 
     }
     
-    public int get_max_accept()
+    public int get_max_accept ()
     {
-        return 0;
+        
+        int max=0;
+        for(int i=0;i<_sequence.size();i++)
+        {
+            int ret=((DataNodeAbstract) _children.get ( _sequence.get (i))).get_max_accept ();  
+            if(ret<0)
+                return ret;
+            else
+                max+=ret;
+            
+        }
+        return max;
     }
     
     public void assign(DataNodeAbstract rhs)

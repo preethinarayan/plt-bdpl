@@ -29,6 +29,7 @@ public class DataNodeBit extends DataNodeAbstract
     {
         String b=rhs.get_bitsequence_value ();
         int a=0;
+        evaluate_fieldsize ();
         int start=0,end=_fieldsize-1;
 
         if(rhs.getClass ().getCanonicalName (). equals ("DataNodeBit")  ||
@@ -62,19 +63,7 @@ public class DataNodeBit extends DataNodeAbstract
     public String get_bitsequence_value() 
     {
         String s=Integer.toString (_data,2); 
-        if((s.length () >= _fieldsize))
-        {
-            return s.substring ( s.length ()-_fieldsize, s.length ());
-        }
-        else
-        {
-            int l=s.length ();
-            for(int i=0;i<_fieldsize-l;i++)
-            {
-                s='0'+s;
-            }
-            return s;
-        }
+        return ""+s.charAt (0);
     }
     public int get_int_value() {return _data;}
     
@@ -98,9 +87,12 @@ public class DataNodeBit extends DataNodeAbstract
             return "";
         }
     }       
-    
+
+
     public void populate (BdplFile rhs) throws Exception
     {
+        evaluate_fieldsize ();
+        if(_fieldsize<=0) return;
         if(rhs.num_readable_bits ()>=1)
         {
             String next_bit=rhs.read_n_bits (1);
