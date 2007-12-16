@@ -76,9 +76,17 @@ abstract public class DataNodeAbstract implements DataNode
 
         try
         {
-            int f=((DataNodeAbstract)par.expr (_fieldsize_ast)).get_int_value ();
-            if(_bitsize<=0 || f<_bitsize)
-                _fieldsize=f;
+            if(_fieldsize_ast != null)
+            {
+                System.err.println(" AST : "+_fieldsize_ast.toString ());
+                
+                int f=((DataNodeAbstract)par.expr (_fieldsize_ast)).get_int_value ();
+                if( f>0 && (_bitsize<=0 || f<_bitsize  ) )
+                {
+                    _fieldsize=f;
+                    System.err.println(" f = "+_fieldsize);
+                }
+            }
                 
             return _fieldsize;
             

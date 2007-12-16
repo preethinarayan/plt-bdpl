@@ -315,13 +315,37 @@ public class DataNodeStruct extends DataNodeAbstract
         
     public void populate (BdplFile rhs) throws Exception
     {
-        int i=0;
         
-        while( rhs.num_readable_bits ()>0 && i<_sequence.size ())
+        BdplFile temprhs=rhs;
+        boolean read_only_fieldsize=false;
+        int num_reading=0;
+        
+        /** if our fieldsize if less than what the children want,
+         * we will :
+         *  1) make a copy of the data limited to ourfieldsize bits
+         *  2) get the children to populate on this copy
+         *  3) in the end detect how much input the children have consumed 
+         *      an consume an equal amount form the actual source
+         */
+        if( evaluate_fieldsize () < get_max_accept () && _fieldsize>0)
+        {
+            BdplMemFile mem_file=new BdplMemFile(rhs,_fieldsize);
+            read_only_fieldsize=true;
+            temprhs=mem_file;
+            num_reading=_fieldsize;
+        }
+        
+        int i=0;
+        while( temprhs.num_readable_bits ()>0 && i<_sequence.size ())
         {
             DataNodeAbstract child= (DataNodeAbstract)_children.get (_sequence.get (i) );
-            child.populate (rhs);
+            child.populate (temprhs);
             i++;
+        }
+        
+        if(read_only_fieldsize)
+        {
+            rhs.read_n_bits (num_reading-temprhs.num_readable_bits ()); // consume bits from rhs
         }
     }
     

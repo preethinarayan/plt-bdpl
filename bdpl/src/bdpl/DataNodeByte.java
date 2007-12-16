@@ -120,7 +120,7 @@ public class DataNodeByte extends DataNodeAbstract
     public void populate (BdplFile rhs) throws Exception
     {
         evaluate_fieldsize ();
-        if(rhs.num_readable_bits ()>=_fieldsize)
+        if(rhs.num_readable_bits ()>=_fieldsize && _fieldsize!=0)
         {
             String bits=rhs.read_n_bits (_fieldsize);
             _data=(int) Integer.parseInt (bits,2);
