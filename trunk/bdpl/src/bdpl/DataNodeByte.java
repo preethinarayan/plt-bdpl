@@ -31,11 +31,10 @@ public class DataNodeByte extends DataNodeAbstract
     }
     
     /** copy constructor */
-    public DataNodeByte (DataNodeByte data)
+    public DataNodeByte (DataNodeAbstract data)
     {
         super (data);
         init ();
-        _data=data._data;
         _bitsize=data._bitsize;
         _fieldsize=data._fieldsize;
     }

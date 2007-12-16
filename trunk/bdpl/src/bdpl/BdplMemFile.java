@@ -66,12 +66,12 @@ public class BdplMemFile implements BdplFile
         String ret="";
         if(n<_data.length ())
         {
-            ret=_data.substring (0,n+1);
-            _data=_data.substring (n+1);
+            ret=_data.substring (0,n);
+            _data=_data.substring (n);
         }
         else if(n==_data.length ())
         {
-            ret=_data.substring (0);
+            ret=_data;
             _data="";
         }
         

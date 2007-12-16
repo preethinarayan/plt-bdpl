@@ -22,7 +22,7 @@ public class DataNodeInt extends DataNodeAbstract
     public DataNodeInt (int data) {super();init();_data=data; }
     
     /** copy constructor */
-    public DataNodeInt (DataNodeInt data) {super(data);init();_data=data._data;_bitsize=data._bitsize; _fieldsize=data._fieldsize;}
+    public DataNodeInt (DataNodeAbstract data) {super(data);init();_bitsize=data._bitsize; _fieldsize=data._fieldsize;}
     
     public int get_max_accept()
     {

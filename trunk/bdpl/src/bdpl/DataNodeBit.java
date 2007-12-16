@@ -18,6 +18,7 @@ public class DataNodeBit extends DataNodeAbstract
     /** list all constructors here */
     /** Creates a new instance of DataNodeBit */
     public DataNodeBit () {super();init();_data=0;}
+    public DataNodeBit (DataNodeAbstract d) {super(d);init();_data=0;}
     
     public int get_max_accept()
     {

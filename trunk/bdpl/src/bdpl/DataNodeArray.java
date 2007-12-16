@@ -358,7 +358,8 @@ public class DataNodeArray extends DataNodeAbstract
          *      an consume an equal amount form the actual source
          */
         evaluate_fieldsize ();
-        if( _fieldsize>0  && (_fieldsize < get_max_accept ()  || _isunlimited) )
+        int ma=get_max_accept ();
+        if( _fieldsize>0  && (_fieldsize < get_max_accept ()  || _isunlimited || ma==-1) )
         {
             BdplMemFile mem_file=new BdplMemFile(rhs,_fieldsize);
             read_only_fieldsize=true;
