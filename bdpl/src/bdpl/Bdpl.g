@@ -158,7 +158,7 @@ tokens{
     PROG;
     RANGES;
     TAG;
-    VALID;
+    VERIFY;
     INITIAL;
     NULL;
     COND;
@@ -285,19 +285,19 @@ size
 
 valid_check
     : valid_values (ok_block)? (nok_block)?
-        {#valid_check = #([VALID,"VALID"],#valid_check);}
+        {#valid_check = #([VERIFY,"VERIFY"],#valid_check);}
     ;
 
 valid_values
-    : "valid"! ("{"! range_list "}"!)
+    : "verify"! ("{"! expr "}"!)
     ;
 
 ok_block
-    : ("ok"^ stmtblock)
+    : ("then"^ stmtblock)
     ;
 
 nok_block
-    : ("nok"^ stmtblock)
+    : ("else"^ stmtblock)
     ;
 
 optional_check
@@ -739,8 +739,7 @@ expr returns [DataNodeAbstract r] throws Exception
     r = new DataNodeBit();
     String y,z; 
 }
-    : #(DOT_DOT     a=expr b=expr {})
-    | #(BYTEOFFSET  a=expr        {})
+    : #(BYTEOFFSET  a=expr        {})
     | #(DOT         a=expr b=expr {})
     | #(PLUS        a=expr b=expr {r = arith.eval(PLUS,a,b);})
     | #(MINUS       a=expr b=expr {r = arith.eval(MINUS,a,b);})
@@ -770,23 +769,13 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(lval:LVALUE {}     
         (
             (y=id {
-
-                    r = varSymbTbl.get(y);
-                    
+                    r = varSymbTbl.get(y); 
                 }| 
                 (#(SQBROPEN y=id a=expr){
-                    try
-                    {
-                        
-                            r = varSymbTbl.get(y);
-                            if(r instanceof DataNodeArray){
-                                r = ((DataNodeArray)r).get_element(a.get_int_value());
-                            }
-                            
-                            
-
-                    }catch(Exception e){
-                    }
+                  r = varSymbTbl.get(y);
+                  if(r instanceof DataNodeArray){
+                    r = ((DataNodeArray)r).get_element(a.get_int_value());
+                  }
                 })
             )
             (y=id {

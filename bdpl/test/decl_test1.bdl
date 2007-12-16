@@ -4,9 +4,9 @@ byte[4]
 byte[4]		
 	b 	("endian" => "big","maxsize" => "100") 
 		(fieldsize 50) 
-	valid {0x30..0x39,0x45..0x68} 
-		ok {break;} 
-		nok {continue;} 
+	verify {0x30} 
+		then {break;} 
+		else {continue;} 
 	optional 
 		on x>3 ;
 
@@ -26,17 +26,17 @@ struct ifd_header
 	byte[4] 
 		x 	("endian" => "big","maxsize" => "100") 
 			(fieldsize 50) 
-		valid {0x30..0x39,0x45..0x68} 
-			ok {break;} 
-			nok {continue;} 
+		verify {0x30} 
+			then {break;} 
+			else {continue;} 
 		optional 
 			on x>3 ;
 	byte[4] 
 		y 	("endian" => "big","maxsize" => "100") 
 			(fieldsize 50) 
-		valid {0x30..0x39,0x45..0x68} 
-			ok {break;} 
-			nok {continue;} 
+		verify {0x30} 
+			then {break;} 
+			else {continue;} 
 		optional 
 			on x>3 ;
 }[4] 
@@ -45,9 +45,9 @@ struct ifd_header
 		
 //	b 	("endian" => "big","maxsize" => "100") 
 //		(fieldsize 50) 
-//	valid {0x30..0x39,0x45..0x68} 
-//		ok {break;} 
-//		nok {continue;} 
+//	verify {0x30} 
+//		then {break;} 
+//		else {continue;} 
 //	optional 
 //		on x>3 ;
 
