@@ -1,11 +1,19 @@
 /*
  * BdplDataFile.java
+ * This is the data file implementation. We read from a file on disk
+ * and store the contents of the file in memory in a byte array. We
+ * maintain a pointer to the current position in the file. When data
+ * is read, the file pointer is incremented. This class implements 
+ * the BdplFile interface, and thus is like the memfile, except that
+ * the contents are read from disk. Since we know that files on disk
+ * will have bytes, we do not need to maintain a pointer to the end 
+ * of the buffer.
  *
  */
 
 /**
  *
- * @author Preethi Narayan(pn2156)
+ * @author akshay
  */
 import java.io.*;
 import java.util.*;
