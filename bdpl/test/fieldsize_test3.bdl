@@ -6,8 +6,8 @@ struct Outer
 	{
 		struct C
 		{
-			byte bb (fieldsize fz); // fieldsize = 6 , 72/6=12
-		}xx;
+			byte bb (fieldsize fz); // fieldsize = 6
+		}[fz]xx;
 	
 	}[*] a (fieldsize 79); // fieldsize is in bits !
 }bb;
