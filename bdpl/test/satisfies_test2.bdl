@@ -1,0 +1,24 @@
+struct Outer
+{
+	int fz (fieldsize 7) // this will contain the value 6 after reading file
+		satisfies { 1 }
+		then { print("fz found to be ");print(fz);print(".");}
+		else { print("undefined fz!\n");};
+	struct A
+	{
+		struct C
+		{
+			byte bb (fieldsize fz) // fieldsize = 6
+			satisfies { 1 }
+			then { print("bb is ");print(bb);print(".");}
+			else { print("bb undefined ");}
+			;
+		}[fz]xx;
+	
+	}[*] a (fieldsize 79); // fieldsize is in bits !
+}bb;
+
+
+
+file "x:/test/file_test.dat" inp_file;
+read(inp_file,bb);
