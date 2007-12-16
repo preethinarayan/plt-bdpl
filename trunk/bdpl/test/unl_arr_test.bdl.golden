@@ -1,0 +1,103 @@
+struct:outer
+{
+	unl => ARRAY of struct:inner
+	[
+		0 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0xd,
+				1 => 0x41,
+				2 => 0x42,
+				3 => 0x43,
+			]
+			,
+		}
+		,
+		1 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0x44,
+				1 => 0x45,
+				2 => 0x46,
+				3 => 0x47,
+			]
+			,
+		}
+		,
+		2 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0x48,
+				1 => 0x49,
+				2 => 0x4a,
+				3 => 0x4b,
+			]
+			,
+		}
+		,
+		3 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0x4c,
+				1 => 0x4d,
+				2 => 0x4e,
+				3 => 0x4f,
+			]
+			,
+		}
+		,
+		4 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0x50,
+				1 => 0x51,
+				2 => 0x52,
+				3 => 0x53,
+			]
+			,
+		}
+		,
+		5 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0x54,
+				1 => 0x55,
+				2 => 0x56,
+				3 => 0x57,
+			]
+			,
+		}
+		,
+		6 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0x58,
+				1 => 0x59,
+				2 => 0x5a,
+				3 => 0xd,
+			]
+			,
+		}
+		,
+		7 => struct:inner
+		{
+			four_bytes => ARRAY of TYPE_BYTE
+			[
+				0 => 0xa,
+				1 => 0x0,
+				2 => 0x0,
+				3 => 0x0,
+			]
+			,
+		}
+		,
+	]
+	,
+}

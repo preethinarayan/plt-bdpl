@@ -161,8 +161,8 @@ public class BdplMain
             CommonAST parseTree = (CommonAST)parser.getAST();
             //System.out.println(parseTree.toStringList());
             
-            ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
-            frame.setVisible(true);
+//            ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
+//            frame.setVisible(true);
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
             treeParser.program(parseTree);           
