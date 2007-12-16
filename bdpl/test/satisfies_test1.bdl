@@ -1,0 +1,4 @@
+int a (fieldsize 5) satisfies { a==5 && a!=6 && a==7} then { print("ok");} else {print("not ok");};
+
+file "x:/test/file_test.dat" inp_file;
+read(inp_file,a);

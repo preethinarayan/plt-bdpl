@@ -143,7 +143,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/fieldsize_test3.bdl");
+                input = new FileInputStream("x:/test/satisfies_test1.bdl");
             }
             //test_utils();
             //test_DataNodeArray();

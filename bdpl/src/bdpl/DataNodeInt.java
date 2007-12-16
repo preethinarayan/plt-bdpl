@@ -52,7 +52,7 @@ public class DataNodeInt extends DataNodeAbstract
             
         }
         _data=a;
-        
+        evaluate_verify_then_else();
     }
     
     /** return the unique typename */
@@ -130,12 +130,7 @@ public class DataNodeInt extends DataNodeAbstract
             {
                 _data=Integer.parseInt (bits,2);
             }
-            /*
-            String next_bit=rhs.read_n_bytes (4);
-            _data=  (((int) next_bit.charAt (3))<<24)  + 
-                    (((int) next_bit.charAt (2))<<16)  + 
-                    (((int) next_bit.charAt (1))<<8)  + 
-                    (((int) next_bit.charAt (0))) ;*/
+            evaluate_verify_then_else();
         }
     }
         
