@@ -346,24 +346,57 @@ public class DataNodeArray extends DataNodeAbstract
     
     public void populate (BdplFile rhs) throws Exception
     {
+        BdplFile temprhs=rhs;
+        boolean read_only_fieldsize=false;
+        int num_reading=0;
+        
+        /** if our fieldsize if less than what the children want,
+         * we will :
+         *  1) make a copy of the data limited to ourfieldsize bits
+         *  2) get the children to populate on this copy
+         *  3) in the end detect how much input the children have consumed 
+         *      an consume an equal amount form the actual source
+         */
+        evaluate_fieldsize ();
+        if( _fieldsize>0  && (_fieldsize < get_max_accept ()  || _isunlimited) )
+        {
+            BdplMemFile mem_file=new BdplMemFile(rhs,_fieldsize);
+            read_only_fieldsize=true;
+            temprhs=mem_file;
+            num_reading=_fieldsize;
+        }
         int i=0;
         if(_isunlimited)
         {
-            while( rhs.num_readable_bits ()>0  )
+            int num_readable=temprhs.num_readable_bits();
+            while( temprhs.num_readable_bits ()>0  )
             {           
                 add_n_elements(1);
-                ((DataNodeAbstract)_children.get (_children.size ()-1)).populate (rhs);
+                ((DataNodeAbstract)_children.get (_children.size ()-1)).populate (temprhs);
+                if(temprhs.num_readable_bits () == num_readable)
+                    break; // we arnt reading any data, better get outta here
+                else
+                    num_readable=temprhs.num_readable_bits ();
             }
         }
         else
         {
             evaluate_and_resize();
-            while( rhs.num_readable_bits ()>0 && i<_children.size () )
+            // its ok if we even read 0 bytes in every iteration, no chance 
+            // of an infinite loop here
+            while( temprhs.num_readable_bits ()>0 && i<_children.size () )
             {
-                ((DataNodeAbstract)_children.get (i)).populate (rhs);
+                ((DataNodeAbstract)_children.get (i)).populate (temprhs);
                 i++;
             }
         }
+        
+        if(read_only_fieldsize)
+        {
+            rhs.read_n_bits (num_reading-temprhs.num_readable_bits ()); // consume bits from rhs
+        }
+        
+        
     }
     
     private void evaluate_and_resize()

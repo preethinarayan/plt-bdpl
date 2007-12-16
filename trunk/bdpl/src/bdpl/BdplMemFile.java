@@ -64,8 +64,17 @@ public class BdplMemFile implements BdplFile
         if(n>_data.length ())
             throw new Exception("dont have "+n+" bits to read, have only " + _data.length () + " bits");
         String ret="";
-        ret=_data.substring (0,n+1);
-        _data=_data.substring (n+1);
+        if(n<_data.length ())
+        {
+            ret=_data.substring (0,n+1);
+            _data=_data.substring (n+1);
+        }
+        else if(n==_data.length ())
+        {
+            ret=_data.substring (0);
+            _data="";
+        }
+        
         return ret;
     }
     
