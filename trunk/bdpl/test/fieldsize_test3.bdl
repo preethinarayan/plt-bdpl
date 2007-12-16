@@ -1,13 +1,20 @@
-struct A
+
+struct Outer
 {
-	int ia (fieldsize 7);
-	byte[*] bb;
+	int fz (fieldsize 7); // this will contain the value 6 after reading file
+	struct A
+	{
+		struct C
+		{
+			byte bb (fieldsize fz); // fieldsize = 6 , 72/6=12
+		}xx;
 	
-}[*] a (fieldsize 79); // fieldsize is in bits !
+	}[*] a (fieldsize 79); // fieldsize is in bits !
+}bb;
 
 
 
 file "x:/test/file_test.dat" inp_file;
-read(inp_file,a);
-print(a);
+read(inp_file,bb);
+print(bb);
 

@@ -97,6 +97,7 @@ public class DataNodeStruct extends DataNodeAbstract
             _children.put (data._sequence.get (i),child );
             try
             {
+                child.set_context (_scope_var_pointer);
                 child.set_name (d.get_name ());
                 _scope_var_pointer.insert ((String)data._sequence.get (i),child);
             }

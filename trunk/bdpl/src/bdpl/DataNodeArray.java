@@ -51,6 +51,9 @@ public class DataNodeArray extends DataNodeAbstract
         super();
         init();    
         _dummy=node._dummy;
+        _fieldsize_ast=node._fieldsize_ast;
+        _verify_ast=node._verify_ast;
+        _scope_var_pointer=node._scope_var_pointer;
     }
     
     public DataNodeArray (DataNodeAbstract dummy,AST _arr_size_expr)
@@ -97,9 +100,11 @@ public class DataNodeArray extends DataNodeAbstract
             {
                 child=new DataNodeStruct ( (DataNodeStruct) _dummy  );
                 ((DataNodeStruct) child).get_scope_var ().set_parent (_scope_var_pointer);
+
             }
             try
             {
+                child.set_context (_scope_var_pointer);
                 _children.add (child);
             }
             catch( Exception e)
