@@ -125,11 +125,12 @@ public class DataNodeStruct extends DataNodeAbstract
         }
         return max;
     }
-    
+    /* lets see if the base class function works
     public void assign(DataNodeAbstract rhs)
     {
         evaluate_verify_then_else();
     }
+     */
     /** return the unique typename */
     public String get_type_name() 
     {

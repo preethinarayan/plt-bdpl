@@ -1,0 +1,21 @@
+struct small_byte
+{
+	byte b (fieldsize 4);
+}sb;	
+
+struct aa
+{
+	type struct small_byte[*] asb;
+} a (fieldsize 20);
+
+type struct aa bb;
+
+file "x:/test/file_test.dat" inp_file;
+
+read(inp_file,a);
+print(a);
+bb=a;
+print(bb);
+
+file "x:/test/file_test.dat" inp_file;
+read(inp_file,a);

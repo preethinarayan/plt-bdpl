@@ -594,7 +594,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r.set_else(else_ast_a);
                 }
 
-             ))?))
+             ))?))?
         )
 
     | #("int"
@@ -631,7 +631,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r.set_else(else_ast_i);
                 }
 
-             ))?))
+             ))?))?
        )
     | #("byte" 
         (#(IDEN name=id 
@@ -666,7 +666,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r.set_else(else_ast_B);
                 }
 
-             ))?))
+             ))?))?
         )
 
     | #("bit"                     
@@ -701,7 +701,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r.set_else(else_ast_b);
                 }
 
-             ))?))
+             ))?))?
 
        )+
        )
@@ -768,7 +768,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r.set_else(else_ast_s);
                 }
 
-             ))?))
+             ))?))?
        )
     |  #("type" name=id
        {
@@ -827,7 +827,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
                     r.set_else(else_ast_t);
                 }
 
-             ))?))
+             ))?))?
 
         )
     ;

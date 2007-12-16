@@ -161,6 +161,7 @@ public class DataNodeArray extends DataNodeAbstract
             
             
     }
+    /* lets see if the base class function works
     public void assign(DataNodeAbstract rhs)
     {
         if(rhs.getClass ().getCanonicalName ().equals (("DataNodeArray")))
@@ -168,7 +169,8 @@ public class DataNodeArray extends DataNodeAbstract
             // copying from array to array
         }
         evaluate_verify_then_else();
-    }
+    }*/
+    
     /** return the unique typename */
     public String get_type_name() {return "ARRAY";}
     
