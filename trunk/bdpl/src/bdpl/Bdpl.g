@@ -158,7 +158,7 @@ tokens{
     PROG;
     RANGES;
     TAG;
-    VERIFY;
+    SATISFIES;
     INITIAL;
     NULL;
     COND;
@@ -285,11 +285,11 @@ size
 
 valid_check
     : valid_values (ok_block)? (nok_block)?
-        {#valid_check = #([VERIFY,"VERIFY"],#valid_check);}
+        {#valid_check = #([SATISFIES,"SATISFIES"],#valid_check);}
     ;
 
 valid_values
-    : "verify"! ("{"! expr "}"!)
+    : "satisfies"! ("{"! expr "}"!)
     ;
 
 ok_block

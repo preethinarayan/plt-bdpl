@@ -4,7 +4,7 @@ byte[4]
 byte[4]		
 	b 	("endian" => "big","maxsize" => "100") 
 		(fieldsize 50) 
-	verify {0x30} 
+	satisfies {0x30} 
 		then {break;} 
 		else {continue;} 
 	optional 
@@ -26,7 +26,7 @@ struct ifd_header
 	byte[4] 
 		x 	("endian" => "big","maxsize" => "100") 
 			(fieldsize 50) 
-		verify {0x30} 
+		satisfies {0x30} 
 			then {break;} 
 			else {continue;} 
 		optional 
@@ -34,7 +34,7 @@ struct ifd_header
 	byte[4] 
 		y 	("endian" => "big","maxsize" => "100") 
 			(fieldsize 50) 
-		verify {0x30} 
+		satisfies {0x30} 
 			then {break;} 
 			else {continue;} 
 		optional 
@@ -45,7 +45,7 @@ struct ifd_header
 		
 //	b 	("endian" => "big","maxsize" => "100") 
 //		(fieldsize 50) 
-//	verify {0x30} 
+//	satisfies {0x30} 
 //		then {break;} 
 //		else {continue;} 
 //	optional 
