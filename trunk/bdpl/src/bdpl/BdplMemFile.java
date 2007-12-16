@@ -1,6 +1,12 @@
 /*
  * BdplMemFile.java
- *
+ * This is the mem file implementation. This class implements the
+ * the BdplFile interface, and thus is like the datafile (and indeed
+ * the two can e used interchangeably). This "file" does not correspond
+ * to data on a disk, but must be initialized with a bitsequence in 
+ * memory. This file also has a way to build itself from BdplFile.
+ * This type of file is used to represent bitsequences of objects 
+ * in memory.
  */
 
 /**

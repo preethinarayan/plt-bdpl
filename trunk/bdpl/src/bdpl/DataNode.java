@@ -15,15 +15,23 @@
 import antlr.collections.AST;
 public interface DataNode
 {
+    /** @return type name of this data node */
     public String get_type_name();
+    /** @return the bits of this data node */
     public String get_bitsequence_value() ;
+    
+    /** @return size of this data in bits*/
     public int get_bit_size(); 
     
+    /** @return size of this data as an integer (for expresion evaluation
+     * purpose */
     public int get_int_value() throws Exception;
+    
     /** @return the number of bits this type takes */    
     public int get_fieldsize();
     
-    /** set the expression for number of bits this type takes*/
+    /** set the expression for number of bits this type takes
+     *@return nothing */
     public void set_fieldsize(AST fieldsize);
     
     /** set valid ok nok */
