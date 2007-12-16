@@ -54,7 +54,13 @@ abstract public class DataNodeAbstract implements DataNode
     {
         return _name;
     }
-    abstract public void assign(DataNodeAbstract rhs);
+    public void assign(DataNodeAbstract rhs) throws Exception
+    {
+        evaluate_fieldsize ();
+        BdplMemFile rhs_file=new BdplMemFile(rhs.get_bitsequence_value ());
+        populate(rhs_file);
+        evaluate_verify_then_else ();
+    }
     
    
     abstract public int get_max_accept();

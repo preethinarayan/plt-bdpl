@@ -47,7 +47,7 @@ public interface DataNode
     
     /** returns the maximum size this object can accept (hold) or -1 for infinity */
     public int get_max_accept();
-    public void assign(DataNodeAbstract rhs);
+    public void assign(DataNodeAbstract rhs) throws Exception;
     public void populate(BdplFile rhs) throws Exception;
     
 }
