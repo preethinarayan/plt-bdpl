@@ -140,7 +140,19 @@ public class DataNodeArray extends DataNodeAbstract
         if(_isunlimited)
             return -1;
         else 
-            return 0;
+        {
+            int max=0;
+            for(int i=0;i<_children.size ();i++)
+            {
+                int ret=((DataNodeAbstract)_children.get (i)).get_max_accept ();
+                if(ret<0)
+                    return ret;
+                else
+                    max+=ret;
+                
+            }
+            return max;
+        }
             
             
     }

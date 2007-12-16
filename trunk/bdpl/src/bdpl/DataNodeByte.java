@@ -42,20 +42,22 @@ public class DataNodeByte extends DataNodeAbstract
     
     public int get_max_accept()
     {
-        return 8;
+        evaluate_fieldsize ();
+        return _fieldsize;
     }
     
     public void assign(DataNodeAbstract rhs)
     {
+        evaluate_fieldsize ();
         String b=rhs.get_bitsequence_value ();
         int a=0;
-        int start=0,end=7;
+        int start=0,end=_fieldsize-1;
 
         if(rhs.getClass ().getCanonicalName (). equals ("DataNodeBit")  ||
             rhs.getClass ().getCanonicalName ().equals ("DataNodeByte") ||
             rhs.getClass ().getCanonicalName ().equals ("DataNodeInt"))
         {
-            start=(b.length ()>=8)?b.length ()-8:0;
+            start=(b.length ()>=_fieldsize)?b.length ()-_fieldsize:0;
             end=b.length ()-1;
         }
         for(int i=start;i<=end && i<b.length ();i++)
@@ -75,14 +77,14 @@ public class DataNodeByte extends DataNodeAbstract
     public String get_bitsequence_value ()
     {
         String s=Integer.toString (_data,2);
-        if((s.length () >= _fieldsize))
+        if((s.length () >= _bitsize))
         {
-            return s.substring ( s.length ()-_fieldsize, s.length ());
+            return s.substring ( s.length ()-_bitsize, s.length ());
         }
         else
         {
             int l=s.length ();
-            for(int i=0;i<_fieldsize-l;i++)
+            for(int i=0;i<_bitsize-l;i++)
             {
                 s='0'+s;
             }
@@ -117,10 +119,11 @@ public class DataNodeByte extends DataNodeAbstract
     
     public void populate (BdplFile rhs) throws Exception
     {
-        if(rhs.num_readable_bits ()>=8)
+        evaluate_fieldsize ();
+        if(rhs.num_readable_bits ()>=_fieldsize)
         {
-            String next_bit=rhs.read_n_bytes (1);
-            _data=(int) next_bit.charAt (0);
+            String bits=rhs.read_n_bits (_fieldsize);
+            _data=(int) Integer.parseInt (bits,2);
         }
     }
         

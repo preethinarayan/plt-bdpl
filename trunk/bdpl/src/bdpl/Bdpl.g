@@ -535,7 +535,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
     String name;
     String id;
 }
-    : #("file" name=string id=id {inputFile = new BdplFile(name);}) 
+    : #("file" name=string id=id {inputFile = new BdplDataFile(name);}) 
     | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) 
         (#(IDEN id=id 
         {

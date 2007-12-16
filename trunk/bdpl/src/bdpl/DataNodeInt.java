@@ -26,11 +26,13 @@ public class DataNodeInt extends DataNodeAbstract
     
     public int get_max_accept()
     {
-        return 32;
+        evaluate_fieldsize ();
+        return _fieldsize;
     }
     
     public void assign(DataNodeAbstract rhs)
     {
+        evaluate_fieldsize ();
         String b=rhs.get_bitsequence_value ();
         int a=0;
         int start=0,end=_fieldsize-1;
@@ -58,14 +60,14 @@ public class DataNodeInt extends DataNodeAbstract
     public String get_bitsequence_value() 
     {
         String s=Integer.toString (_data,2); 
-        if((s.length () >= _fieldsize))
+        if((s.length () >= _bitsize))
         {
-            return s.substring ( s.length ()-_fieldsize, s.length ());
+            return s.substring ( s.length ()-_bitsize, s.length ());
         }
         else
         {
             int l=s.length ();
-            for(int i=0;i<_fieldsize-l;i++)
+            for(int i=0;i<_bitsize-l;i++)
             {
                 s='0'+s;
             }
@@ -98,13 +100,42 @@ public class DataNodeInt extends DataNodeAbstract
     
     public void populate (BdplFile rhs) throws Exception
     {
-        if(rhs.num_readable_bits ()>=32)
+        evaluate_fieldsize ();
+        if(rhs.num_readable_bits ()>=_fieldsize)
         {
+            String bits=rhs.read_n_bits (_fieldsize);
+            if(Globals.little_endian)
+            {
+                _data=0;
+                for(int i=0;i<4;i++)
+                {
+                    _data=_data<<8;
+                    if(bits.length ()>=8)
+                    {
+                        String s=bits.substring (0,8);
+                        _data+=Integer.parseInt (s,2);
+                        if(bits.length ()>8)
+                            bits=bits.substring (8,bits.length ());
+                        else
+                            return;
+                        
+                    }
+                    else
+                    {
+                        _data+=Integer.parseInt (bits);
+                    }
+                }
+            }
+            else
+            {
+                _data=Integer.parseInt (bits,2);
+            }
+            /*
             String next_bit=rhs.read_n_bytes (4);
             _data=  (((int) next_bit.charAt (3))<<24)  + 
                     (((int) next_bit.charAt (2))<<16)  + 
                     (((int) next_bit.charAt (1))<<8)  + 
-                    (((int) next_bit.charAt (0))) ;
+                    (((int) next_bit.charAt (0))) ;*/
         }
     }
         
