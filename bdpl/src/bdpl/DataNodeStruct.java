@@ -66,15 +66,15 @@ public class DataNodeStruct extends DataNodeAbstract
             
             if(d.getClass ().getCanonicalName ().equals ("DataNodeBit"))
             {
-                child=new DataNodeBit();
+                child=new DataNodeBit(d);
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeByte"))
             {
-                child=new DataNodeByte();
+                child=new DataNodeByte(d);
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeInt"))
             {
-                child=new DataNodeInt();
+                child=new DataNodeInt(d);
             } 
             else if(d.getClass ().getCanonicalName ().equals ("DataNodeArray"))
             {
@@ -327,7 +327,9 @@ public class DataNodeStruct extends DataNodeAbstract
          *  3) in the end detect how much input the children have consumed 
          *      an consume an equal amount form the actual source
          */
-        if( evaluate_fieldsize () < get_max_accept () && _fieldsize>0)
+        int ma=get_max_accept();
+        evaluate_fieldsize ();
+        if( _fieldsize>0 && ( _fieldsize < ma || ma==-1))
         {
             BdplMemFile mem_file=new BdplMemFile(rhs,_fieldsize);
             read_only_fieldsize=true;

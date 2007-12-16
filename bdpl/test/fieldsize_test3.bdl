@@ -1,5 +1,13 @@
-byte[*] a (fieldsize 5+3);
+struct A
+{
+	int ia (fieldsize 7);
+	byte[*] bb;
+	
+}[*] a (fieldsize 79); // fieldsize is in bits !
+
+
 
 file "x:/test/file_test.dat" inp_file;
 read(inp_file,a);
 print(a);
+
