@@ -393,7 +393,9 @@ object
 //                                TREE WALKER                                //
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
+{
+	import java.util.regex.Pattern;
+}
 //
 // A program is a collection of declarations and statements
 // A declaration is a subtree which has one of the following as a root node
@@ -517,7 +519,18 @@ stmts throws Exception
       })
     | #("write"                     {})
     | #("set"                       {})
-    | #("print" {String str;} (((str = string) {System.out.print(str);} ) | (r = expr {System.out.print(r.print());})))
+    | #("print" {String str;} 
+			(((str = string) {
+				int i;
+				String[] strings = str.split("::",-1);
+				for(i=0;i<strings.length-1;i++) {
+					System.out.println(strings[i]);
+				}
+				System.out.print(strings[i]);
+				} 
+			) 
+		| 	(r = expr {System.out.print(r.print());}))
+		)
     | #("printstring" ((r = expr) {System.out.print(r.print(1));}))
     | #(BLOCK (stmts)*              {})
     | r=expr                        {}
