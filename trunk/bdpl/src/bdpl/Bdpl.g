@@ -365,7 +365,7 @@ not_expr
 child_term 
     : term
     | "("! expr ")"!
-    | INDEX^ object
+    | "$#"^ lvalue
     | POUND^ lvalue_term
     | NUM
     ;
@@ -876,7 +876,7 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(BIOR        a=expr b=expr {r = bitwise.eval(BIOR,a,b);})
     | #(BEOR        a=expr b=expr {r = bitwise.eval(BEOR,a,b);})
     | #(APPEND      a=expr b=expr {})
-	| #(INDEX       arr:LVALUE {
+	| #("$#"        arr:LVALUE {
 						r = expr(#arr);
 						if(r instanceof DataNodeArray){
 							r = new DataNodeInt(((DataNodeArray)r).get_size());
