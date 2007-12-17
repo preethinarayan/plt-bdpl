@@ -30,8 +30,7 @@ public interface DataNode
     /** @return the number of bits this type takes */    
     public int get_fieldsize();
     
-    /** set the expression for number of bits this type takes
-     *@return nothing */
+    /** set the expression for number of bits this type takes*/
     public void set_fieldsize(AST fieldsize);
     
     /** set valid ok nok */

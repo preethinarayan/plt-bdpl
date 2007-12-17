@@ -231,8 +231,7 @@ public class DataNodeStruct extends DataNodeAbstract
         }
     }
     
-    /** initialize / set a child by name 
-     @return nothing */
+    /** initialize / set a child by name */
     public void set_child_by_name(String name,DataNodeAbstract  value) throws Exception
     { 
         if(_children.containsKey (name))
