@@ -128,7 +128,7 @@ public class DataNodeInt extends DataNodeAbstract
             }
             else
             {
-                _data=Integer.parseInt (bits,2);
+                _data=(int)Long.parseLong (bits,2);
             }
             evaluate_verify_then_else();
         }

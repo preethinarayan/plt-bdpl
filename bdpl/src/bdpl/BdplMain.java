@@ -38,7 +38,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/unl_arr_test.bdl");
+                input = new FileInputStream("x:/test/elf.bdl");
             }
  
             BdplLexer lexer = new BdplLexer(input);
@@ -50,6 +50,7 @@ public class BdplMain
             //System.out.println(parseTree.toStringList());
             ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
             frame.setVisible(true);
+
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
             treeParser.program(parseTree);
