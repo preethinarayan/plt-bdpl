@@ -1,8 +1,4 @@
 
-/**
- *
- * @author akshay
- */
 import java.io.*;
 import java.util.*;
 /**
@@ -14,6 +10,7 @@ import java.util.*;
  * memory. This file also has a way to build itself from BdplFile.
  * This type of file is used to represent bitsequences of objects 
  * in memory.
+ * @author akshay
  */
 public class BdplMemFile implements BdplFile
 {

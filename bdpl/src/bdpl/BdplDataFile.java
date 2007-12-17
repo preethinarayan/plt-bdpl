@@ -1,7 +1,4 @@
-/**
- *
- * @author akshay
- */
+
 import java.io.*;
 import java.util.*;
 
@@ -15,7 +12,7 @@ import java.util.*;
  * the contents are read from disk. Since we know that files on disk
  * will have bytes, we do not need to maintain a pointer to the end 
  * of the buffer.
- *
+ * @author akshay
  */
 public class BdplDataFile implements BdplFile
 {

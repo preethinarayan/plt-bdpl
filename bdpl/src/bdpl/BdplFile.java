@@ -1,12 +1,10 @@
-/**
- * @author akshay
- */
 
 /**
  * BdplFile.java
  * This interface specifies what all a "file" should have in Bdpl. 
  * A file should be capable of saying how much data is yet to be read, 
  * and expose methods for reading the data. 
+ * @author akshay
  */
 public interface BdplFile
 {
