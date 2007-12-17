@@ -38,7 +38,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/print_test1.bdl");
+                input = new FileInputStream("x:/test/bitwise_test1.bdl");
             }
  
             BdplLexer lexer = new BdplLexer(input);
