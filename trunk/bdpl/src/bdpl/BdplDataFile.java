@@ -120,7 +120,10 @@ public class BdplDataFile implements BdplFile
         
         for(int i=start; i<_data.size () && i<end ;i++)
         {
-            String s=Integer.toString ( Byte.parseByte (_data.get (i).toString ()),2);
+            String s=Integer.toBinaryString ( Byte.parseByte (_data.get (i).toString ()));
+            if(s.length ()>8)
+                s=s.substring (s.length ()-8);
+            
             int l=s.length ();
             for(int j=0;j<8-l;j++)
             {
