@@ -1,12 +1,12 @@
-/*
- * Cache.java
- *
- * Simple class to cache bitsequences, array sizes etc
- */
-
 /**
  *
  * @author Akshay Pundle
+ */
+
+/**
+ * Cache.java
+ *
+ * Simple class to cache bitsequences, array sizes etc
  */
 public class Cache
 {

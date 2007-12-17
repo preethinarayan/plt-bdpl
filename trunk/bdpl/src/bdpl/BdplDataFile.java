@@ -1,4 +1,11 @@
-/*
+/**
+ *
+ * @author akshay
+ */
+import java.io.*;
+import java.util.*;
+
+/**
  * BdplDataFile.java
  * This is the data file implementation. We read from a file on disk
  * and store the contents of the file in memory in a byte array. We
@@ -10,14 +17,6 @@
  * of the buffer.
  *
  */
-
-/**
- *
- * @author akshay
- */
-import java.io.*;
-import java.util.*;
-
 public class BdplDataFile implements BdplFile
 {
 

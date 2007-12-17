@@ -11,6 +11,7 @@
 import java.util.*;
 import antlr.collections.AST;
 
+/** Implementsa an array node */
 public class DataNodeArray extends DataNodeAbstract
 {    
     /** common initializers */
