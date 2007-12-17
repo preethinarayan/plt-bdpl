@@ -14,5 +14,5 @@ set files [glob *.bdl]
 foreach f $files { 
  set result [exec -- $javaexec BdplMain -f $f 2>&1 > $f.out]
  catch {set result [exec -- diff -b -q $f.out $f.golden ]} error
- switch $error "" "puts {Testing $f......OK}" "default" "puts {Testing $f .......FAILED}"
+ switch $error "" "puts {Testing $f......OK}" "default" "puts {Testing $f .......FAILED $error}"
 }

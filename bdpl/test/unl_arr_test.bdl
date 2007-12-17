@@ -9,3 +9,5 @@ struct outer
 file "x:/test/file_test.dat" inp_file;
 read(inp_file,a);
 print(a);
+print($#a.unl);
+print("::");
