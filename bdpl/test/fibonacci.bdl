@@ -1,0 +1,9 @@
+int a; int b;
+int c; int i;
+a = 1; b = 1;
+for(i=0;i<25;i=i+1){
+	print(a); print("::");
+	c = a + b;
+	a = b;
+	b = c;
+}

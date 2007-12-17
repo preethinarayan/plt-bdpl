@@ -1,0 +1,13 @@
+int a; int b;
+a = 96; b = 36;
+for (;;) {
+	if(a > b) 	{
+		a = a - b;
+	}
+	else if(a < b) 	{
+		b = b - a;
+	}else {
+		break;
+	}
+} 
+print(a);//Find the GCD of two integers
