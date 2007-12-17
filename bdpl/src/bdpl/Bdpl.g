@@ -919,7 +919,7 @@ expr returns [DataNodeAbstract r] throws Exception
                 })
             )*
         ){})
-    | #(num:NUM     {r=new DataNodeInt(Integer.parseInt(num.getText()));})
+    | #(num:NUM     {r=new DataNodeInt(Integer.decode(num.getText()));})
     ;
 
 protected
