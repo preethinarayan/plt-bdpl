@@ -30,6 +30,8 @@ abstract public class DataNodeAbstract implements DataNode
         _fieldsize_ast=data._fieldsize_ast;
         _then_ast=data._then_ast;
         _verify_ast=data._verify_ast;
+        _else_ast=data._else_ast;
+        _context=data._context;
         _name=data._name;
             
     }

@@ -4,17 +4,17 @@
 int count;
 count = 0;
 struct TransportPacket{
-	byte sync satisfies {sync == 0x47} then {count=count+1;} else {print("Error in processing packet:"); print(count);print("::");};
+	byte sync satisfies {sync == 0x47} then {count=count+1;} else {print("Error in processing packet:"); print(count);print("::");}; 
 	bit[3] auxBits;
 	bit[13] pid;
-	bit[2] scramblingStatus satisfies {1} then {if(scramblingStatus != 0){print("Packet ");print(count);print(" is scrambled::");}};
+	bit[2] scramblingStatus satisfies {0} then {if(scramblingStatus != 0){print("Packet ");print(count);print(" is scrambled::");}};
 	bit[2] adaptationFieldControl;
 	int continuityCounter (fieldsize 4) 
 		satisfies {continuityCounter == tp[count-1].continuityCounter + 1} 
-		else {print("Continuity counter error in packet: "); print(count);};
+		else {print("Continuity counter error in packet: "); print(count);print("::");};
 	byte[184] payload;
 }[*] tp;
 
 file "x:\test\mpeg_test.ts" inputFile ;
 read(inputFile,tp);
-print(tp);
+//print(tp);

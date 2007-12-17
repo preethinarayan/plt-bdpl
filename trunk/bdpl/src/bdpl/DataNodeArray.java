@@ -83,15 +83,15 @@ public class DataNodeArray extends DataNodeAbstract
             DataNodeAbstract child=null;
             if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeBit"))
             {
-                child=new DataNodeBit ();
+                child=new DataNodeBit (_dummy);
             }
             else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeByte"))
             {
-                child=new DataNodeByte ();
+                child=new DataNodeByte (_dummy);
             }
             else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeInt"))
             {
-                child=new DataNodeInt ();
+                child=new DataNodeInt (_dummy);
             }
             else if(_dummy.getClass ().getCanonicalName ().equals ("DataNodeArray"))
             {
