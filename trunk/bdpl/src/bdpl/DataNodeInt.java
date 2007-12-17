@@ -59,7 +59,7 @@ public class DataNodeInt extends DataNodeAbstract
     public String get_type_name() {return "TYPE_INT";}
     public String get_bitsequence_value() 
     {
-        String s=Integer.toString (_data,2); 
+        String s=Integer.toBinaryString (_data);
         if((s.length () >= _bitsize))
         {
             return s.substring ( s.length ()-_bitsize, s.length ());
