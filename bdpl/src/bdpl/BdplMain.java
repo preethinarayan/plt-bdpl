@@ -38,7 +38,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/elf.bdl");
+                input = new FileInputStream("x:/test/mpeg.bdl");
             }
  
             BdplLexer lexer = new BdplLexer(input);
@@ -48,8 +48,8 @@ public class BdplMain
             
             CommonAST parseTree = (CommonAST)parser.getAST();
             //System.out.println(parseTree.toStringList());
-            ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
-            frame.setVisible(true);
+            //ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
+            //frame.setVisible(false);
 
 
 	    BdplTreeParser treeParser = new BdplTreeParser();
