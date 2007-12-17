@@ -1,8 +1,3 @@
-/*
- * AbstractDataNode.java
- *
- */
-
 /**
  *
  * @author Akshay Pundle
@@ -11,7 +6,7 @@ import antlr.collections.*;
 abstract public class DataNodeAbstract implements DataNode
 {
     
-    /** Creates a new instance of AbstractDataNode */
+    /** Creates a new instance  */
     private void init()
     {
         _fieldsize=0;

@@ -1,4 +1,11 @@
-/*
+
+/**
+ *
+ * @author akshay
+ */
+import java.io.*;
+import java.util.*;
+/**
  * BdplMemFile.java
  * This is the mem file implementation. This class implements the
  * the BdplFile interface, and thus is like the datafile (and indeed
@@ -8,13 +15,6 @@
  * This type of file is used to represent bitsequences of objects 
  * in memory.
  */
-
-/**
- *
- * @author akshay
- */
-import java.io.*;
-import java.util.*;
 public class BdplMemFile implements BdplFile
 {
     

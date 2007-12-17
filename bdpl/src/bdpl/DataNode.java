@@ -1,11 +1,3 @@
-/*
- * DataNode.java
- *
- * This defines the interface which all data nodes should 
- * adhere to (i.e this is the abstract base class for all
- * our concrete data node classes 
- *
- */
 
 /**
  *
@@ -13,6 +5,14 @@
  */
 
 import antlr.collections.AST;
+/**
+ * DataNode.java
+ *
+ * This defines the interface which all data nodes should 
+ * adhere to (i.e this is the abstract base class for all
+ * our concrete data node classes 
+ *
+ */
 public interface DataNode
 {
     /** @return type name of this data node */
