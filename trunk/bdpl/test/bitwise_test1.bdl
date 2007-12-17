@@ -1,0 +1,21 @@
+int a;
+int b;
+int c;
+
+a = 10;
+a = a << 2;
+b = a >> 1;
+c = b <<< 3;
+print(a); print("::");
+print(b); print("::");
+print(c); print("::");
+
+
+a = 7;
+a = a & 4;
+b = a | 3;
+c = b ^ 7;
+
+print(a); print("::");
+print(b); print("::");
+print(c); print("::");

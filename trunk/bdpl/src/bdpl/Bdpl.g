@@ -327,15 +327,15 @@ and_expr
     ;
 
 bior_expr
-    : beor_expr ("|"^ beor_expr)*
+    : beor_expr (BIOR^ beor_expr)*
     ;
 
 beor_expr
-    : band_expr ("^" band_expr)*
+    : band_expr (BEOR^ band_expr)*
     ;
 
 band_expr
-    : eq_expr (BAND eq_expr)*
+    : eq_expr (BAND^ eq_expr)*
     ;
 
 eq_expr
