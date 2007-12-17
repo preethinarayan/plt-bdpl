@@ -64,7 +64,7 @@ public class DataNodeBit extends DataNodeAbstract
     
     public String get_bitsequence_value() 
     {
-        String s=Integer.toString (_data,2); 
+        String s=Integer.toBinaryString (_data);
         return ""+s.charAt (0);
     }
     public int get_int_value() {return _data;}

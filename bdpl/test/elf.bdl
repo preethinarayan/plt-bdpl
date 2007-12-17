@@ -1,7 +1,7 @@
 int i;
 int j;
 struct elf_header{
-		byte[32] before_offset;//30 bytes
+		byte[30] before_offset;//30 bytes
 		int e_shoff;//4 bytes 
 		byte[10] before_section_header_size;//10 bytes
 		byte[2] e_shentsize;//2 bytes
