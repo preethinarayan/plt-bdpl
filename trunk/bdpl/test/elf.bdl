@@ -1,0 +1,68 @@
+int i;
+int j;
+struct elf_header{
+		byte[32] before_offset;//30 bytes
+		int e_shoff;//4 bytes 
+		byte[10] before_section_header_size;//10 bytes
+		byte[2] e_shentsize;//2 bytes
+		byte[2] e_shnum;//2 bytes
+		byte[2] e_shtrndx;//2 bytes
+} elf_hd;
+file "x:/test/a.out" inp_file;
+read(inp_file,elf_hd);
+print(elf_hd);
+for(i=0;i<6;i=i+1){
+printstring(elf_hd.before_offset[i]);
+}
+int a;
+int b;
+int c;
+a=elf_hd.e_shentsize[0];
+b=elf_hd.e_shnum[0];
+c=a*b;
+print(c);
+print("----------------");
+print(elf_hd.e_shoff);
+print("----------------");
+struct elf_file
+{
+	byte[52] header;
+	byte[elf_hd.e_shoff] buffer;
+	struct sec_hdr{
+		int sh_name;//4 bytes
+		byte[4] sh_type;//4 bytes
+		int[2] before_offset;//8 bytes
+		int sh_offset;//4 bytes
+		byte[4] sh_size;//4 bytes
+		int[4] remaining_headers;//16 bytes
+	}[b] elf_sechdr;
+		
+} elf_fl;
+read(inp_file,elf_fl);
+int k;
+k=elf_hd.e_shtrndx[0];
+//for(i=0;i<b;i=i+1){
+print("-*");
+print(elf_fl.elf_sechdr[k].sh_offset);
+print("-*");
+//}
+print("the size of the string table is:");
+print(elf_fl.elf_sechdr[k].sh_size);
+struct str_tab{
+	byte[61] buffer_for_string;
+	byte[elf_hd.e_shtrndx[0]] string_table;
+} string_tab;
+
+read(inp_file,string_tab);
+
+//for(i=0;i<size_string;i=i+1){
+//printstring(string_tab.string_table[i]);
+//}
+
+
+
+print("the string table index is:");
+print(elf_hd.e_shtrndx);
+
+
+	
