@@ -1,0 +1,9 @@
+//
+// This is an MPEG Transport Stream Processor
+//
+struct TransportPacket{
+	byte sync satisfies {sync == 0x47} then {} else {print("Error in processing packet: "); print($#a-1);};
+}[1] tp;
+
+file "x:\test\mpeg.ts" inputFile ;
+read(inputFile,tp);
