@@ -192,7 +192,7 @@ public class DataNodeArray extends DataNodeAbstract
     public int get_bit_size()  
     { 
         if(_bsize_cache.is_valid ())
-        {
+        { 
             return _bseq_cache.as_int();
         }
         int ret=0;
