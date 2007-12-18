@@ -84,9 +84,9 @@ struct elf_file_1
 	byte[strtab_size] string_table;
 }elf_file_1;
 
-file "x:/test/tut.o" inp_file;
+file "x:/test/knr.o" inp_file;
 read(inp_file,elf_file);
-file "x:/test/tut.o" inp_file;
+file "x:/test/knr.o" inp_file;
 read(inp_file,elf_file_1);
 
 for(i=0;i<$#elf_file_1.symbol_table;i=i+1)
