@@ -111,8 +111,8 @@ for(i=0;i<$#elf_file_1.symbol_table;i=i+1)
 			}
 		}
 
-		print(" ");
+		print("::");
 	}
-	print(elf_file_1.symbol_table[i]);
+	//print(elf_file_1.symbol_table[i]);
 }
 
