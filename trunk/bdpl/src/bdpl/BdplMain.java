@@ -46,7 +46,8 @@ public class BdplMain
             }
             else
             {
-                usage ();
+                input = new FileInputStream ("x:/test/objdump.bdl");
+                //usage ();
             }
             
             BdplLexer lexer = new BdplLexer (input);
