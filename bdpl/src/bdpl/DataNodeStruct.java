@@ -117,7 +117,7 @@ public class DataNodeStruct extends DataNodeAbstract
 
     }
     
-    public int get_max_accept ()
+    public int get_max_accept () throws Exception
     {
         
         int max=0;

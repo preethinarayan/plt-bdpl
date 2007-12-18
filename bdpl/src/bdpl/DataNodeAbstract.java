@@ -60,7 +60,7 @@ abstract public class DataNodeAbstract implements DataNode
     }
     
    
-    abstract public int get_max_accept();
+    abstract public int get_max_accept() throws Exception;
     abstract public String get_type_name();
     abstract public String get_bitsequence_value();
     

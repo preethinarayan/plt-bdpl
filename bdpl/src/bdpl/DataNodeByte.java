@@ -39,13 +39,13 @@ public class DataNodeByte extends DataNodeAbstract
         _fieldsize=data._fieldsize;
     }
     
-    public int get_max_accept()
+    public int get_max_accept() throws Exception
     {
         evaluate_fieldsize ();
         return _fieldsize;
     }
     
-    public void assign(DataNodeAbstract rhs)
+    public void assign(DataNodeAbstract rhs) throws Exception
     {
         evaluate_fieldsize ();
         String b=rhs.get_bitsequence_value ();
