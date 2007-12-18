@@ -58,7 +58,7 @@ public class BdplMain
 	}
         catch(Exception e)
         {
-            System.err.println ("aha : "+e.getMessage ());
+            System.err.println (e.getMessage ());
             return ;
             //sSystem.exit(0);
 	    //System.err.println("Exception: "+e);
