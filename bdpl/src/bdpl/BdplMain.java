@@ -57,8 +57,10 @@ public class BdplMain
 	}
         catch(Exception e)
         {
-            e.printStackTrace ();
-	    System.err.println("Exception: "+e);
+            System.err.println (e.getMessage ());
+            return ;
+            //System.exit(0);
+	    //System.err.println("Exception: "+e);
         }
     }
 }

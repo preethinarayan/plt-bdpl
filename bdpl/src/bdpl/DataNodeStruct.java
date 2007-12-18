@@ -52,7 +52,7 @@ public class DataNodeStruct extends DataNodeAbstract
     
     
     /** should invoke copy constructor for base class */
-    public DataNodeStruct(DataNodeStruct data)
+    public DataNodeStruct(DataNodeStruct data) throws Exception
     {
         super(data);
         init();
@@ -95,16 +95,10 @@ public class DataNodeStruct extends DataNodeAbstract
                 ((DataNodeStruct)child).get_scope_var ().set_parent (_scope_var_pointer);
             }
             _children.put (data._sequence.get (i),child );
-            try
-            {
-                child.set_context (_scope_var_pointer);
-                child.set_name (d.get_name ());
-                _scope_var_pointer.insert ((String)data._sequence.get (i),child);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace ();
-            }
+            child.set_context (_scope_var_pointer);
+            child.set_name (d.get_name ());
+            _scope_var_pointer.insert ((String)data._sequence.get (i),child);
+            
         }
         _type_name=data._type_name;
 

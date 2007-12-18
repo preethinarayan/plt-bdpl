@@ -6,6 +6,7 @@ struct A
 			print("Structure ");
 			print($#a);
 			print(" valid ::" ); 
+			print(b);
 		}
 		else 
 		{

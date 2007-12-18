@@ -472,7 +472,7 @@ stmts throws Exception
             // VRB: To do
             // Check the type of 'r' for consistency
             //
-            try{
+            
                 if(r.get_int_value() > 0){
                      stmts(#thenpart);
                 }else{
@@ -485,9 +485,7 @@ stmts throws Exception
                         //
                     }
                 }
-            }catch(Exception e){
-
-            }    
+                
         }
        )
     | #("for" (#(INITIAL init=expr))? (#(COND cond:.))? (#(INCR incr:.))? (#(body:BLOCK {}))

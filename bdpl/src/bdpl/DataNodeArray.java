@@ -68,7 +68,7 @@ public class DataNodeArray extends DataNodeAbstract
         _scope_var_pointer=null;
         _dummy=dummy;
     }
-    public DataNodeArray (DataNodeAbstract dummy,int arr_size)
+    public DataNodeArray (DataNodeAbstract dummy,int arr_size) throws Exception
     {
         super();
         init();
@@ -76,7 +76,7 @@ public class DataNodeArray extends DataNodeAbstract
         add_n_elements(arr_size);
     }
     
-    private void add_n_elements(int n)
+    private void add_n_elements (int n) throws Exception
     {
         for(int i=0;i< n; i++ )
         {
@@ -101,17 +101,12 @@ public class DataNodeArray extends DataNodeAbstract
             {
                 child=new DataNodeStruct ( (DataNodeStruct) _dummy  );
                 ((DataNodeStruct) child).get_scope_var ().set_parent (_scope_var_pointer);
-
+                
             }
-            try
-            {
-                child.set_context (_scope_var_pointer);
-                _children.add (child);
-            }
-            catch( Exception e)
-            {
-                e.printStackTrace ();
-            }
+            child.set_context (_scope_var_pointer);
+            _children.add (child);
+            
+            
         }
         
     }

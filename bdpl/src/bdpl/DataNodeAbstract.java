@@ -121,29 +121,22 @@ abstract public class DataNodeAbstract implements DataNode
         _else_ast=else_ast;
     }
     
-    protected void evaluate_verify_then_else ()
+    protected void evaluate_verify_then_else () throws Exception
     {
         BdplTreeParser par=new BdplTreeParser ();
         if(_context != null)
             par.varSymbTbl=_context;
-
-        try
+        
+        if (_verify_ast != null && ((DataNodeAbstract)par.expr (_verify_ast)).get_int_value ()!=0)
         {
-            if (_verify_ast != null && ((DataNodeAbstract)par.expr (_verify_ast)).get_int_value ()!=0)
-            {
-                if(_then_ast!= null) par.stmts (_then_ast);
-            }
-            else
-            {
-                if(_else_ast!= null) par.stmts (_else_ast);
-            }
-            
+            if(_then_ast!= null) par.stmts (_then_ast);
         }
-        catch (Exception e)
+        else
         {
-            e.printStackTrace ();
+            if(_else_ast!= null) par.stmts (_else_ast);
         }
-
+        
+        
     }
     
     
