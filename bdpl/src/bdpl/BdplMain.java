@@ -46,6 +46,7 @@ public class BdplMain
  	    BdplParser parser = new BdplParser(lexer);
 	    parser.program();
             
+            
             CommonAST parseTree = (CommonAST)parser.getAST();
             //System.out.println(parseTree.toStringList());
             //ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
@@ -57,11 +58,12 @@ public class BdplMain
 	}
         catch(Exception e)
         {
-            System.err.println (e.getMessage ());
+            System.err.println ("aha : "+e.getMessage ());
             return ;
-            //System.exit(0);
+            //sSystem.exit(0);
 	    //System.err.println("Exception: "+e);
         }
+        
     }
 }
 
