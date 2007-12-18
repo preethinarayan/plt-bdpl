@@ -1,20 +1,34 @@
-//
+//	
 // This is an MPEG Transport Stream Processor
 //
 int count;
+int video; int videopackets;
+int audio; int audiopackets; int auxpackets;
+video = 8191; audio = 17;
 count = 0;
 struct TransportPacket{
-	byte sync satisfies {sync == 0x47} then {count=count+1;} else {print("Error in processing packet:"); print(count);print("::");}; 
+	byte sync satisfies {sync == 0x47} then {count=count+1;} 
+		else { count=count+1; print("Sync Error in packet:");print(count);print("::");}; 
 	bit[3] auxBits;
-	bit[13] pid;
-	bit[2] scramblingStatus satisfies {0} then {if(scramblingStatus != 0){print("Packet ");print(count);print(" is scrambled::");}};
+	int pid (fieldsize 13) satisfies {pid == video || pid == audio}
+		then {
+				if(pid == video) {
+					videopackets = videopackets + 1;
+				} else {
+					audiopackets = audiopackets + 1;
+				}
+			} else {
+				auxpackets = auxpackets + 1;
+			};
 	bit[2] adaptationFieldControl;
+	bit[2] scramblingStatus satisfies {1} then {if(scramblingStatus[1] != 0){print("Packet ");print(count);print(" is scrambled::");}};
 	int continuityCounter (fieldsize 4) 
-		satisfies {continuityCounter == tp[count-1].continuityCounter + 1} 
-		else {print("Continuity counter error in packet: "); print(count);print("::");};
+		satisfies {(count > 1 && continuityCounter == ((tp[count-2].continuityCounter + 1) & 0xF))} then {}
+		else {print("Discontinuity in packet: "); print(count);print("::");};
 	byte[184] payload;
 }[*] tp;
 
 file "x:\test\mpeg_test.ts" inputFile ;
 read(inputFile,tp);
-//print(tp);
+print($#tp); print(" packets found::"); print(videopackets); print(" are video, "); print(audiopackets); print(" are audio, ");
+ print(auxpackets); print(" are auxillary::");
