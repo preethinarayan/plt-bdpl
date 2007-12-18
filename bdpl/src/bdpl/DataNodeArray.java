@@ -135,7 +135,7 @@ public class DataNodeArray extends DataNodeAbstract
     }*/
     
     
-    public int get_max_accept()
+    public int get_max_accept() throws Exception
     {
         if(_isunlimited)
             return -1;
