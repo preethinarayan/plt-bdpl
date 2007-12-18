@@ -4,10 +4,8 @@ int symtab_size;
 int strtab_offset;
 int strtab_size;
 int i;
-int j;
 int k;
 bit flag;
-byte[128] name;
 
 struct symbol_table_entry
 {
@@ -71,8 +69,6 @@ struct elf_file
 		int sh_addralign;
 		int sh_entsize;
 	} [elf_hd.e_shnum[0]] se_array;
-	
-	byte[ symtab_offset - ( ( $#se_array*40)+elf_hd.e_shoff) ] e_other_stuff3;
 
 }elf_file;
 
@@ -96,10 +92,6 @@ for(i=0;i<$#elf_file_1.symbol_table;i=i+1)
 		flag=1;
 		for(k=elf_file_1.symbol_table[i].st_name;flag==1;k=k+1)
 		{
-			for(j=0;j<128;j=j+1)
-			{
-				//name[j]=0;
-			}
 			if(elf_file_1.string_table[k] == 0 )
 			{
 				flag=0;
