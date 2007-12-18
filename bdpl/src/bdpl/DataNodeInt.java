@@ -118,10 +118,10 @@ public class DataNodeInt extends DataNodeAbstract
                     _data=_data<<8;
                     if(bits.length ()>=8)
                     {
-                        String s=bits.substring (0,8);
+                        String s=bits.substring (bits.length ()-8);
                         _data+=Integer.parseInt (s,2);
                         if(bits.length ()>8)
-                            bits=bits.substring (8,bits.length ());
+                            bits=bits.substring (0,bits.length ()-8);
                         else
                             return;
                         

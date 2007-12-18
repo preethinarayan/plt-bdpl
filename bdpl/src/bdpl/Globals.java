@@ -18,5 +18,5 @@ public class Globals
         little_endian=true;
     }
     /** is everything supposed to be done in little endian ? */
-    public static boolean little_endian;
+    public static boolean little_endian=true;
 }
