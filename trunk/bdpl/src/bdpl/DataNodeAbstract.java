@@ -128,7 +128,6 @@ abstract public class DataNodeAbstract implements DataNode
             if(_else_ast!= null) par.stmts (_else_ast);
         }
         
-        
     }
     
     
