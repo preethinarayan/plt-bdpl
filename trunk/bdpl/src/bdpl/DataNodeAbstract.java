@@ -88,7 +88,7 @@ abstract public class DataNodeAbstract implements DataNode
             {
                 
                 int f=((DataNodeAbstract)par.expr (_fieldsize_ast)).get_int_value ();
-                if( f>0 && (_bitsize<=0 || f<_bitsize  ) )
+                if( f>=0 && (_bitsize<=0 || f<_bitsize  ) )
                 {
                     _fieldsize=f;
                 }
