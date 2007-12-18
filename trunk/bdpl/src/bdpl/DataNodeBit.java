@@ -26,7 +26,7 @@ public class DataNodeBit extends DataNodeAbstract
     }
 
     
-    public void assign(DataNodeAbstract rhs)
+    public void assign(DataNodeAbstract rhs) throws Exception
     {
         String b=rhs.get_bitsequence_value ();
         int a=0;
