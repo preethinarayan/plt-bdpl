@@ -28,7 +28,7 @@ public interface DataNode
     public void set_fieldsize(AST fieldsize);
     
     /** set valid ok nok */
-    public void set_verify_then_else(AST verify_ast,AST then_ast , AST else_ast);
+    public void set_verify_then_else(AST verify_ast,AST then_ast , AST else_ast) throws Exception;
     
     /** sets the contaxt for evaluation of expressions for this data node*/
     public void set_context(VariableSymbolTable context);
