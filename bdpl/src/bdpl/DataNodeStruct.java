@@ -81,10 +81,23 @@ public class DataNodeStruct extends DataNodeAbstract
                 if(((DataNodeArray)d).get_ast()!=null)
                 {
                     child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_ast()  );
+                    child._else_ast=d._else_ast;
+                    child._context=d._context;
+                    child._fieldsize_ast=d._fieldsize_ast;
+                    child._then_ast=d._then_ast;
+                    child._verify_ast=d._verify_ast;
+                    child._fieldsize=d._fieldsize;
+
                 }
                 else
                 {
                     child=new DataNodeArray( ((DataNodeArray)d).get_dummy(),((DataNodeArray)d).get_size()  );
+                    child._else_ast=d._else_ast;
+                    child._context=d._context;
+                    child._fieldsize_ast=d._fieldsize_ast;
+                    child._then_ast=d._then_ast;
+                    child._verify_ast=d._verify_ast;
+                    child._fieldsize=d._fieldsize;
                 }
                 ((DataNodeArray)child).set_scope (_scope_var_pointer);
                 ((DataNodeArray)child).set_is_unlimited ( ((DataNodeArray)d).get_is_unlimited ());

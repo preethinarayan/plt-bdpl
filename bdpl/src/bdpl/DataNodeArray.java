@@ -49,7 +49,7 @@ public class DataNodeArray extends DataNodeAbstract
      */
     public DataNodeArray (DataNodeArray node)
     {
-        super();
+        super(node);
         init();    
         _dummy=node._dummy;
         _fieldsize_ast=node._fieldsize_ast;
@@ -65,7 +65,6 @@ public class DataNodeArray extends DataNodeAbstract
         _isunlimited=false;
         _delayed_size=true;
         _size_evaled=false;
-        _scope_var_pointer=null;
         _dummy=dummy;
     }
     public DataNodeArray (DataNodeAbstract dummy,int arr_size) throws Exception
@@ -357,7 +356,7 @@ public class DataNodeArray extends DataNodeAbstract
         int num_reading=0;
         
         /** if our fieldsize if less than what the children want,
-         * we will :
+         * we will 
          *  1) make a copy of the data limited to ourfieldsize bits
          *  2) get the children to populate on this copy
          *  3) in the end detect how much input the children have consumed 
