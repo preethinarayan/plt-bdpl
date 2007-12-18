@@ -1,0 +1,21 @@
+struct A
+{
+	byte a1 satisfies {a1>=97 && a1<=122} 
+		then 
+		{
+			print("Structure ");
+			print($#a);
+			print(" valid ::" ); 
+		}
+		else 
+		{
+			print("Structure ");
+			print($#a);
+			print(" invalid ::" ); 
+		};
+	byte a2;
+}[*] a;
+
+file "x:/test/test.dat" inp_file;
+read(inp_file,a);
+
