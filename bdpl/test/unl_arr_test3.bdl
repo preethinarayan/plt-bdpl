@@ -7,7 +7,7 @@ struct outer
 	{
 		byte[10+size/2] n_bytes;
 	}[*] c;
-	type struct cc ccc;
+	type struct inner inner_var;
 
 }[*] b;
 
