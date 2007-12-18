@@ -38,7 +38,7 @@ public class BdplMain
             }
             else
             {
-                input = new FileInputStream("x:/test/mp3_id3.bdl");
+                input = new FileInputStream("x:/test/tutorial.bdl");
             }
  
             BdplLexer lexer = new BdplLexer(input);
