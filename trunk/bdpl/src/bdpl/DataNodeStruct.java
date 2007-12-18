@@ -369,7 +369,7 @@ public class DataNodeStruct extends DataNodeAbstract
     /** bit size cache */
     private Cache _bsize_cache;
     
-    /** cache calculated int value */
+    /** cache calculated int value */ 
     private Cache _intvalue_cache;
     
     private VariableSymbolTable _scope_var_pointer;
