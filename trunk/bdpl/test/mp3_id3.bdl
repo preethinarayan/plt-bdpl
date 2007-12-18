@@ -18,15 +18,10 @@ struct MP3_FILE
 
 	struct FRAME
 	{
-		byte[4] frameheader_id satisfies {1} then {
+		byte[4] frameheader_id satisfies {frameheader_id[0] == 0x54} then {
 			framesize = 0;
-			print(frameheader_id[0]); print("Hello!::");
-		}else{
-			print("World");
-		}
-		;
+		}else{		};
 		byte[4] size satisfies {1} then {
-			print("hello world");
 			framesize = size[0];
 			framesize = ((framesize << 8) | (size[1] & 0xFF));
 			framesize = ((framesize << 8) | (size[2] & 0xFF));
@@ -36,13 +31,29 @@ struct MP3_FILE
     	struct TEXT_FRAME
 	    {
 		    byte encoding;
-		    byte[framesize-1] string;
+		    byte[framesize-2] string satisfies {frameheader_id[0] == 0x54} then {
+				if(frameheader_id[1] == 0x49) {
+					print("Song Title: ");printstring(string);print("::");
+				}
+				if(frameheader_id[1] == 0x41) {
+					print("Album: ");printstring(string);print("::");
+				}
+				if(frameheader_id[1] == 0x43 && frameheader_id[2] == 0x4F && frameheader_id[3] == 0x4E) {
+					print("Genre: ");printstring(string);print("::");
+				}
+				if(frameheader_id[1] == 0x50 && frameheader_id[2] == 0x45 && frameheader_id[3] == 0x32) {
+					print("Performer: ");printstring(string);print("::");
+				}
+				if(frameheader_id[1] == 0x43 && frameheader_id[2] == 0x4F && frameheader_id[3] == 0x4D) {
+					print("Composer: ");printstring(string);print("::");
+				}
+			};
+			byte empty;
 	    }text;
-    }[*]textFrame ;//(fieldsize tagsize);
-	//byte[*] data;
+    }[*]textFrame;
+	byte[*] data;
 }mp3_file;
 
-file "x:/test/mp3_test.mp3" inp_file;
+file "x:/test/ChaleChalo.mp3" inp_file;
 read(inp_file,mp3_file);
-print(mp3_file.textFrame[0]);
 
