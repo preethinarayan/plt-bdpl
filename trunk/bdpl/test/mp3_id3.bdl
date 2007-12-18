@@ -1,3 +1,6 @@
+int tagsize;
+int framesize;
+
 struct MP3_FILE
 {
 	struct MP3_ID3
@@ -5,23 +8,40 @@ struct MP3_FILE
 		byte[3]	id;
 		byte[2]	version;
 		byte flags;
-		int size;
+		byte[4] size satisfies {1} then {
+			tagsize = size[0];
+			tagsize = ((tagsize << 7) | (size[1] & 0x7F));
+			tagsize = ((tagsize << 7) | (size[2] & 0x7F));
+			tagsize = ((tagsize << 7) | (size[3] & 0x7F));
+		};
 	}mp3_id3;
 
 	struct FRAME
 	{
-		byte[4] frame_id;
-		int size;
+		byte[4] frameheader_id satisfies {1} then {
+			framesize = 0;
+			print(frameheader_id[0]); print("Hello!::");
+		}else{
+			print("World");
+		}
+		;
+		byte[4] size satisfies {1} then {
+			framesize = size[0];
+			framesize = ((framesize << 8) | (size[1] & 0xFF));
+			framesize = ((framesize << 8) | (size[2] & 0xFF));
+			framesize = ((framesize << 8) | (size[3] & 0xFF));
+		};
 		byte[2] flags;
     	struct TEXT_FRAME
 	    {
 		    byte encoding;
-		    byte[size/100] string;
+		    byte[framesize-1] string;
 	    }text;
-    }[10]textFrame;
+    }[*]textFrame ;//(fieldsize tagsize);
+	//byte[*] data;
 }mp3_file;
 
-file "x:/test/test_id3.dat" inp_file;
-print("finished reading input file ... printing output");
+file "x:/test/mp3_test.mp3" inp_file;
 read(inp_file,mp3_file);
-print(a);
+print(mp3_file.textFrame[0]);
+
