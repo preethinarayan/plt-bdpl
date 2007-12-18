@@ -15,6 +15,17 @@ public class Logical implements BdplLexerTokenTypes{
         _typeChecker = typeChecker;
     }
     
+    public boolean shortckt(int operator, DataNodeAbstract operand) throws Exception{
+        if(!TypeChecker.isBasic(operand.get_type_name())){
+            throw new BdplException(operand.get_name()+" is not of a basic type");
+        }
+        
+        if(LAND == operator && operand.get_int_value()==0) return true;
+        if(LOR == operator && operand.get_int_value()!=0) return true;
+        
+        return false;
+    }
+    
     public DataNodeAbstract eval(
             int operator,
             DataNodeAbstract operand1,
