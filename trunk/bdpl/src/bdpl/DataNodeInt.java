@@ -123,7 +123,11 @@ public class DataNodeInt extends DataNodeAbstract
                         if(bits.length ()>8)
                             bits=bits.substring (0,bits.length ()-8);
                         else
-                            return;
+                        {
+                            evaluate_verify_then_else ();
+                            return ;
+                        }
+
                         
                     }
                     else
