@@ -237,7 +237,7 @@ public class DataNodeArray extends DataNodeAbstract
     public void set_is_unlimited(boolean isunlimited) {_isunlimited=isunlimited;}
     
     /** returns size of the array in num of elements */
-    public int get_size ()
+    public int get_size () throws Exception
     {
         if(_delayed_size && !_size_evaled)
         {
@@ -407,25 +407,18 @@ public class DataNodeArray extends DataNodeAbstract
         
     }
     
-    private void evaluate_and_resize()
+    private void evaluate_and_resize () throws Exception
     {
         if(_delayed_size)
         {
-            BdplTreeParser par=new BdplTreeParser();
+            BdplTreeParser par=new BdplTreeParser ();
             if(_scope_var_pointer != null)
                 par.varSymbTbl=_scope_var_pointer;
             
-            try
+            int siz=((DataNodeAbstract)par.expr (_arr_size_expr_ast)).get_int_value ();
+            if(siz>_children.size ())
             {
-                int siz=((DataNodeAbstract)par.expr (_arr_size_expr_ast)).get_int_value ();
-                if(siz>_children.size ())
-                {
-                    add_n_elements (siz-_children.size ());
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace ();
+                add_n_elements (siz-_children.size ());
             }
             
         }
