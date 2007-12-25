@@ -15,11 +15,11 @@
     <mkdir dir="${jar}"/>
   </target>
 
-  <target name="dot_g" depends="init">
-    <java  classpath="${antlr_lib}" classname="antlr.Tool" args=" -o ${src} src/bdpl/Bdpl.g"></java>
+  <target name="antlr" depends="init">
+    <java  classpath="${antlr_lib}" classname="antlr.Tool" args=" -o ${src} ${src}/Bdpl.g"></java>
     </target>
 
-  <target name="compile" depends="dot_g">
+  <target name="compile" depends="antlr">
     <description>
       Compile the java source files
     </description>	
@@ -71,6 +71,11 @@
   <target name="clean">
     <delete dir="${build}"/>
     <delete dir="${jar}"/>
+    <delete>
+        <fileset dir="${src}" includes="BdplLexer**.*"/>
+        <fileset dir="${src}" includes="BdplParser**.*"/>
+        <fileset dir="${src}" includes="BdplTreeParser**.*"/>
+    </delete>
   </target>
   
   <target name="testall" depends="jar">
