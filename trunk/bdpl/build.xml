@@ -15,13 +15,15 @@
     <mkdir dir="${jar}"/>
   </target>
 
-  <antlr target="src/bdpl/bdpl.g" outputdirectory="src/bdpl"/>
+  <target name="dot_g" depends="init">
+    <java  classpath="${antlr_lib}" classname="antlr.Tool" args=" -o ${src} src/bdpl/Bdpl.g"></java>
+    </target>
 
-  <target name="compile" depends="init">
+  <target name="compile" depends="dot_g">
     <description>
       Compile the java source files
     </description>	
-    <javac  debug="yes" srcdir="${src}" destdir="${build}"/>
+    <javac classpath="${antlr_lib}" debug="yes" srcdir="${src}" destdir="${build}"/>
   </target>
 
   <target name="jar" depends="compile">
