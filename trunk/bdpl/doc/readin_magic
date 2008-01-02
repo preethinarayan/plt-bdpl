@@ -1,0 +1,50 @@
+// define a new kind of int that takes care of endianness
+struct Int 
+{
+    byte[4]  _data satisfies {1} 
+        then 
+        {
+            if(endianness == 0) // little
+                //make _data little endian
+            else if (endianness == 1 ) // big
+                // make _data big endian
+            else if (endianness == 2 ) // middle
+                // make data middle endian
+        }
+};
+
+// use it like this :
+struct some_file
+{
+    Int aa_from_file;
+    // And define a regular int with fieldize 0 which holds a “usable” int
+    // value. Note that the above Int's integer value will always be usable is
+    // we first assign it to a reat int.
+    int aa_int_val (fieldsize 0 ) satisfies {1} 
+        then {aa_int_val=aa_from_file;} ;
+}
+
+struct magic_rule
+{
+    byte[*] offset satisfies { offset[$#offset] == '\t'} 
+        then { stop };  // offset spec has \t as its last char
+                        // we wil need to parse the text offset
+                        // which would be something like 0123,
+                        // 123 or 0x123 
+
+    byte[*] type satisfies { type[$#type] == '\t' }
+        then { stop };  // type will be a string from a specified set
+                        // we will need to convert it to an int
+                        // or implement == operator for strings 
+                        // (byte arrays) which should not be too hard.
+                        // also, assume for the moment that "type" 
+                        // is not a keyword in bdpl.
+
+    byte[*] optional_rule   // this field is present if offset[0] is >
+                            // we will need some way to specify optinal 
+                            // fields. this field will also have the \t
+                            // test as above
+    byte[*] value satisfies { value[$#value] == '\t' }
+            then { stop };  // matching in the dest file is going to be tricky
+                            // each "type" will have its own stopping condition
+    byte[*] string satisfies { string[$#string] == '                            
