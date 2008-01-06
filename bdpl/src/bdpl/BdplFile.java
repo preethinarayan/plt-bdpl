@@ -34,6 +34,9 @@ public interface BdplFile
     
     /* @return number of bits that can be read from this file*/
     public int num_readable_bits();    
+    
+    /** jump the current pointer to this bit in the the file */
+    public void set_current_pointer(int bit_pointer) throws Exception;
 
     
 }
