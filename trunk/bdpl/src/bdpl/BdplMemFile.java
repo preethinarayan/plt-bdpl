@@ -15,9 +15,8 @@ import java.util.*;
 public class BdplMemFile implements BdplFile
 {
     
-    private String _data;
-    private String _l_data;
-    private int _bit_pointer; // pointer to the next readable element
+    protected String _data;
+    protected String _l_data;
     private void init()
     {
         _data="";
@@ -31,25 +30,6 @@ public class BdplMemFile implements BdplFile
         _data=bitsequence;
     }
 
-    
-    /** make a file of n bits from the given file without incrementing its pointer */
-    public BdplMemFile (BdplFile f,int n) throws Exception
-    {
-        init();
-        for(int i=0;i<n;i++)
-        {
-            if( f.get_nth_readable_bit (i))
-            {
-                _data+='1';
-            }
-            else
-            {
-                _data+='0';
-            }
-            
-        }
-
-    }
     
     public String read_n_bytes (int n) throws Exception
     {
