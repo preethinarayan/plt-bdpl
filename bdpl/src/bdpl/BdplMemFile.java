@@ -16,10 +16,12 @@ public class BdplMemFile implements BdplFile
 {
     
     private String _data;
+    private String _l_data;
     private int _bit_pointer; // pointer to the next readable element
     private void init()
     {
         _data="";
+        _l_data="";
     }
     
     /** Creates a new instance of BdplMemFile from a bitsequence*/
@@ -58,6 +60,7 @@ public class BdplMemFile implements BdplFile
         {
             ret += (char)Byte.parseByte (_data.substring (i*8,(i+1)*8),2);
         }
+        _l_data=_l_data+_data.substring(0,n*8);
         _data=_data.substring (n*8);
         return ret;
     }
@@ -77,7 +80,7 @@ public class BdplMemFile implements BdplFile
             ret=_data;
             _data="";
         }
-        
+        _l_data+=ret;
         return ret;
     }
     
@@ -98,6 +101,16 @@ public class BdplMemFile implements BdplFile
     public int num_readable_bits()
     {
         return _data.length ();
+    }
+    
+    public void set_current_pointer(int bit_offset) throws Exception
+    {
+        if(bit_offset > _data.length()+_l_data.length())
+            throw new Exception("bit offset too large");
+        // can be done better
+        _data=_l_data+_data;
+        _l_data=_data.substring(0,bit_offset);
+        _data=_data.substring(bit_offset);
     }
     
 }//end of class

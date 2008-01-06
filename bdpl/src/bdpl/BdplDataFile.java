@@ -59,23 +59,7 @@ public class BdplDataFile implements BdplFile
         }
 
     } 
-    
-    /** make a file froma bitsequence. limit to max_size bits */
-    public BdplDataFile (String bitsequence,int max_size) throws BdplException
-    {
-        _data=new ArrayList(); 
-        _bit_pointer=-1; 
-
-    }    
-    
-    
-    public BdplDataFile (BdplDataFile f,int maxsize) throws BdplException
-    {
-        _data=new ArrayList(); 
-        _bit_pointer=-1; 
-
-    }
-    
+        
     public String read_n_bytes (int n) throws Exception
     {
         String ret="";
@@ -166,6 +150,13 @@ public class BdplDataFile implements BdplFile
     public int num_readable_bits()
     {
         return (8*_data.size ())-_bit_pointer;
+    }
+    
+    public void set_current_pointer(int bit_offset) throws Exception
+    {
+        if(bit_offset > 8*_data.size())
+            throw new Exception("bit offset too large");
+        _bit_pointer=bit_offset;
     }
     
 }//end of class

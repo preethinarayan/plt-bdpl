@@ -178,6 +178,7 @@ program
 stmt
     : declstmt 
     | execstmt
+    | filestmt
     ;
 
 expr
@@ -192,6 +193,9 @@ append_expr
 
 assign_expr
     : term ASSIGN^ tern_expr
+    ;
+filestmt
+    :"file"^ STRING ID SEMICOLON!
     ;
 
 execstmt
@@ -243,7 +247,6 @@ declstmt
         (valid_check)? 
         (optional_check)? 
         SEMICOLON!
-    | "file"^ STRING ID SEMICOLON!
     ;
 
 tag
@@ -434,6 +437,7 @@ class BdplTreeParser extends TreeParser;
     boolean continueset = false;
     int loopcounter = 0;
     BdplFile inputFile;
+    FileSymbolTable fileSymbTbl;
 }
 
 program throws Exception
@@ -512,7 +516,7 @@ stmts throws Exception
                                         throw new BdplException("'continue' is only permitted within the body of a loop");
                                     }})
     | #("read" source=id dest=expr  { 
-//                                      inputFile = fileTable.get(source);
+                                        inputFile = fileSymbTbl.get(source);
                                         dest.populate(inputFile);
       })
     | #("write"                     {})
@@ -546,7 +550,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
     String name;
     String id;
 }
-    : #("file" name=string id=id {inputFile = new BdplDataFile(name);}) 
+    : #("file" name=string id=id {inputFile = new BdplDataFile(name);fileSymbTbl.insert(name,inputFile);} ) 
     | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) 
         (#(IDEN id=id 
         {
