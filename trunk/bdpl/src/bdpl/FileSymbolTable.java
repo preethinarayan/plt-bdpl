@@ -67,9 +67,9 @@ public class FileSymbolTable
         return _the_table.containsKey (id);
     }
     
-    public void set_current_file_ptr(int offset)
+    public void set_current_file_pointer(int offset) throws Exception
     {
-
+        _current_file.set_current_pointer (offset);
     }
     
 }
