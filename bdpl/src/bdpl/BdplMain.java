@@ -47,7 +47,7 @@ public class BdplMain
             else
             {
                 //usage ();
-                input = new FileInputStream ("x:/test/fieldsize_test3.bdl");
+                input = new FileInputStream ("x:/test/objdump.bdl");
                 
             }
             

@@ -122,11 +122,13 @@ abstract public class DataNodeAbstract implements DataNode
         
         if (_verify_ast != null && ((DataNodeAbstract)par.expr (_verify_ast)).get_int_value ()!=0)
         {
-            if(_then_ast!= null) par.stmts (_then_ast);
+            if(_then_ast!= null) 
+                par.stmts (_then_ast);
         }
         else
         {
-            if(_else_ast!= null) par.stmts (_else_ast);
+            if(_else_ast!= null) 
+                par.stmts (_else_ast);
         }
         
     }
