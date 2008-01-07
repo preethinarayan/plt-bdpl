@@ -1,4 +1,160 @@
-ARRAY of TYPE_BYTE
-[
-	0 => 0xd,
-]
+0x6struct:Outer
+{
+	fz => 0x6,
+	a => ARRAY of struct:A
+	[
+		0 => struct:A
+		{
+			xx => ARRAY of struct:C
+			[
+				0 => struct:C
+				{
+					bb => 0x28,
+				}
+				,
+				1 => struct:C
+				{
+					bb => 0xa,
+				}
+				,
+				2 => struct:C
+				{
+					bb => 0x4,
+				}
+				,
+				3 => struct:C
+				{
+					bb => 0x21,
+				}
+				,
+				4 => struct:C
+				{
+					bb => 0x28,
+				}
+				,
+				5 => struct:C
+				{
+					bb => 0x22,
+				}
+				,
+			]
+			,
+		}
+		,
+		1 => struct:A
+		{
+			xx => ARRAY of struct:C
+			[
+				0 => struct:C
+				{
+					bb => 0xa,
+				}
+				,
+				1 => struct:C
+				{
+					bb => 0x23,
+				}
+				,
+				2 => struct:C
+				{
+					bb => 0x8,
+				}
+				,
+				3 => struct:C
+				{
+					bb => 0x3a,
+				}
+				,
+				4 => struct:C
+				{
+					bb => 0x10,
+				}
+				,
+				5 => struct:C
+				{
+					bb => 0x24,
+				}
+				,
+			]
+			,
+		}
+		,
+		2 => struct:A
+		{
+			xx => ARRAY of struct:C
+			[
+				0 => struct:C
+				{
+					bb => 0x29,
+				}
+				,
+				1 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				2 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				3 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				4 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				5 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+			]
+			,
+		}
+		,
+		3 => struct:A
+		{
+			xx => ARRAY of struct:C
+			[
+				0 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				1 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				2 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				3 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				4 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+				5 => struct:C
+				{
+					bb => 0x0,
+				}
+				,
+			]
+			,
+		}
+		,
+	]
+	,
+}

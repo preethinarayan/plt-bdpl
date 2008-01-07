@@ -1,4 +1,32 @@
-ARRAY of TYPE_BYTE
-[
-	0 => 0xd,
-]
+struct:aa
+{
+	asb => ARRAY of struct:small_byte
+	[
+		0 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		1 => struct:small_byte
+		{
+			b => 0xd,
+		}
+		,
+		2 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		3 => struct:small_byte
+		{
+			b => 0x1,
+		}
+		,
+		4 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+	]
+	,
+}
