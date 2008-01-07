@@ -17,7 +17,6 @@ struct symbol_table_entry
 	byte[2] st_shndx;
 }Elf32_Sym;
 
-
 struct elf_file
 {
 
@@ -36,7 +35,7 @@ struct elf_file
 		byte[2]		e_shentsize;
 		byte[2]		e_shnum;
 		byte[2]		e_shstrndx;
-	}elf_hd satisfies {1} then {$$=elf_hd.e_shoff*8;}; // jump to sh_off once this structure is read
+	}elf_hd satisfies {1} then {$$=elf_hd.e_shoff*8;}; // jump to section header once this structure is read
 
 	struct section_header
 	{
@@ -61,22 +60,23 @@ struct elf_file
 					strtab_size=sh_size;
 			};
 
-
 		int sh_link;
 		int sh_info;
 		int sh_addralign;
 		int sh_entsize;
-	} [elf_hd.e_shnum[0]] se_array 
-		satisfies{1} then {$$=symtab_offset*8;}; // jump to symbol table
-	type struct symbol_table_entry[symtab_size/16] symbol_table 
-		satisfies{1} then {$$=strtab_offset*8;}; // jump to string table
-	byte[strtab_size] string_table;
+	} [elf_hd.e_shnum[0]] se_array				 				// read the section header entries into the array
+		satisfies{1} then {$$=symtab_offset*8;}; 				// and then jump to symbol table
+	type struct symbol_table_entry[symtab_size/16] symbol_table // read symbol table 
+		satisfies{1} then {$$=strtab_offset*8;}; 				// and jump to string table
+	byte[strtab_size] string_table; 							// read the string table
 
 }elf_file;
 
 file "x:/test/test.o" inp_file;
 read(inp_file,elf_file);
 
+// print the names of symbols found in the symbl table
+// by looking up the names from the string table
 for(i=0;i<$#elf_file.symbol_table;i=i+1)
 {
 	if(elf_file.symbol_table[i].st_name != 0 )
@@ -97,6 +97,5 @@ for(i=0;i<$#elf_file.symbol_table;i=i+1)
 
 		print("::");
 	}
-        //print(elf_file_1.symbol_table[i]);
+    //print(elf_file_1.symbol_table[i]);
 }
-
