@@ -16,6 +16,16 @@ public class Globals
     public Globals()
     {
         little_endian=true;
+        VariableSymbolTable varSymbTbl = new VariableSymbolTable ();
+        FileSymbolTable fileSymbTbl=new FileSymbolTable ();
+        TypeSymbolTable typeSymbTbl = new TypeSymbolTable ();
+        
+        TypeConverter typeConverter = new TypeConverter ();
+        TypeChecker typeChecker = new TypeChecker (typeSymbTbl,typeConverter);
+        Arithmetic arith = new Arithmetic (typeChecker);
+        Relational relate = new Relational (typeChecker);
+        Logical logic = new Logical (typeChecker);
+        Bitwise bitwise = new Bitwise (typeChecker);
     }
     /** is everything supposed to be done in little endian ? */
     public static boolean little_endian=true;

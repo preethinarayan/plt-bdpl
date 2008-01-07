@@ -67,7 +67,10 @@ public class DataNodeBit extends DataNodeAbstract
         String s=Integer.toBinaryString (_data);
         return ""+s.charAt (0);
     }
-    public int get_int_value() {return _data;}
+    public int get_int_value() 
+    {
+        return _data;
+    }
     
     public String print()
     {
