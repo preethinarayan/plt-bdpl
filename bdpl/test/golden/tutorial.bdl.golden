@@ -1,0 +1,68 @@
+ARRAY of struct:outer
+[
+	0 => struct:outer
+	{
+		size => 0xd,
+		c => ARRAY of struct:inner
+		[
+			0 => struct:inner
+			{
+				n_bytes => ARRAY of TYPE_BYTE
+				[
+					0 => 0x41,
+					1 => 0x42,
+					2 => 0x43,
+					3 => 0x44,
+					4 => 0x45,
+					5 => 0x46,
+					6 => 0x47,
+					7 => 0x48,
+					8 => 0x49,
+					9 => 0x4a,
+					10 => 0x4b,
+					11 => 0x4c,
+					12 => 0x4d,
+					13 => 0x4e,
+					14 => 0x4f,
+					15 => 0x50,
+				]
+				,
+			}
+			,
+			1 => struct:inner
+			{
+				n_bytes => ARRAY of TYPE_BYTE
+				[
+					0 => 0x51,
+					1 => 0x52,
+					2 => 0x53,
+					3 => 0x54,
+					4 => 0x55,
+					5 => 0x56,
+					6 => 0x57,
+					7 => 0x58,
+					8 => 0x59,
+					9 => 0x5a,
+					10 => 0xd,
+					11 => 0xa,
+					12 => 0x0,
+					13 => 0x0,
+					14 => 0x0,
+					15 => 0x0,
+				]
+				,
+			}
+			,
+		]
+		,
+		inner_var => struct:inner
+		{
+			n_bytes => ARRAY of TYPE_BYTE
+			[
+			]
+			,
+		}
+		,
+	}
+	,
+]

@@ -1,0 +1,297 @@
+struct:aa
+{
+	asb => ARRAY of struct:small_byte
+	[
+		0 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		1 => struct:small_byte
+		{
+			b => 0xd,
+		}
+		,
+		2 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		3 => struct:small_byte
+		{
+			b => 0x1,
+		}
+		,
+		4 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		5 => struct:small_byte
+		{
+			b => 0x2,
+		}
+		,
+		6 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		7 => struct:small_byte
+		{
+			b => 0x3,
+		}
+		,
+		8 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		9 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		10 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		11 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		12 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		13 => struct:small_byte
+		{
+			b => 0x6,
+		}
+		,
+		14 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		15 => struct:small_byte
+		{
+			b => 0x7,
+		}
+		,
+		16 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		17 => struct:small_byte
+		{
+			b => 0x8,
+		}
+		,
+		18 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		19 => struct:small_byte
+		{
+			b => 0x9,
+		}
+		,
+		20 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		21 => struct:small_byte
+		{
+			b => 0xa,
+		}
+		,
+		22 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		23 => struct:small_byte
+		{
+			b => 0xb,
+		}
+		,
+		24 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		25 => struct:small_byte
+		{
+			b => 0xc,
+		}
+		,
+		26 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		27 => struct:small_byte
+		{
+			b => 0xd,
+		}
+		,
+		28 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		29 => struct:small_byte
+		{
+			b => 0xe,
+		}
+		,
+		30 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		31 => struct:small_byte
+		{
+			b => 0xf,
+		}
+		,
+		32 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		33 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		34 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		35 => struct:small_byte
+		{
+			b => 0x1,
+		}
+		,
+		36 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		37 => struct:small_byte
+		{
+			b => 0x2,
+		}
+		,
+		38 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		39 => struct:small_byte
+		{
+			b => 0x3,
+		}
+		,
+		40 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		41 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		42 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		43 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		44 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		45 => struct:small_byte
+		{
+			b => 0x6,
+		}
+		,
+		46 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		47 => struct:small_byte
+		{
+			b => 0x7,
+		}
+		,
+		48 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		49 => struct:small_byte
+		{
+			b => 0x8,
+		}
+		,
+		50 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		51 => struct:small_byte
+		{
+			b => 0x9,
+		}
+		,
+		52 => struct:small_byte
+		{
+			b => 0x5,
+		}
+		,
+		53 => struct:small_byte
+		{
+			b => 0xa,
+		}
+		,
+		54 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		55 => struct:small_byte
+		{
+			b => 0xd,
+		}
+		,
+		56 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		57 => struct:small_byte
+		{
+			b => 0xa,
+		}
+		,
+	]
+	,
+}
