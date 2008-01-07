@@ -46,7 +46,9 @@ public class BdplMain
             }
             else
             {
-                usage ();
+                //usage ();
+                input = new FileInputStream ("x:/test/fieldsize_test3.bdl");
+                
             }
             
             BdplLexer lexer = new BdplLexer (input);
@@ -56,9 +58,9 @@ public class BdplMain
             
             
             CommonAST parseTree = (CommonAST)parser.getAST ();
-            //System.out.println(parseTree.toStringList());
-            //ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
-            //frame.setVisible(false);
+            // System.out.println(parseTree.toStringList());
+            // ASTFrame frame = new ASTFrame("AST for the BDPL Parser", parseTree);
+            // frame.setVisible(true);
             
             
             BdplTreeParser treeParser = new BdplTreeParser ();

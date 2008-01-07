@@ -65,13 +65,12 @@ ROR : ">->";
 QUESTION :'?';
 APPEND : "<-";
 INDEX : "$#";
-BYTEOFFSET : '$';
-POUND : '#';
 LAND : "&&";
 BAND : '&';
 BIOR : '|';
 BEOR : '^';
 LOR : "||";
+CUR_EXPR: "$$";
 
 ID
     : (LETTER | UNDERSCORE)(LETTER|DIGIT|'_')*
@@ -165,8 +164,9 @@ tokens{
     INCR;
     ARRAY_SIZE;
     DECL;
-	LVALUE;
+    LVALUE;
     STRUCT_NAME;
+    CUR_ASSIGN;
 }
 
 program
@@ -184,7 +184,12 @@ stmt
 expr
     : (term ASSIGN^ tern_expr) => assign_expr
     | (term APPEND^ tern_expr) => append_expr
+    | (CUR_EXPR ! ASSIGN! tern_expr) => cur_expr 
     | tern_expr
+    ;
+
+cur_expr 
+    : CUR_EXPR ! ASSIGN! tern_expr { #cur_expr=#([CUR_ASSIGN,"CUR_ASSIGN"],#cur_expr);}
     ;
 
 append_expr
@@ -369,13 +374,13 @@ child_term
     : term
     | "("! expr ")"!
     | "$#"^ lvalue
-    | POUND^ lvalue_term
+    | CUR_EXPR
     | NUM
     ;
 
 term
     : lvalue
-    | BYTEOFFSET^ lvalue_term
+//    | BYTEOFFSET^ lvalue_term
     ;
 	
 lvalue
@@ -424,20 +429,22 @@ object
 //
 class BdplTreeParser extends TreeParser;
 {
-    public VariableSymbolTable varSymbTbl = new VariableSymbolTable();
-    TypeSymbolTable typeSymbTbl = new TypeSymbolTable();
-    TypeConverter typeConverter = new TypeConverter();
-    TypeChecker typeChecker = new TypeChecker(typeSymbTbl,typeConverter);
-    Arithmetic arith = new Arithmetic(typeChecker);
-    Relational relate = new Relational(typeChecker);
-    Logical logic = new Logical(typeChecker);
-    Bitwise bitwise = new Bitwise(typeChecker);
+    public VariableSymbolTable varSymbTbl   = Globals.varSymbTbl;
+    FileSymbolTable fileSymbTbl             = Globals.fileSymbTbl;
+    TypeSymbolTable typeSymbTbl             = Globals.typeSymbTbl;
+    TypeConverter typeConverter             = Globals.typeConverter;
+    TypeChecker typeChecker                 = Globals.typeChecker;
+    Arithmetic arith                        = Globals.arith;
+    Relational relate                       = Globals.relate;
+    Logical logic                           = Globals.logic;
+    Bitwise bitwise                         = Globals.bitwise;
+
     DataNodeAbstract r;
     boolean breakset = false;
     boolean continueset = false;
     int loopcounter = 0;
-    BdplFile inputFile;
-    FileSymbolTable fileSymbTbl;
+    BdplFile inputFile=null;
+    
 }
 
 program throws Exception
@@ -550,7 +557,7 @@ decls returns [DataNodeAbstract r=null] throws Exception
     String name;
     String id;
 }
-    : #("file" name=string id=id {inputFile = new BdplDataFile(name);fileSymbTbl.insert(name,inputFile);} ) 
+    : #("file" name=string id=id {inputFile = new BdplDataFile(name);fileSymbTbl.insert(id,inputFile);} ) 
     | #(ARRAY  (type:.) (#(ARRAY_SIZE array_size:.)) 
         (#(IDEN id=id 
         {
@@ -853,8 +860,8 @@ expr returns [DataNodeAbstract r] throws Exception
     r = new DataNodeBit();
     String y,z; 
 }
-    : #(BYTEOFFSET  a=expr        {})
-    | #(DOT         a=expr b=expr {})
+    //: #(BYTEOFFSET  a=expr        {})
+    : #(DOT         a=expr b=expr {})
     | #(PLUS        a=expr b=expr {r = arith.eval(PLUS,a,b);})
     | #(MINUS       a=expr b=expr {r = arith.eval(MINUS,a,b);})
     | #(STAR        a=expr b=expr {r = arith.eval(STAR,a,b);})
@@ -878,7 +885,7 @@ expr returns [DataNodeAbstract r] throws Exception
     | #(BIOR        a=expr b=expr {r = bitwise.eval(BIOR,a,b);})
     | #(BEOR        a=expr b=expr {r = bitwise.eval(BEOR,a,b);})
     | #(APPEND      a=expr b=expr {})
-	| #("$#"        arr:LVALUE {
+    | #("$#"        arr:LVALUE {
 						r = expr(#arr);
 						if(r instanceof DataNodeArray){
 							r = new DataNodeInt(((DataNodeArray)r).get_size());
@@ -886,7 +893,17 @@ expr returns [DataNodeAbstract r] throws Exception
 							throw new BdplException("Size can only be applied on an array");
 						}
 					})
-    | #(ASSIGN      lhs:LVALUE b=expr {r = expr(#lhs); r.assign(b);})
+    | #(CUR_EXPR { r=new DataNodeInt(fileSymbTbl.get_current_file_pointer());} )
+    | #(ASSIGN   lhs:LVALUE b=expr {r = expr(#lhs); r.assign(b);})
+    | #(CUR_ASSIGN  b=expr 
+        { 
+            if(b.get_int_value() >=0 ) 
+                fileSymbTbl.set_current_file_pointer(b.get_int_value());
+            else
+                System.err.println("Cant set file pointer to -ve value "+b.get_int_value());
+              
+        }
+       )
     | #("=>"        y=string z=string {})
     | #(lval:LVALUE {}     
         (

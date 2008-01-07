@@ -12,7 +12,7 @@ set files [glob *.bdl]
 
 # Loop through all the files that have been found
 foreach f $files { 
- set result [exec -- $javaexec BdplMain -f $f 2>&1 > $f.out]
- catch {set result [exec -- diff -b -q $f.out $f.golden ]} error
+ set result [exec -- $javaexec BdplMain -f $f 2>&1 > "out/$f.out"]
+ catch {set result [exec -- diff -b -q "out/$f.out" "golden/$f.golden" ]} error
  switch $error "" "puts {Testing $f......OK}" "default" "puts {Testing $f .......FAILED $error}"
 }

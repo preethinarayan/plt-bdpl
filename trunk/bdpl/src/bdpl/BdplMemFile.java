@@ -92,6 +92,9 @@ public class BdplMemFile implements BdplFile
         _l_data=_data.substring(0,bit_offset);
         _data=_data.substring(bit_offset);
     }
-    
+    public int get_current_pointer()
+    {
+        return _l_data.length ();
+    }
 }//end of class
    
