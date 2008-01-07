@@ -1,0 +1,205 @@
+16
+24
+32
+40
+48
+56
+64
+72
+80
+88
+96
+104
+112
+120
+128
+136
+144
+152
+160
+168
+176
+184
+192
+200
+208
+216
+224
+232
+ARRAY of struct:Outer
+[
+	0 => struct:Outer
+	{
+		a => 0xd,
+		b => 0x41,
+	}
+	,
+	1 => struct:Outer
+	{
+		a => 0x41,
+		b => 0x42,
+	}
+	,
+	2 => struct:Outer
+	{
+		a => 0x42,
+		b => 0x43,
+	}
+	,
+	3 => struct:Outer
+	{
+		a => 0x43,
+		b => 0x44,
+	}
+	,
+	4 => struct:Outer
+	{
+		a => 0x44,
+		b => 0x45,
+	}
+	,
+	5 => struct:Outer
+	{
+		a => 0x45,
+		b => 0x46,
+	}
+	,
+	6 => struct:Outer
+	{
+		a => 0x46,
+		b => 0x47,
+	}
+	,
+	7 => struct:Outer
+	{
+		a => 0x47,
+		b => 0x48,
+	}
+	,
+	8 => struct:Outer
+	{
+		a => 0x48,
+		b => 0x49,
+	}
+	,
+	9 => struct:Outer
+	{
+		a => 0x49,
+		b => 0x4a,
+	}
+	,
+	10 => struct:Outer
+	{
+		a => 0x4a,
+		b => 0x4b,
+	}
+	,
+	11 => struct:Outer
+	{
+		a => 0x4b,
+		b => 0x4c,
+	}
+	,
+	12 => struct:Outer
+	{
+		a => 0x4c,
+		b => 0x4d,
+	}
+	,
+	13 => struct:Outer
+	{
+		a => 0x4d,
+		b => 0x4e,
+	}
+	,
+	14 => struct:Outer
+	{
+		a => 0x4e,
+		b => 0x4f,
+	}
+	,
+	15 => struct:Outer
+	{
+		a => 0x4f,
+		b => 0x50,
+	}
+	,
+	16 => struct:Outer
+	{
+		a => 0x50,
+		b => 0x51,
+	}
+	,
+	17 => struct:Outer
+	{
+		a => 0x51,
+		b => 0x52,
+	}
+	,
+	18 => struct:Outer
+	{
+		a => 0x52,
+		b => 0x53,
+	}
+	,
+	19 => struct:Outer
+	{
+		a => 0x53,
+		b => 0x54,
+	}
+	,
+	20 => struct:Outer
+	{
+		a => 0x54,
+		b => 0x55,
+	}
+	,
+	21 => struct:Outer
+	{
+		a => 0x55,
+		b => 0x56,
+	}
+	,
+	22 => struct:Outer
+	{
+		a => 0x56,
+		b => 0x57,
+	}
+	,
+	23 => struct:Outer
+	{
+		a => 0x57,
+		b => 0x58,
+	}
+	,
+	24 => struct:Outer
+	{
+		a => 0x58,
+		b => 0x59,
+	}
+	,
+	25 => struct:Outer
+	{
+		a => 0x59,
+		b => 0x5a,
+	}
+	,
+	26 => struct:Outer
+	{
+		a => 0x5a,
+		b => 0xd,
+	}
+	,
+	27 => struct:Outer
+	{
+		a => 0xd,
+		b => 0xa,
+	}
+	,
+	28 => struct:Outer
+	{
+		a => 0xa,
+		b => 0x0,
+	}
+	,
+]

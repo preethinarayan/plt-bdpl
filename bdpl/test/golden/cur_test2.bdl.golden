@@ -1,0 +1,233 @@
+16
+25
+34
+43
+52
+61
+70
+79
+88
+97
+106
+115
+124
+133
+142
+151
+160
+169
+178
+187
+196
+205
+214
+223
+232
+225
+226
+227
+228
+229
+230
+231
+ARRAY of struct:Outer
+[
+	0 => struct:Outer
+	{
+		a => 0xd,
+		b => 0x41,
+	}
+	,
+	1 => struct:Outer
+	{
+		a => 0x82,
+		b => 0x84,
+	}
+	,
+	2 => struct:Outer
+	{
+		a => 0x9,
+		b => 0xd,
+	}
+	,
+	3 => struct:Outer
+	{
+		a => 0x1a,
+		b => 0x22,
+	}
+	,
+	4 => struct:Outer
+	{
+		a => 0x44,
+		b => 0x54,
+	}
+	,
+	5 => struct:Outer
+	{
+		a => 0xa8,
+		b => 0xc8,
+	}
+	,
+	6 => struct:Outer
+	{
+		a => 0x91,
+		b => 0xd2,
+	}
+	,
+	7 => struct:Outer
+	{
+		a => 0xa4,
+		b => 0x24,
+	}
+	,
+	8 => struct:Outer
+	{
+		a => 0x49,
+		b => 0x4a,
+	}
+	,
+	9 => struct:Outer
+	{
+		a => 0x94,
+		b => 0x96,
+	}
+	,
+	10 => struct:Outer
+	{
+		a => 0x2d,
+		b => 0x31,
+	}
+	,
+	11 => struct:Outer
+	{
+		a => 0x62,
+		b => 0x6a,
+	}
+	,
+	12 => struct:Outer
+	{
+		a => 0xd4,
+		b => 0xe4,
+	}
+	,
+	13 => struct:Outer
+	{
+		a => 0xc9,
+		b => 0xea,
+	}
+	,
+	14 => struct:Outer
+	{
+		a => 0xd4,
+		b => 0x14,
+	}
+	,
+	15 => struct:Outer
+	{
+		a => 0x28,
+		b => 0xa9,
+	}
+	,
+	16 => struct:Outer
+	{
+		a => 0x52,
+		b => 0x53,
+	}
+	,
+	17 => struct:Outer
+	{
+		a => 0xa6,
+		b => 0xa8,
+	}
+	,
+	18 => struct:Outer
+	{
+		a => 0x51,
+		b => 0x55,
+	}
+	,
+	19 => struct:Outer
+	{
+		a => 0xaa,
+		b => 0xb2,
+	}
+	,
+	20 => struct:Outer
+	{
+		a => 0x65,
+		b => 0x75,
+	}
+	,
+	21 => struct:Outer
+	{
+		a => 0xeb,
+		b => 0xb,
+	}
+	,
+	22 => struct:Outer
+	{
+		a => 0x16,
+		b => 0x56,
+	}
+	,
+	23 => struct:Outer
+	{
+		a => 0xad,
+		b => 0x6,
+	}
+	,
+	24 => struct:Outer
+	{
+		a => 0xd,
+		b => 0xa,
+	}
+	,
+	25 => struct:Outer
+	{
+		a => 0x0,
+		b => 0x0,
+	}
+	,
+	26 => struct:Outer
+	{
+		a => 0x34,
+		b => 0x0,
+	}
+	,
+	27 => struct:Outer
+	{
+		a => 0x68,
+		b => 0x0,
+	}
+	,
+	28 => struct:Outer
+	{
+		a => 0xd0,
+		b => 0x0,
+	}
+	,
+	29 => struct:Outer
+	{
+		a => 0xa1,
+		b => 0x0,
+	}
+	,
+	30 => struct:Outer
+	{
+		a => 0x42,
+		b => 0x0,
+	}
+	,
+	31 => struct:Outer
+	{
+		a => 0x85,
+		b => 0x0,
+	}
+	,
+	32 => struct:Outer
+	{
+		a => 0xa,
+		b => 0x0,
+	}
+	,
+]

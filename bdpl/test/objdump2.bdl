@@ -1,0 +1,102 @@
+int symtab_offset;
+int symtab_size;
+
+int strtab_offset;
+int strtab_size;
+int i;
+int k;
+bit flag;
+
+struct symbol_table_entry
+{
+	int st_name;
+	int st_value;
+	int st_size;
+	byte st_info;
+	byte st_other;
+	byte[2] st_shndx;
+}Elf32_Sym;
+
+
+struct elf_file
+{
+
+	struct elf_header
+	{
+		byte[16] 	e_ident;
+		byte[2]		e_type;
+		byte[2]		e_machine;
+		int			e_version;
+		byte[8]		e_other_stuff1;
+		int			e_shoff;
+		int			e_flags;
+		byte[2] 	e_ehsize;
+		byte[2]		e_phentsize;
+		byte[2]		e_phnum;
+		byte[2]		e_shentsize;
+		byte[2]		e_shnum;
+		byte[2]		e_shstrndx;
+	}elf_hd satisfies {1} then {$$=elf_hd.e_shoff*8;}; // jump to sh_off once this structure is read
+
+	struct section_header
+	{
+		int sh_name;
+		int sh_type;
+		int sh_flags;
+		int sh_addr;
+		int sh_offset satisfies{sh_type==2 || sh_type==3 } 
+			then 
+			{
+				if(sh_type==2)
+					symtab_offset=sh_offset;
+				else
+					strtab_offset=sh_offset;
+			};
+		int sh_size satisfies{sh_type==2 || sh_type==3 }
+			then	
+			{
+				if(sh_type==2)
+					symtab_size=sh_size;
+				else
+					strtab_size=sh_size;
+			};
+
+
+		int sh_link;
+		int sh_info;
+		int sh_addralign;
+		int sh_entsize;
+	} [elf_hd.e_shnum[0]] se_array 
+		satisfies{1} then {$$=symtab_offset*8;}; // jump to symbol table
+	type struct symbol_table_entry[symtab_size/16] symbol_table 
+		satisfies{1} then {$$=strtab_offset*8;}; // jump to string table
+	byte[strtab_size] string_table;
+
+}elf_file;
+
+file "x:/test/test.o" inp_file;
+read(inp_file,elf_file);
+
+for(i=0;i<$#elf_file.symbol_table;i=i+1)
+{
+	if(elf_file.symbol_table[i].st_name != 0 )
+	{
+		flag=1;
+		for(k=elf_file.symbol_table[i].st_name;flag==1;k=k+1)
+		{
+			if(elf_file.string_table[k] == 0 )
+			{
+				flag=0;
+				continue;
+			}
+			else
+			{
+				printstring(elf_file.string_table[k]);
+			}
+		}
+
+		print("::");
+	}
+        //print(elf_file_1.symbol_table[i]);
+}
+
