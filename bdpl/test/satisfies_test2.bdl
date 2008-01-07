@@ -1,6 +1,6 @@
 struct Outer
 {
-	int fz (fieldsize 7) // this will contain the value 6 after reading file
+	byte fz (fieldsize 7) // this will contain the value 6 after reading file
 		satisfies { 1 }
 		then { print("fz found to be ");print(fz);print(".");}
 		else { print("undefined fz!\n");};

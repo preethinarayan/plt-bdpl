@@ -1,0 +1,89 @@
+struct:aa
+{
+	asb => ARRAY of struct:small_byte
+	[
+		0 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		1 => struct:small_byte
+		{
+			b => 0xd,
+		}
+		,
+		2 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		3 => struct:small_byte
+		{
+			b => 0x1,
+		}
+		,
+		4 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+	]
+	,
+}
+struct:aa
+{
+	asb => ARRAY of struct:small_byte
+	[
+		0 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		1 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		2 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		3 => struct:small_byte
+		{
+			b => 0xd,
+		}
+		,
+		4 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		5 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+		6 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		7 => struct:small_byte
+		{
+			b => 0x1,
+		}
+		,
+		8 => struct:small_byte
+		{
+			b => 0x0,
+		}
+		,
+		9 => struct:small_byte
+		{
+			b => 0x4,
+		}
+		,
+	]
+	,
+}

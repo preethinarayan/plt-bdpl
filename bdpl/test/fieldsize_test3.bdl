@@ -1,7 +1,7 @@
 
 struct Outer
 {
-	int fz (fieldsize 7); // this will contain the value 6 after reading file
+	byte fz (fieldsize 7) satisfies{1} then{print(fz);};  // this will contain the value 6 after reading file
 	struct A
 	{
 		struct C
@@ -11,8 +11,6 @@ struct Outer
 	
 	}[*] a (fieldsize 79); // fieldsize is in bits !
 }bb;
-
-
 
 file "x:/test/file_test.dat" inp_file;
 read(inp_file,bb);
