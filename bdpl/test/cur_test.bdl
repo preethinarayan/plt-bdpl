@@ -1,0 +1,16 @@
+struct Outer
+{
+	byte a;
+	byte b satisfies {1} then {print($$);$$=$$-1;print("::");};
+} ob;
+
+file "x:/test/file_test.dat" inp_file;
+file "x:/test/file_test.dat" inp_file1;
+print($$);
+print("::");
+read(inp_file,ob);
+read(inp_file,ob);
+read(inp_file,ob);
+print(ob);
+
+

@@ -36,6 +36,8 @@ public class FileSymbolTable
         {
             System.err.println(id+" file already open. Reopening.");
         }
+        if(the_file == null)
+            throw new Exception("trying to open null file");
         
         _the_table.put (id,the_file);
                  
@@ -51,13 +53,12 @@ public class FileSymbolTable
     {
         if(_the_table.containsKey(id))
         {
-            return (BdplFile) _the_table.get (id);
+            _current_file=(BdplFile) _the_table.get (id);
+            return _current_file;
         }   
         else
         {
-            
-            throw new Exception(id+" : undefined file identifier");
-            
+            throw new Exception(id+" : undefined file identifier");   
         }
     }
     
@@ -69,7 +70,23 @@ public class FileSymbolTable
     
     public void set_current_file_pointer(int offset) throws Exception
     {
-        _current_file.set_current_pointer (offset);
+        if(_current_file != null)
+            _current_file.set_current_pointer (offset);
+        else
+            System.err.println ("Error : Cant set file pointer, no file read");
+    }
+    
+    public int get_current_file_pointer()
+    {
+        if(_current_file != null)
+        {
+            return _current_file.get_current_pointer ();
+        }
+        else
+        {
+            System.err.println ("Error : Tried to access current file pointer before the first read");
+            return 0;
+        }
     }
     
 }

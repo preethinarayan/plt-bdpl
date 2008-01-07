@@ -340,7 +340,7 @@ public class DataNodeStruct extends DataNodeAbstract
         evaluate_fieldsize ();
         if( _fieldsize>0 && ( _fieldsize < ma || ma==-1))
         {
-            BdplMemFile mem_file=new BdplMemFile(rhs,_fieldsize);
+            BdplMemDataFile mem_file=new BdplMemDataFile(rhs,_fieldsize);
             read_only_fieldsize=true;
             temprhs=mem_file;
             num_reading=_fieldsize;

@@ -366,7 +366,7 @@ public class DataNodeArray extends DataNodeAbstract
         int ma=get_max_accept ();
         if( _fieldsize>0  && (_fieldsize < get_max_accept ()  || _isunlimited || ma==-1) )
         {
-            BdplMemFile mem_file=new BdplMemFile(rhs,_fieldsize);
+            BdplMemDataFile mem_file=new BdplMemDataFile(rhs,_fieldsize);
             read_only_fieldsize=true;
             temprhs=mem_file;
             num_reading=_fieldsize;

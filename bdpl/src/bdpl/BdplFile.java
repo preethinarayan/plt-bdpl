@@ -37,6 +37,9 @@ public interface BdplFile
     
     /** jump the current pointer to this bit in the the file */
     public void set_current_pointer(int bit_pointer) throws Exception;
+    
+    /** get the current pointer value of this file */
+    public int get_current_pointer();
 
     
 }

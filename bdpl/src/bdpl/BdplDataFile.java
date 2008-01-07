@@ -159,4 +159,9 @@ public class BdplDataFile implements BdplFile
         _bit_pointer=bit_offset;
     }
     
+    public int get_current_pointer()
+    {
+        return _bit_pointer;
+    }
+    
 }//end of class
