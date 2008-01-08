@@ -8,8 +8,9 @@ public class BdplMain
     public static void usage ()
     {
         System.out.println ("================================================");
-        System.out.println ("Bdpl Usage:");
-        System.out.println ("java BdplMain [options] <file>");
+        System.out.println ("               Bdpl Version 1.0  ");
+        System.out.println ("Usage:");
+        System.out.println ("java BdplMain [options]");
         System.out.println ("\t -f : File specified as next argument");
         System.out.println ("\t -h : To display this help text");
         System.out.println ("================================================");
