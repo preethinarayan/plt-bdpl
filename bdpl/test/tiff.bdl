@@ -1,0 +1,31 @@
+struct image_file_header
+{
+	byte[2] endianness;
+	byte[2] magic satisfies {magic[0]==42} else { print("bad magic::");};
+	int ifd_pointer;
+}header satisfies {1} then {$$=header.ifd_pointer*8;};
+
+struct image_file_directory
+{
+  byte[2] numEntries;
+  struct image_file_directory_entry
+  {
+	  byte[2] tag;
+	  byte[2] typefield;
+	  byte[4] count;
+	  byte[4] value;
+  }[numEntries[0]+numEntries[1]*8] ifdentry satisfies{1} then {print(numEntries[0]+numEntries[1]*8);print("::");};
+  int nextifd satisfies { nextifd>0 } then { print(nextifd); $$=nextifd*8;print("::");} ;
+}ifd;
+
+file "x:/test/test.tif" inp_file;
+read(inp_file,header);
+read(inp_file,ifd);
+print(ifd);
+for(;ifd.nextifd > 0 ;)
+{
+	read(inp_file,ifd);
+	print(ifd);
+}
+
+
